@@ -7,5 +7,14 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
   }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+      events "passed", "skipped", "failed"
+      showStandardStreams = true  // ⬅ 这一行很关键
+    }
 }

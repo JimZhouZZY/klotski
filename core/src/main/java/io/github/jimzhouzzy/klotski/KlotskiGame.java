@@ -342,6 +342,86 @@ public class KlotskiGame {
         return sb.toString();
     }
 
+    public void fromString(String boardString) {
+        // Split the board string into rows
+        String[] rows = boardString.trim().split("\n");
+        if (rows.length != BOARD_HEIGHT) {
+            throw new IllegalArgumentException("Invalid board height. Expected " + BOARD_HEIGHT + " rows.");
+        }
+    
+        // Create a temporary board to track which cells are occupied
+        char[][] board = new char[BOARD_HEIGHT][BOARD_WIDTH];
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            String[] cells = rows[i].trim().split(" ");
+            if (cells.length != BOARD_WIDTH) {
+                throw new IllegalArgumentException("Invalid board width at row " + i + ". Expected " + BOARD_WIDTH + " columns.");
+            }
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                board[i][j] = cells[j].charAt(0);
+            }
+        }
+    
+        // Reset all pieces' positions
+        for (KlotskiPiece piece : pieces) {
+            piece.setPosition(new int[]{-1, -1}); // Temporarily mark as unplaced
+        }
+    
+        // Iterate through the board and update piece positions
+        for (int row = 0; row < BOARD_HEIGHT; row++) {
+            for (int col = 0; col < BOARD_WIDTH; col++) {
+                char cell = board[row][col];
+                if (cell == '.') {
+                    continue; // Skip empty cells
+                }
+    
+                // Find the piece corresponding to the cell's abbreviation
+                for (KlotskiPiece piece : pieces) {
+                    if (piece.abbreviation == cell && piece.getPosition()[0] == -1) {
+                        // Check if the piece fits at this position
+                        boolean fits = true;
+                        for (int i = 0; i < piece.height; i++) {
+                            for (int j = 0; j < piece.width; j++) {
+                                int r = row + i;
+                                int c = col + j;
+                                if (r >= BOARD_HEIGHT || c >= BOARD_WIDTH || board[r][c] != cell) {
+                                    fits = false;
+                                    break;
+                                }
+                            }
+                            if (!fits) break;
+                        }
+    
+                        if (fits) {
+                            piece.setPosition(new int[]{row, col});
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        // Debug print for piece positions
+        System.out.println("Piece positions after fromString:");
+        for (KlotskiPiece piece : pieces) {
+            System.out.println(piece);
+        }
+        try {
+            System.out.println(this.toString());
+        } catch (Exception e) {
+            if (e instanceof ArrayIndexOutOfBoundsException) {
+                throw new IllegalStateException("Piece missing or overflowing: " + e.getMessage());
+            } else {
+                System.out.println("Unexpected exception: " + e.getMessage());
+            }
+        }
+
+        // Validate that all pieces have been placed
+        for (KlotskiPiece piece : pieces) {
+            if (piece.getPosition()[0] == -1) {
+                throw new IllegalStateException("Piece " + piece.name + " could not be placed on the board.");
+            }
+        }
+    }
+
     public KlotskiPiece[] getPieces() {
         return pieces.clone();
     }
