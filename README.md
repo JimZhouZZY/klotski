@@ -1,5 +1,5 @@
 # Klotski
-Klotski Game
+Klotski Game.
 
 CS-103 Project
 
