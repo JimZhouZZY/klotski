@@ -54,8 +54,10 @@ public class Klotski extends Game {
     public WebServer webServer;
     public SettingsScreen settingsScreen;
     public HelpScreen helpScreen;
-    private Music backgroundMusic;
-    private boolean arrowControlsEnabled = true; // 默认显示方向控制按钮
+    public Music backgroundMusic;
+    public Music backgroundMusicLight;
+    public Music backgroundMusicDark;
+    private boolean arrowControlsEnabled = true;
 
     public KlotskiTheme klotskiTheme;
     private String loggedInUser; // Field to store the logged-in user's name
@@ -74,6 +76,16 @@ public class Klotski extends Game {
 
     public void create() {
         // Load the music file
+        // MUST before load configurations
+        backgroundMusicLight = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/light_theme.mp3"));
+        backgroundMusicLight.setLooping(true);
+        backgroundMusicLight.setVolume(1f);
+
+        backgroundMusicDark = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/dark_theme.mp3"));
+        backgroundMusicDark.setLooping(true);
+        backgroundMusicDark.setVolume(1f);
+
+        backgroundMusic = backgroundMusicLight; // Default to light theme, place holder
 
         // Load the skin for UI components
         skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
@@ -87,38 +99,6 @@ public class Klotski extends Game {
         // height to screen height
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
-
-        // Load the last logged-in user
-        loadLoginStatus();
-
-        // Cresate dynamic board before screens
-        this.dynamicBoard = new DynamicBoard(this, null);
-
-        // After the user loading, settings screen must come first to load settings
-        this.settingsScreen = new SettingsScreen(this);
-        // MUST before load configurations
-        this.helpScreen = new HelpScreen(this);
-        // 根据主题加载不同的音乐或设置参数
-        String musicPath = "assets/sound_fx/light_theme.mp3";
-        if (klotskiTheme == KlotskiTheme.DARK) {
-            musicPath = "assets/sound_fx/dark_theme.mp3"; // 可替换为 DARK 模式专属音乐
-        } else if (klotskiTheme == KlotskiTheme.LIGHT) {
-            musicPath = "assets/sound_fx/light_theme.mp3"; // 可替换为 LIGHT 模式专属音乐
-        }
-
-        // 加载并播放音乐
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(1f);
-        backgroundMusic.play();
-
-        this.mainScreen = new MainScreen(this);
-        this.gameScreen = new GameScreen(this);
-        this.setScreen(mainScreen);
-
-        // Start local web socket server
-        webSocketServer = new GameWebSocketServer(this, 8014);
-        webSocketServer.start();
 
         // Start online websocket client if not in offline mode
         if (!isOfflineMode()) {
@@ -595,8 +575,9 @@ public class Klotski extends Game {
         this.webSocketClient = client;
     }
 
-    public void setBackgroundMusic(Music lightMusic) {
-        this.backgroundMusic = lightMusic;
+    // THIS SHOULD BE USELESS
+    public void setBackgroundMusic(Music music) {
+        this.backgroundMusic = music;
     }
 
     public Music getBackgroundMusic() {

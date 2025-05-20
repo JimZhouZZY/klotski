@@ -30,8 +30,8 @@ public class SettingsScreen implements Screen {
 
     public SettingsScreen(final Klotski klotski) {
         this.klotski = klotski;
-        loadSettings(); // Load settings from file
         create();
+        loadSettings(); // Load settings from file
     }
 
     public void create() {
@@ -102,7 +102,7 @@ public class SettingsScreen implements Screen {
                     if (klotski.getBackgroundMusic() != null) {
                         klotski.getBackgroundMusic().stop();
                     }
-                    Music darkMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/dark_theme.mp3"));
+                    Music darkMusic = klotski.backgroundMusicDark;
                     darkMusic.setLooping(true);
                     klotski.getBackgroundMusic().setVolume(1f);
                     darkMusic.play();
@@ -117,7 +117,7 @@ public class SettingsScreen implements Screen {
                     if (klotski.getBackgroundMusic() != null) {
                         klotski.getBackgroundMusic().stop();
                     }
-                    Music lightMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/light_theme.mp3"));
+                    Music lightMusic = klotski.backgroundMusicLight;
                     lightMusic.setLooping(true);
                     klotski.getBackgroundMusic().setVolume(1f);
                     lightMusic.play();
@@ -170,7 +170,6 @@ public class SettingsScreen implements Screen {
                 klotski.playClickSound();;
                 if (musicCheckBox.isChecked()) {
                     klotski.setMusicEnabled(true);
-//                    klotski.setBackgroundMusic(lightMusic);
                 } else {
                     klotski.setMusicEnabled(false);
                 }
@@ -258,6 +257,7 @@ public class SettingsScreen implements Screen {
         defaultSettings.put("vsyncEnabled", true);
         defaultSettings.put("musicEnabled", true);
         defaultSettings.put("offlineMode", false);
+        defaultSettings.put("arrowControlsEnabled", true);
         return defaultSettings;
     }
 
@@ -312,9 +312,19 @@ public class SettingsScreen implements Screen {
 
         // Set Klotski.klotskiTheme based on isDarkMode
         if (isDarkMode) {
+            Music darkMusic = klotski.backgroundMusicDark;
+            darkMusic.setLooping(true);
+            klotski.getBackgroundMusic().setVolume(1f);
+            darkMusic.play();
+            klotski.setBackgroundMusic(darkMusic); 
             klotski.klotskiTheme = KlotskiTheme.DARK;
         } else {
             klotski.klotskiTheme = KlotskiTheme.LIGHT;
+            Music lightMusic = klotski.backgroundMusicLight;
+            lightMusic.setLooping(true);
+            klotski.getBackgroundMusic().setVolume(1f);
+            lightMusic.play();
+            klotski.setBackgroundMusic(lightMusic);
         }
     }
 
