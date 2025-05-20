@@ -1,5 +1,6 @@
 package io.github.jimzhouzzy.klotski;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -97,11 +98,31 @@ public class SettingsScreen implements Screen {
                     isDarkMode = true;
                     klotski.klotskiTheme = KlotskiTheme.DARK;
                     klotski.updateMainScreenColors();
+                    // Switch to dark-themed music
+                    if (klotski.getBackgroundMusic() != null) {
+                        klotski.getBackgroundMusic().stop();
+                    }
+                    Music darkMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/dark_theme.mp3"));
+                    darkMusic.setLooping(true);
+                    klotski.getBackgroundMusic().setVolume(1f);
+                    darkMusic.play();
+                    klotski.setBackgroundMusic(darkMusic);
+
                     Gdx.app.log("Settings", "Dark mode enabled");
                 } else {
                     isDarkMode = false;
                     klotski.klotskiTheme = KlotskiTheme.LIGHT;
                     klotski.updateMainScreenColors();
+                    // Switch to the light-themed music
+                    if (klotski.getBackgroundMusic() != null) {
+                        klotski.getBackgroundMusic().stop();
+                    }
+                    Music lightMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/light_theme.mp3"));
+                    lightMusic.setLooping(true);
+                    klotski.getBackgroundMusic().setVolume(1f);
+                    lightMusic.play();
+                    klotski.setBackgroundMusic(lightMusic);
+
                     Gdx.app.log("Settings", "Light mode enabled");
                 }
                 saveSettings();
@@ -139,8 +160,8 @@ public class SettingsScreen implements Screen {
             }
         });
         table.add(vsyncCheckBox).padBottom(20).row();
-        
-        // Add a checkbox for music 
+
+        // Add a checkbox for music
         CheckBox musicCheckBox = new CheckBox("Audio - Music", skin);
         musicCheckBox.setChecked(klotski.isMusicEnabled());
         musicCheckBox.addListener(new ClickListener() {
@@ -149,6 +170,7 @@ public class SettingsScreen implements Screen {
                 klotski.playClickSound();;
                 if (musicCheckBox.isChecked()) {
                     klotski.setMusicEnabled(true);
+//                    klotski.setBackgroundMusic(lightMusic);
                 } else {
                     klotski.setMusicEnabled(false);
                 }
@@ -158,7 +180,20 @@ public class SettingsScreen implements Screen {
         });
         table.add(musicCheckBox).padBottom(20).row();
 
-        // Add a checkbox for music 
+        // Add a checkbox for arrow key UI
+        CheckBox arrowControlCheckBox = new CheckBox("Gameplay - Show Arrow Controls", skin);
+        arrowControlCheckBox.setChecked(klotski.isArrowControlsEnabled());
+        arrowControlCheckBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                klotski.setArrowControlsEnabled(arrowControlCheckBox.isChecked());
+                Gdx.app.log("Settings", "Arrow Controls " + (arrowControlCheckBox.isChecked() ? "enabled" : "disabled"));
+                saveSettings();
+            }
+        });
+        table.add(arrowControlCheckBox).padBottom(20).row();
+
+        // Add a checkbox for music
         CheckBox offlineModeCheckBox = new CheckBox("Network - Offline Mode", skin);
         offlineModeCheckBox.setChecked(klotski.isOfflineMode());
         offlineModeCheckBox.addListener(new ClickListener() {
@@ -198,6 +233,7 @@ public class SettingsScreen implements Screen {
         settings.put("vsyncEnabled", klotski.isVsyncEnabled());
         settings.put("musicEnabled", klotski.isMusicEnabled());
         settings.put("offlineMode", klotski.isOfflineMode());
+        settings.put("arrowControlsEnabled", klotski.isArrowControlsEnabled());
 
         String username = klotski.getLoggedInUser();
         if (username == null || username.isEmpty()) {
@@ -260,6 +296,7 @@ public class SettingsScreen implements Screen {
             klotski.setVsyncEnabled((boolean) settings.getOrDefault("vsyncEnabled", true), stage);
             klotski.setMusicEnabled((boolean) settings.getOrDefault("musicEnabled", true));
             klotski.setOfflineMode((boolean) settings.getOrDefault("offlineMode", false));
+            klotski.setArrowControlsEnabled((boolean) settings.getOrDefault("arrowControlsEnabled", true));
             Gdx.app.log("Settings", "Settings loaded for user: " + username);
         } else {
             Gdx.app.log("Settings", "No settings found for user: " + username + ". Using default settings.");
@@ -269,6 +306,7 @@ public class SettingsScreen implements Screen {
             klotski.setVsyncEnabled((boolean) settings.get("vsyncEnabled"), stage);
             klotski.setMusicEnabled((boolean) settings.getOrDefault("musicEnabled", true));
             klotski.setOfflineMode((boolean) settings.getOrDefault("offlineMode", false));
+            klotski.setArrowControlsEnabled((boolean) settings.getOrDefault("arrowControlsEnabled", true));
             saveSettings();
         }
 
@@ -297,6 +335,9 @@ public class SettingsScreen implements Screen {
                 return false;
             }
             if (!settings.containsKey("offlineMode") || !(settings.get("vsyncEnabled") instanceof Boolean)) {
+                return false;
+            }
+            if (!settings.containsKey("arrowControlsEnabled") || !(settings.get("arrowControlsEnabled") instanceof Boolean)) {
                 return false;
             }
             if (!settings.containsKey("username") || !(settings.get("username") instanceof String)) {

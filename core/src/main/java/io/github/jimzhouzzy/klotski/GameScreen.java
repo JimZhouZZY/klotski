@@ -1,5 +1,5 @@
 // KNOWN ISSUES:
-// 1. The move count is incorrect when the user dragged a piece 
+// 1. The move count is incorrect when the user dragged a piece
 //    across multiple grid.
 // 2. Restart in an leveled (seedly random shuffeled) game won't
 //    reset the game to the shuffeled state.
@@ -15,14 +15,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.net.HttpRequestBuilder;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -30,7 +23,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -39,29 +31,24 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 
-import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.KlotskiGame;
-import io.github.jimzhouzzy.klotski.KlotskiGame.KlotskiPiece;
-import io.github.jimzhouzzy.klotski.KlotskiSolver;
-import io.github.jimzhouzzy.klotski.RectangleBlockActor;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.function.Consumer;
 import java.io.*;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class GameScreen extends ApplicationAdapter implements Screen {
+    private Sound clickRectangularSound;
+    private Music winSound;
+    private boolean winMusicPlayed = false;
+    private Music loseSound;
+    private boolean loseMusicPlayed = false;
     private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
     private final String SAVE_FILE = configPathHelper.getConfigFilePath("Klotski", "game_save.dat");
 
@@ -73,6 +60,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private final int cols = 4;
     private List<RectangleBlockActor> blocks; // List of all blocks
     private Group congratulationsGroup;
+    private RectangleBlockActor selectedBlock = null;
 
     private int[][] autoMoves;
     private int autoStep;
@@ -100,6 +88,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     private Label congratsLabel;
 
+    private int blockedId;
+
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
     }
@@ -108,9 +98,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.isAttackMode = isAttackMode;
     }
 
+    public void blockedPieceId(int blockedId) {
+        this.blockedId = blockedId;
+    }
     @Override
     public void create() {
         stage = new Stage(new ScreenViewport());
+        Gdx.app.postRunnable(() -> {
+            Music bgm = klotski.getBackgroundMusic();
+            if (bgm != null) {
+                bgm.setVolume(0.3f); // Reduce volume to 30%
+            }
+        });
         Gdx.input.setInputProcessor(stage);
         klotski.dynamicBoard.setStage(stage);
 
@@ -118,6 +117,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         blocks = new ArrayList<>(); // Initialize the list of blocks
+
+        // Load the rectangular block click sound
+        clickRectangularSound = Gdx.audio.newSound(Gdx.files.internal("assets/sound_fx/clickRectangular.mp3"));
+        // Load the win sound effect
+        winSound = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/win.mp3"));
+        loseSound = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/lose.mp3"));
 
         // Calculate cellSize dynamically based on the screen size
         cellSize = Math.min(Gdx.graphics.getWidth() / (float) cols, Gdx.graphics.getHeight() / (float) rows);
@@ -153,7 +158,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    klotski.playClickSound();;
+                    klotski.playClickSound();
                     switch (name) {
                         case "Restart":
                             handleRestart(game);
@@ -173,7 +178,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                         case "Save":
                             if (!klotski.isOfflineMode())
                                 handleSave(false);
-                            else 
+                            else
                                 handleLocalSave();
                             break;
                         case "Load":
@@ -190,6 +195,60 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             });
         }
 
+        if (klotski.isArrowControlsEnabled()) {
+            // Add arrow control buttons
+            Label controlLabel = new Label("Move", skin);
+            controlLabel.setFontScale(2f);
+            buttonTable.add(controlLabel).padTop(20).row();
+            Map<String, TextButton> directionButtons = new HashMap<>();
+//        Table arrowTable = new Table();
+            buttonNames = new String[]{"Up", "Down", "Left", "Right"};
+            for (String name : buttonNames) {
+
+                final String buttonName = name;
+                TextButton button = new TextButton(buttonName, skin);
+                directionButtons.put(buttonName, button);
+                button.getLabel().setFontScale(0.5f);
+                //buttonTable.add(button).height(30).width(100).pad(10);
+                //buttonTable.row();
+
+                button.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        klotski.playClickSound();
+                        switch (buttonName) {
+                            case "Up":
+                                handleArrowKeys(new int[] { -1, 0 });
+                                break;
+                            case "Down":
+                                handleArrowKeys(new int[] { 1, 0 });
+                                break;
+                            case "Left":
+                                handleArrowKeys(new int[] { 0, -1 });
+                                break;
+                            case "Right":
+                                handleArrowKeys(new int[] { 0, 1 });
+                                break;
+                        }
+                    }
+                });
+            }
+
+            Table arrowTable = new Table();
+            arrowTable.add().width(30);
+            arrowTable.add(directionButtons.get("Up")).width(50).height(40);
+            arrowTable.add().width(30).row();
+
+            arrowTable.add(directionButtons.get("Left")).width(50).height(40);
+            arrowTable.add().width(10);
+            arrowTable.add(directionButtons.get("Right")).width(50).height(40).row();
+
+            arrowTable.add().width(30);
+            arrowTable.add(directionButtons.get("Down")).width(50).height(40);
+            arrowTable.add().width(30).row();
+
+            buttonTable.add(arrowTable).padTop(20).row();
+        }
         // Add grid and buttons to the root table
         rootTable.add(gridTable).expand().fill().left().padRight(20); // Grid on the left
         rootTable.add(buttonTable).top().right(); // Buttons on the right
@@ -208,6 +267,27 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
             blocks.add(block); // Add block to the list
             stage.addActor(block); // Add block to the stage
+
+            block.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Play rectangular block click sound
+                    if (clickRectangularSound != null) {
+                        clickRectangularSound.play(1.0f);
+                    }
+                    if (selectedBlock == block) {
+                        selectedBlock.setSelected(false);
+                        selectedBlock = null;
+                    } else {
+                        if (selectedBlock != null) {
+                            selectedBlock.setSelected(false);
+                        }
+                        selectedBlock = block;
+                        selectedBlock.setSelected(true); // Thicker border
+                    }
+                }
+            });
+
         }
 
         // Create the congratulations screen
@@ -279,23 +359,49 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     case Input.Keys.L:
                     case Input.Keys.LEFT:
                         // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { 0, -1 });
+                        handleArrowKeys(new int[]{0, -1});
                         return true;
                     case Input.Keys.K:
                     case Input.Keys.UP:
                         // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { -1, 0 });
+                        handleArrowKeys(new int[]{-1, 0});
                         return true;
                     case Input.Keys.H:
                     case Input.Keys.RIGHT:
                         // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { 0, 1 });
+                        handleArrowKeys(new int[]{0, 1});
                         return true;
                     case Input.Keys.J:
                     case Input.Keys.DOWN:
                         // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { 1, 0 });
+                        handleArrowKeys(new int[]{1, 0});
                         return true;
+                    // Handle number keys 0-9 and numpad 0-9 for block selection
+                    case Input.Keys.NUM_0:
+                    case Input.Keys.NUM_1:
+                    case Input.Keys.NUM_2:
+                    case Input.Keys.NUM_3:
+                    case Input.Keys.NUM_4:
+                    case Input.Keys.NUM_5:
+                    case Input.Keys.NUM_6:
+                    case Input.Keys.NUM_7:
+                    case Input.Keys.NUM_8:
+                    case Input.Keys.NUM_9: {
+                        int digitKey = keycode - Input.Keys.NUM_0; // digitKey = 0~9
+                        for (RectangleBlockActor block : blocks) {
+                            if (block.pieceId == digitKey) {
+                                if (selectedBlock != block) {
+                                    if (selectedBlock != null) selectedBlock.setSelected(false);
+                                    selectedBlock = block;
+                                    selectedBlock.setSelected(true);
+                                    if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
+                                }
+                                break;
+                            }
+                        }
+                        return true;
+                    }
+
                 }
                 return false;
             }
@@ -339,35 +445,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleArrowKeys(int[] direction) {
-        List<int[][]> legalMoves = game.getLegalMovesByDirection(direction);
-        if (legalMoves.isEmpty()) {
-            return;
-        }
-        if (isAutoSolving) {
-            stopAutoSolving();
-        }
-        int[][] move = legalMoves.get(0);
-        int fromRow = move[0][0];
-        int fromCol = move[0][1];
-        int toRow = move[1][0];
-        int toCol = move[1][1];
-        for (RectangleBlockActor block : blocks) {
-            KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
-            if (piece.getRow() == fromRow && piece.getCol() == fromCol) {
-                float targetX = toCol * cellSize;
-                float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
-                game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-                piece.setPosition(new int[] { toRow, toCol });
-                recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-                isTerminal = game.isTerminal(); // Check if the game is in a terminal state
-                broadcastGameState();
-                block.addAction(Actions.sequence(
-                        Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
-                        Actions.run(() -> {
-                        })));
-                break;
-            }
-        }
+        if (selectedBlock == null || selectedBlock.pieceId == blockedId) return;
+
+        KlotskiGame.KlotskiPiece piece = game.getPiece(selectedBlock.pieceId);
+        int fromRow = piece.getRow();
+        int fromCol = piece.getCol();
+        int toRow = fromRow + direction[0];
+        int toCol = fromCol + direction[1];
+
+        if (!game.isLegalMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol })) return;
+
+        float targetX = toCol * cellSize;
+        float targetY = (rows - toRow - piece.height) * cellSize;
+
+        game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+        piece.setPosition(new int[] { toRow, toCol });
+        recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+        isTerminal = game.isTerminal();
+        broadcastGameState();
+
+        selectedBlock.addAction(Actions.moveTo(targetX, targetY, 0.1f));
     }
 
     // Helper method to assign colors to pieces
@@ -607,6 +704,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         if (autoSaveTask != null) {
             autoSaveTask.cancel();
         }
+        // Dispose the rectangular block click sound
+        if (clickRectangularSound != null) {
+            clickRectangularSound.dispose();
+        }
     }
 
     private void handleRestart(KlotskiGame game) {
@@ -632,6 +733,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Reset terminal state
         isTerminal = false;
+        winMusicPlayed = false;
+        loseMusicPlayed = false;
 
         broadcastGameState();
 
@@ -662,6 +765,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
                 System.out.printf("Block ID: %d, Position: (%d, %d)\n", piece.id, piece.position[0], piece.position[1]);
                 if (piece.position[0] == fromRow && piece.position[1] == fromCol) {
+//                    if (piece.id == blockedId) return; // Skip the hint if the suggested piece is blockedId
                     // Animate the block's movement to the target position
                     float targetX = toCol * cellSize;
                     float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
@@ -705,6 +809,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleExit() {
+        // reset
+        winMusicPlayed = false;
+        loseMusicPlayed = false;
+
         klotski.setScreen(klotski.mainScreen); // Switch back to the main menu
         dispose(); // Dispose of the current screen resources
     }
@@ -798,6 +906,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void showCongratulationsScreen() {
+
+        // Play win sound effect
+        if (!winMusicPlayed && winSound != null) {
+            winSound.play();
+            winMusicPlayed = true;
+        }
         // Update the time label with the final elapsed time
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
@@ -808,12 +922,24 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         movesLabel.setText("Moves: " + (currentMoveIndex + 1));
 
         congratulationsGroup.setVisible(true); // Show the congratulations screen
-    }
 
+    }
     private void showLosingScreen() {
-        // Create a losing screen similar to the congratulations screen
-        showCongratulationsScreen();
+        // Play lose sound effect
+        if (!loseMusicPlayed && loseSound != null) {
+            loseSound.play();
+            loseMusicPlayed = true;
+        }
+        // Update the time label with the final elapsed time
+        int minutes = (int) (elapsedTime / 60);
+        int seconds = (int) (elapsedTime % 60);
+        timerLabelCongrats.setText(String.format("Time: %02d:%02d", minutes, seconds));
         congratsLabel.setText("Game Over! You Lose!");
+
+        // Update the moves label with the total moves
+        movesLabel.setText("Moves: " + (currentMoveIndex + 1));
+
+        congratulationsGroup.setVisible(true); // Show the losing screen
     }
 
     private void updateAutoButtonText(TextButton autoButton) {
@@ -880,7 +1006,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private String getSaveFileName() {
         String username = klotski.getLoggedInUser();
         if (username == null || username.isEmpty()) {
-            return "guest_save.dat"; // Default save file for guests
+            return "Guest_save.dat"; // Default save file for guests
         }
         return username + "_save.dat"; // Unique save file for each user
     }
@@ -895,6 +1021,22 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeObject(moveHistory);
             oos.writeObject(new GameState(currentMoveIndex, elapsedTime));
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
+            // Show a small pop-up window after saving
+            Dialog saveDialog = new Dialog("Save", skin);
+            Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
+            saveMessage.setFontScale(1.5f); // Increase font size for the message
+            saveDialog.getContentTable().add(saveMessage).pad(20).row();
+
+            TextButton cancelButton = new TextButton("Cancel", skin);
+            cancelButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                }
+            });
+            cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
+            saveDialog.button(cancelButton, true);
+            saveDialog.show(stage);
             // print save file content
             System.out.println("Save file content: " + new String(Files.readAllBytes(file.toPath())));
 
@@ -967,6 +1109,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         fetchLatestSaveFromServer(username, saveData -> {
             if (saveData == null) {
                 System.out.println("No save file found for user: " + username);
+//                System.out.println("!!!!!!");
                 return;
             }
 
@@ -1050,7 +1193,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
         });
     }
-    
+
     private void handleLocalSave() {
         // TODO: refactor to math the online method
         String saveFileName = getSaveFileName();
@@ -1063,6 +1206,22 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeInt(currentMoveIndex);
             oos.writeFloat(elapsedTime);
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
+            // Show a small pop-up window after saving
+            Dialog saveDialog = new Dialog("Save", skin);
+            Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
+            saveMessage.setFontScale(1.5f); // Increase font size for the message
+            saveDialog.getContentTable().add(saveMessage).pad(20).row();
+
+            TextButton cancelButton = new TextButton("Cancel", skin);
+            cancelButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                }
+            });
+            cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
+            saveDialog.button(cancelButton, true);
+            saveDialog.show(stage);
         } catch (IOException e) {
             System.err.println("Failed to save game: " + e.getMessage());
         }
@@ -1113,6 +1272,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Cancel the auto-save task when the screen is hidden
         if (autoSaveTask != null) {
             autoSaveTask.cancel();
+        }
+
+        Music bgm = klotski.getBackgroundMusic();
+        if (bgm != null) {
+            bgm.setVolume(1.0f); // 恢复音量
         }
     }
 

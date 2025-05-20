@@ -33,8 +33,8 @@ public class GameModeScreen implements Screen {
 
                 Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
                 resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
 
                 int xHotspot = 7, yHotspot = 1;
                 Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
@@ -51,8 +51,8 @@ public class GameModeScreen implements Screen {
 
                 Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
                 resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
 
                 int xHotspot = 7, yHotspot = 1;
                 Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
@@ -92,7 +92,8 @@ public class GameModeScreen implements Screen {
         freeGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
             }
@@ -104,7 +105,8 @@ public class GameModeScreen implements Screen {
         attackModeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 klotski.gameScreen.setGameMode(true); // Set to 3min-Attack mode
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
             }
@@ -116,9 +118,13 @@ public class GameModeScreen implements Screen {
         level1Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
+                int p = 2 + (int) (Math.random() * 8);
+                System.out.println("!!!!!!!"+(int) (Math.random() * 8)+"!!!!!!");
+                klotski.gameScreen.blockedPieceId(9); // Select a piece with id 2-9
+                System.out.println("!!!!!!!"+p+"!!!!!!");
                 klotski.gameScreen.randomShuffle(10101L); // Shuffle with seed for Level 1
             }
         });
@@ -129,20 +135,22 @@ public class GameModeScreen implements Screen {
         level2Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
                 klotski.gameScreen.randomShuffle(10102L); // Shuffle with seed for Level 2
             }
         });
         table.add(level2Button).width(300).height(50).padBottom(20).row();
-        
+
         // Add "Spectate" button
         TextButton spectateButton = new TextButton("Spectate", skin);
         spectateButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 klotski.setScreen(new SpectateChoiceScreen(klotski, klotski.webSocketClient)); // Navigate to the game screen
             }
         });
@@ -153,7 +161,8 @@ public class GameModeScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 handleBack();
             }
         });
@@ -193,10 +202,12 @@ public class GameModeScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     private void handleBack() {
         klotski.setScreen(klotski.mainScreen); // Navigate back to the main screen
