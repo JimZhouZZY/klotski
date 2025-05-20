@@ -390,9 +390,17 @@ public class KlotskiGame {
                             }
                             if (!fits) break;
                         }
-    
+
                         if (fits) {
                             piece.setPosition(new int[]{row, col});
+                            for (int i = 0; i < piece.height; i++) {
+                                for (int j = 0; j < piece.width; j++) {
+                                    int r = row + i;
+                                    int c = col + j;
+                                    board[r][c] = '.'; // Mark the cell as occupied
+                                }
+                            }
+                            if (!fits) break;
                             break;
                         }
                     }

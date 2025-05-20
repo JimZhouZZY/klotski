@@ -231,6 +231,7 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
             // Create a block with a unique color for each piece
             Color color = getColorForPiece(piece.id);
             RectangleBlockActor block = new RectangleBlockActor(x, y, width, height, color, piece.id, game);
+            block.enableTouch = false; // Disable touch events for blocks
 
             blocks.add(block); // Add block to the list
             stage.addActor(block); // Add block to the stage
@@ -268,59 +269,6 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
                 switch (keycode) {
                     case Input.Keys.ESCAPE:
                         handleExit(); // Handle exit when ESC is pressed
-                        return true;
-                    case Input.Keys.R:
-                        handleRestart(game); // Handle restart when R is pressed
-                        return true;
-                    case Input.Keys.I:
-                        handleHint(game); // Handle hint when H is pressed
-                        return true;
-                    case Input.Keys.U:
-                        handleUndo(); // Handle undo when U is pressed
-                        return true;
-                    case Input.Keys.Y:
-                        handleRedo(); // Handle redo when Y is pressed
-                        return true;
-                    case Input.Keys.A:
-                        handleAutoSolve(game, autoButton); // Handle auto-solving when A is pressed
-                        return true;
-                    case Input.Keys.SPACE:
-                        // Handle space key for auto-solving
-                        if (isAutoSolving) {
-                            stopAutoSolving(); // Stop auto-solving if already active
-                            autoButton.setText("Auto"); // Change button text back to "Auto"
-                        } else {
-                            handleAutoSolve(game, autoButton); // Start auto-solving
-                        }
-                        return true;
-                    case Input.Keys.ENTER:
-                        // Handle enter key for auto-solving
-                        if (isAutoSolving) {
-                            stopAutoSolving(); // Stop auto-solving if already active
-                            autoButton.setText("Auto"); // Change button text back to "Auto"
-                        } else {
-                            handleAutoSolve(game, autoButton); // Start auto-solving
-                        }
-                        return true;
-                    case Input.Keys.L:
-                    case Input.Keys.LEFT:
-                        // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { 0, -1 });
-                        return true;
-                    case Input.Keys.K:
-                    case Input.Keys.UP:
-                        // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { -1, 0 });
-                        return true;
-                    case Input.Keys.H:
-                    case Input.Keys.RIGHT:
-                        // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { 0, 1 });
-                        return true;
-                    case Input.Keys.J:
-                    case Input.Keys.DOWN:
-                        // Handle left arrow key for moving blocks
-                        handleArrowKeys(new int[] { 1, 0 });
                         return true;
                 }
                 return false;
