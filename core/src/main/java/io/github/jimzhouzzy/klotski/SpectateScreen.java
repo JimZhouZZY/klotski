@@ -45,7 +45,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import org.java_websocket.client.WebSocketClient;
+
 import java.io.*;
+import java.net.http.WebSocket;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 
@@ -94,10 +98,12 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
     private float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     private Label congratsLabel;
     private String username;
+    private GameWebSocketClient webSocketClient;
 
-    public SpectateScreen(final Klotski klotski, String username) {
+    public SpectateScreen(final Klotski klotski, String username, GameWebSocketClient webSocketClient) {
         this.klotski = klotski;
         this.username = username;
+        this.webSocketClient = webSocketClient;
         connectWebSocket();
     }
 
@@ -106,8 +112,7 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
     }
 
     private void connectWebSocket() {
-        // Connect to the WebSocket server
-        GameWebSocketClient webSocketClient = klotski.getWebSocketClient();
+        System.out.println("SpectateScreen is trying to connect the websocket");
         if (webSocketClient == null || !webSocketClient.isConnected()) {
             System.err.println("WebSocket client is not connected.");
             return;

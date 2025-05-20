@@ -65,6 +65,7 @@ public class SpectateChoiceScreen implements Screen {
 
         // Set a callback to handle the server's response
         webSocketClient.setOnMessageListener(message -> {
+            System.out.println("Test output");
             if (message.startsWith("Online users: ")) {
                 String[] users = message.substring("Online users: ".length()).split(", ");
                 Gdx.app.postRunnable(() -> {
@@ -114,7 +115,7 @@ public class SpectateChoiceScreen implements Screen {
 
     private void spectateUser(String user) {
         System.out.println("Spectating user: " + user);
-        klotski.setScreen(new SpectateScreen(klotski, user)); // Navigate to the SpectateScreen
+        klotski.setScreen(new SpectateScreen(klotski, user, klotski.webSocketClient)); // Navigate to the SpectateScreen
     }
 
     // TODO: avoid repeated code.
