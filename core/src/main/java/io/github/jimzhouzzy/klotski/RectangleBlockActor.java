@@ -18,6 +18,7 @@ public class RectangleBlockActor extends Actor {
     private Rectangle rectangle;
     private Color color;
     private static ShapeRenderer shapeRenderer = new ShapeRenderer();
+    public Boolean enableTouch = true;
     public int pieceId; // ID of the corresponding game piece
     private KlotskiGame game; // Reference to the game logic
     private float snappedX;
@@ -38,6 +39,10 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (enableTouch == false) {
+                    return false;
+                }
+
                 Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
                 GameScreen gameScreen = klotski.gameScreen;
                 if (gameScreen.isAutoSolving()) {
@@ -59,6 +64,10 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                if (enableTouch == false) {
+                    return;
+                }
+                
                 Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
                 GameScreen gameScreen = klotski.gameScreen;
                 if (gameScreen.isAutoSolving()) {
@@ -151,6 +160,10 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (enableTouch == false) {
+                    return;
+                }
+                
                 Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
                 GameScreen gameScreen = klotski.gameScreen;
                 float cellSize = Math.min(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 5f);
