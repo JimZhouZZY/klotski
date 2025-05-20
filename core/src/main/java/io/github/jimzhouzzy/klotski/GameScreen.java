@@ -708,6 +708,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         if (clickRectangularSound != null) {
             clickRectangularSound.dispose();
         }
+
+        // Dispose the win and lose sounds
+        if (winSound != null) {
+            winSound.dispose();
+        }
+        if (loseSound != null) {
+            loseSound.dispose();
+        }
     }
 
     private void handleRestart(KlotskiGame game) {
