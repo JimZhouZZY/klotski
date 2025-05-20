@@ -31,15 +31,9 @@ public class GameWebSocketClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         System.out.println("Message from server: " + message);
-        
-        if (message.startsWith("Online users: ")) {
-            String[] users = message.substring("Online users: ".length()).split(", ");
-            onlineUsers = users;
-            System.out.println("Online users: " + String.join(", ", users));
-            
-            if (onMessageListener != null) {
-                onMessageListener.onMessage(message); // Trigger the callback
-            }
+    
+        if (onMessageListener != null) {
+            onMessageListener.onMessage(message); // Trigger the callback
         }
     }
 
