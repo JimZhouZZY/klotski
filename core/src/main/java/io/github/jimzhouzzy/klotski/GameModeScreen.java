@@ -122,9 +122,9 @@ public class GameModeScreen implements Screen {
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
                 int p = 2 + (int) (Math.random() * 8);
-                System.out.println("!!!!!!!"+(int) (Math.random() * 8)+"!!!!!!");
+                logger.fine("Random value generated: " + (int) (Math.random() * 8));
                 klotski.gameScreen.blockedPieceId(9); // Select a piece with id 2-9
-                System.out.println("!!!!!!!"+p+"!!!!!!");
+                logger.fine("Value of p: " + p);
                 klotski.gameScreen.randomShuffle(10101L); // Shuffle with seed for Level 1
             }
         });
