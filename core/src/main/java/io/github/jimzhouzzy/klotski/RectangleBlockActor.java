@@ -1,5 +1,6 @@
 package io.github.jimzhouzzy.klotski;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,6 +11,8 @@ import io.github.jimzhouzzy.klotski.GameScreen;
 import io.github.jimzhouzzy.klotski.Klotski;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,12 +28,32 @@ public class RectangleBlockActor extends Actor {
     private float snappedY;
     private float oldVelocityX;
     private float oldVelocityY;
+    private boolean isSelected = false;
+    private Texture pieceTexture;
+
+    // Font for drawing pieceId
+    private static final BitmapFont font = new BitmapFont();
+    private static final GlyphLayout layout = new GlyphLayout();
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public RectangleBlockActor(float x, float y, float width, float height, Color color, int pieceId, KlotskiGame game) {
         this.rectangle = new Rectangle(x, y, width, height);
         this.color = color;
         this.pieceId = pieceId;
         this.game = game;
+
+        if (pieceId == 0) {
+            pieceTexture = new Texture(Gdx.files.internal("assets/image/CaoCao.png"));
+        } else if (pieceId == 1) {
+            pieceTexture = new Texture(Gdx.files.internal("assets/image/Guanyu.png"));
+        } else if ((pieceId >= 2 && pieceId <= 5)) {
+            pieceTexture = new Texture(Gdx.files.internal("assets/image/Normal.png"));
+        } else if (pieceId >= 6 && pieceId <= 9) {
+            pieceTexture = new Texture(Gdx.files.internal("assets/image/Soldier.png"));
+        }
 
         setBounds(x, y, width, height);
 
@@ -140,14 +163,14 @@ public class RectangleBlockActor extends Actor {
                 float velocityY = newY - oldY;
                 float accelerationX = velocityX - oldVelocityX;
                 float accelerationY = velocityY - oldVelocityY;
-               
+
                 oldVelocityX = velocityX;
                 oldVelocityY = velocityY;
 
                 // TODO: find a better way to detect collision
                 /*
                 if (
-                    (velocityX / (float) Math.abs(velocityX) * accelerationX < -1.0f && collisionX) 
+                    (velocityX / (float) Math.abs(velocityX) * accelerationX < -1.0f && collisionX)
                         || (velocityY / (float) Math.abs(velocityY) * accelerationY < -1.0f && collisionY)
                     ) {
                     klotski.playBlockCollideSound();
@@ -203,12 +226,13 @@ public class RectangleBlockActor extends Actor {
                         // Update the game logic
                         game.getPiece(pieceId).setPosition(new int[]{newRow, newCol});
 
-                        // Apply the action and record the move
-                        gameScreen.getGame().applyAction(new int[]{oldRow, oldCol}, new int[]{newRow, newCol});
-                        gameScreen.recordMove(new int[]{oldRow, oldCol}, new int[]{newRow, newCol});
-
-                        gameScreen.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
-                        gameScreen.broadcastGameState();
+                        // Apply the action and record the move only if the block actually moved
+                        if (oldRow != newRow || oldCol != newCol) {
+                            gameScreen.getGame().applyAction(new int[]{oldRow, oldCol}, new int[]{newRow, newCol});
+                            gameScreen.recordMove(new int[]{oldRow, oldCol}, new int[]{newRow, newCol});
+                            gameScreen.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
+                            gameScreen.broadcastGameState();
+                        }
                     })
                 ));
             }
@@ -218,9 +242,21 @@ public class RectangleBlockActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end(); // End the batch to use ShapeRenderer
-    
+
+        // Draw selection indicator (black filled circle in center if selected)
+        if (isSelected) {
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.BLACK);
+            float centerX = getX() + getWidth() / 2f;
+            float centerY = getY() + getHeight() / 2f;
+            float radius = Math.min(getWidth(), getHeight()) * 0.15f;
+            shapeRenderer.circle(centerX, centerY, radius);
+            shapeRenderer.end();
+        }
+
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-    
+
         // Optional dynamic color for the rectangle
         float time = (System.currentTimeMillis() % 10000) / 10000f; // 0 to 1 looping value
         Color dynamicColor = new Color(
@@ -229,7 +265,7 @@ public class RectangleBlockActor extends Actor {
             color.b * (0.9f + 0.1f * (float) Math.sin(2 * Math.PI * time + 2 * Math.PI / 3)), // Dynamic blue component
             1
         );
-    
+
         // Draw the main filled rectangle
         // Define gradient colors for each corner
         Color bottomLeftColor = dynamicColor.cpy().mul(0.8f); // Slightly darker
@@ -244,7 +280,13 @@ public class RectangleBlockActor extends Actor {
             bottomLeftColor, bottomRightColor, topRightColor, topLeftColor
         );
         shapeRenderer.end();
-    
+
+        if (pieceTexture != null) {
+            batch.begin();
+            batch.draw(pieceTexture, getX(), getY(), getWidth(), getHeight());
+            batch.end();
+        }
+
         // Add shadow effect (bottom-right gradient)
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(dynamicColor.cpy().mul(0.6f)); // Darker shadow color
@@ -259,7 +301,7 @@ public class RectangleBlockActor extends Actor {
             getX() + 5, getY() + getHeight() - 5 // Slight offset for shadow
         );
         shapeRenderer.end();
-    
+
         // Add highlight effect (top-left gradient)
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(dynamicColor.cpy().mul(1.2f)); // Lighter highlight color
@@ -274,14 +316,21 @@ public class RectangleBlockActor extends Actor {
             getX() + 5, getY() + 5 // Slight offset for highlight
         );
         shapeRenderer.end();
-    
+
         // Draw the border (outline)
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(dynamicColor.cpy().mul(0.7f)); // Slightly darker border color
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
         shapeRenderer.end();
-    
+
         batch.begin(); // Restart the batch
+        // Draw the pieceId number in the top-right corner
+        layout.setText(font, String.valueOf(pieceId));
+        font.getData().setScale(1.5f); // enlarge font
+        font.setColor(Color.BLACK);   // set color to black
+        float textX = getX() + getWidth() - layout.width - 5f;
+        float textY = getY() + getHeight() - 5f;
+        font.draw(batch, layout, textX, textY);
     }
 
     @Override
@@ -292,5 +341,13 @@ public class RectangleBlockActor extends Actor {
 
     public Rectangle getRectangle() {
         return rectangle;
+    }
+
+
+    public void dispose() {
+        if (pieceTexture != null) {
+            pieceTexture.dispose();
+        }
+        font.dispose();
     }
 }

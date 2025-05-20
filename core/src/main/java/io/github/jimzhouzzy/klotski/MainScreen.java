@@ -76,7 +76,7 @@ public class MainScreen implements Screen {
     private float interpolationFactor = 0f;
     private float interpolationSpeedMultiplier = 1f; // Speed of color interpolation
     private List<Vector2[]> topRectangleVectors;
-    private List<Float> topRectangleYs; 
+    private List<Float> topRectangleYs;
 
     public MainScreen(final Klotski klotski) {
         this.klotski = klotski;
@@ -175,6 +175,17 @@ public class MainScreen implements Screen {
             }
         });
         table.add(settingsButton).width(200).height(50).padBottom(20).row();
+        //Add a "Help" button
+        TextButton helpButton = new TextButton("Help", skin);
+        helpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                klotski.playClickSound();
+                klotski.setScreen(klotski.helpScreen);
+            }
+        });
+        table.add(helpButton).width(200).height(50).padBottom(20).row();
+
 
         // Add an "Exit" button
         TextButton exitButton = new TextButton("Exit", skin);
@@ -322,10 +333,10 @@ public class MainScreen implements Screen {
             targetColors.add(new Color(153 / 255f, 255 / 255f, 204 / 255f, 1)); // rgb(153, 255, 204)
             targetColors.add(new Color(51 / 255f, 153 / 255f, 255 / 255f, 1)); // rgb(51, 153, 255)
         }
-        
+
         Color currentBaseColor = targetColors.get(currentColorIndex);
         Color nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
-    
+
         interpolationFactor += 0.3 * colorChangeSpeed * interpolationSpeedMultiplier;
         if (interpolationFactor > 1f) {
             interpolationFactor = 0f;
@@ -346,11 +357,11 @@ public class MainScreen implements Screen {
         }
         float t = interpolationFactor;
         t = t * t * (3 - 2 * t); // smoothstep(t)
-        
+
         float red   = currentBaseColor.r + t * (nextBaseColor.r - currentBaseColor.r);
         float green = currentBaseColor.g + t * (nextBaseColor.g - currentBaseColor.g);
-        float blue  = currentBaseColor.b + t * (nextBaseColor.b - currentBaseColor.b); 
-    
+        float blue  = currentBaseColor.b + t * (nextBaseColor.b - currentBaseColor.b);
+
         currentColor = new Color(red, green, blue, 1.0f);
         return currentColor;
     }
@@ -454,23 +465,23 @@ public class MainScreen implements Screen {
         // Check if the point is in either of the two triangles
         return isPointInTriangle(point, tl, tr, br) || isPointInTriangle(point, tl, br, bl);
     }
-    
+
     private boolean isPointInTriangle(Vector2 point, Vector2 v1, Vector2 v2, Vector2 v3) {
         // Calculate vectors
         Vector2 v1v2 = v2.cpy().sub(v1);
         Vector2 v2v3 = v3.cpy().sub(v2);
         Vector2 v3v1 = v1.cpy().sub(v3);
-    
+
         // Calculate vectors from the point to the vertices
         Vector2 v1p = point.cpy().sub(v1);
         Vector2 v2p = point.cpy().sub(v2);
         Vector2 v3p = point.cpy().sub(v3);
-    
+
         // Calculate cross products
         float cross1 = v1v2.crs(v1p);
         float cross2 = v2v3.crs(v2p);
         float cross3 = v3v1.crs(v3p);
-    
+
         // Check if all cross products have the same sign
         return (cross1 >= 0 && cross2 >= 0 && cross3 >= 0) || (cross1 <= 0 && cross2 <= 0 && cross3 <= 0);
     }
@@ -479,7 +490,7 @@ public class MainScreen implements Screen {
         if (!triggerYRotationAnimation || true) {
             yRotationAnimationStartingOffsetY = offsetY;
             yRotationAnimationStartingRow = (int) Math.floor(yRotationAnimationStartingOffsetY / baseTileSize);
-            yRotationAnimationTemp = 0; 
+            yRotationAnimationTemp = 0;
             triggerYRotationAnimation = true;
             System.out.println("Triggering flip animation, with starting row: " + yRotationAnimationStartingRow);
         }
@@ -489,28 +500,28 @@ public class MainScreen implements Screen {
         if (!triggerYRotationAnimation || true) {
             yRotationAnimationStartingOffsetY = row * baseTileSize;
             yRotationAnimationStartingRow = row;
-            yRotationAnimationTemp = 0; 
+            yRotationAnimationTemp = 0;
             triggerYRotationAnimation = true;
             System.out.println("Triggering flip animation, with starting row: " + yRotationAnimationStartingRow);
         }
     }
-    
+
     private float[] rgbToHsl(float r, float g, float b) {
         // Normalize RGB values to [0, 1]
         r = Math.min(Math.max(r, 0), 1);
         g = Math.min(Math.max(g, 0), 1);
         b = Math.min(Math.max(b, 0), 1);
-    
+
         float max = Math.max(r, Math.max(g, b));
         float min = Math.min(r, Math.min(g, b));
         float delta = max - min;
-    
+
         float h = 0, s = 0, l = (max + min) / 2;
-    
+
         if (delta != 0) {
             // Calculate saturation
             s = l < 0.5f ? delta / (max + min) : delta / (2 - max - min);
-    
+
             // Calculate hue
             if (max == r) {
                 h = (g - b) / delta + (g < b ? 6 : 0);
@@ -521,13 +532,13 @@ public class MainScreen implements Screen {
             }
             h /= 6;
         }
-    
+
         return new float[]{h, s, l};
     }
 
     private float[] hslToRgb(float h, float s, float l) {
         float r, g, b;
-    
+
         if (s == 0) {
             // Achromatic (gray)
             r = g = b = l;
@@ -538,10 +549,10 @@ public class MainScreen implements Screen {
             g = hueToRgb(p, q, h);
             b = hueToRgb(p, q, h - 1f / 3f);
         }
-    
+
         return new float[]{r, g, b};
     }
-    
+
     private float hueToRgb(float p, float q, float t) {
         if (t < 0) t += 1;
         if (t > 1) t -= 1;
