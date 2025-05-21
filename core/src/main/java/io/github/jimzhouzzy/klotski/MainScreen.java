@@ -181,7 +181,7 @@ public class MainScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.setScreen(klotski.helpScreen);
+                klotski.setScreen(new HelpScreen(klotski));
             }
         });
         table.add(helpButton).width(200).height(50).padBottom(20).row();
