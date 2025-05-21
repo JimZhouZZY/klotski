@@ -96,6 +96,7 @@ public class SettingsScreen implements Screen {
                 klotski.playClickSound();;
                 if (darkModeCheckBox.isChecked()) {
                     isDarkMode = true;
+                    klotski.stopBackgroundMusic();
                     klotski.klotskiTheme = KlotskiTheme.DARK;
                     klotski.updateMainScreenColors();
                     // Switch to dark-themed music
@@ -112,6 +113,7 @@ public class SettingsScreen implements Screen {
                     Gdx.app.log("Settings", "Dark mode enabled");
                 } else {
                     isDarkMode = false;
+                    klotski.stopBackgroundMusic();
                     klotski.klotskiTheme = KlotskiTheme.LIGHT;
                     klotski.updateMainScreenColors();
                     // Switch to the light-themed music
@@ -312,11 +314,8 @@ public class SettingsScreen implements Screen {
             saveSettings();
         }
 
-        // Set Klotski.klotskiTheme based on isDarkMode
-        if (klotski.getBackgroundMusic() != null) {
-            klotski.getBackgroundMusic().stop(); // 先停止旧音乐
-        }
-
+        klotski.stopBackgroundMusic();
+        
         // Set Klotski.klotskiTheme based on isDarkMode
         if (isDarkMode) {
 		    Music darkMusic = klotski.backgroundMusicDark;
