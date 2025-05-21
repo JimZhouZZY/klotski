@@ -108,7 +108,6 @@ public class SettingsScreen implements Screen {
                     if (klotski.isMusicEnabled()) {
                         darkMusic.play();
                     }
-                    klotski.klotskiTheme = KlotskiTheme.DARK;
 
                     Gdx.app.log("Settings", "Dark mode enabled");
                 } else {
@@ -125,7 +124,6 @@ public class SettingsScreen implements Screen {
                     if (klotski.isMusicEnabled()) {
                         lightMusic.play();
                     }
-                    klotski.klotskiTheme = KlotskiTheme.DARK;
 
                     Gdx.app.log("Settings", "Light mode enabled");
                 }
@@ -312,6 +310,11 @@ public class SettingsScreen implements Screen {
             klotski.setOfflineMode((boolean) settings.getOrDefault("offlineMode", false));
             klotski.setArrowControlsEnabled((boolean) settings.getOrDefault("arrowControlsEnabled", true));
             saveSettings();
+        }
+
+        // Set Klotski.klotskiTheme based on isDarkMode
+        if (klotski.getBackgroundMusic() != null) {
+            klotski.getBackgroundMusic().stop(); // 先停止旧音乐
         }
 
         // Set Klotski.klotskiTheme based on isDarkMode
