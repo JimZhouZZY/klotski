@@ -587,4 +587,16 @@ public class Klotski extends Game {
     public boolean isArrowControlsEnabled() { return arrowControlsEnabled; }
 
     public void setArrowControlsEnabled(boolean enabled) { this.arrowControlsEnabled = enabled; }
+
+    public void stopBackgroundMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
+    }
+
+    public void startBackgroundMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.play();
+        }
+    }
 }
