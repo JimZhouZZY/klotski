@@ -25,16 +25,13 @@ public class HelpScreen implements Screen {
 
     public HelpScreen(Klotski klotski) {
         this.klotski = klotski;
-        //this.stage = new Stage(new ScreenViewport());
-       // Gdx.input.setInputProcessor(stage);
-        create();
         this.skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
+        create();
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
-//        Label helpLabel = new Label("This is the help screen.\nYou can add instructions here.", skin);
         Label.LabelStyle labelStyle = skin.get(Label.LabelStyle.class);
 
         Label textLabel = new Label("Welcome to our game!\n\n"+
@@ -48,7 +45,6 @@ public class HelpScreen implements Screen {
         textLabel.setAlignment(Align.center); // center text
 
         Table textBox = new Table(skin);
-        //textBox.setBackground("textfield"); // 使用默认边框背景（前提：皮肤支持）
         textBox.add(textLabel).width(500).pad(20);
 
         TextButton backButton = new TextButton("Back", skin);
@@ -60,14 +56,12 @@ public class HelpScreen implements Screen {
             return true;
         });
 
-//        table.add(helpLabel).padBottom(40).row();
         table.add(textBox).width(540).height(250).padBottom(40).row();
         table.add(backButton).width(200).height(50);
     }
     public void create() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        //klotski.dynamicBoard.setStage(stage);
         stage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -107,7 +101,6 @@ public class HelpScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-//        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -124,7 +117,6 @@ public class HelpScreen implements Screen {
 
     @Override public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        // klotski.dynamicBoard = new DynamicBoard(klotski, stage);
     }
     @Override public void pause() {}
     @Override public void resume() {}

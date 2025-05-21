@@ -98,7 +98,7 @@ public class SettingsScreen implements Screen {
                     isDarkMode = true;
                     klotski.klotskiTheme = KlotskiTheme.DARK;
                     klotski.updateMainScreenColors();
-                    
+
                     // Switch to dark-themed music
                     klotski.stopBackgroundMusic();
                     Music darkMusic = klotski.backgroundMusicDark;
@@ -107,13 +107,13 @@ public class SettingsScreen implements Screen {
                     if (klotski.isMusicEnabled()) {
                         darkMusic.play();
                     }
-                  
+
                     Gdx.app.log("Settings", "Dark mode enabled");
                 } else {
                     isDarkMode = false;
                     klotski.klotskiTheme = KlotskiTheme.LIGHT;
                     klotski.updateMainScreenColors();
-                    
+
                     // Switch to the light-themed music
                     klotski.stopBackgroundMusic();
                     Music lightMusic = klotski.backgroundMusicLight;
@@ -122,7 +122,7 @@ public class SettingsScreen implements Screen {
                     if (klotski.isMusicEnabled()) {
                         lightMusic.play();
                     }
-                  
+
                     Gdx.app.log("Settings", "Light mode enabled");
                 }
                 saveSettings();
@@ -185,6 +185,7 @@ public class SettingsScreen implements Screen {
         arrowControlCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                klotski.playClickSound();
                 klotski.setArrowControlsEnabled(arrowControlCheckBox.isChecked());
                 Gdx.app.log("Settings", "Arrow Controls " + (arrowControlCheckBox.isChecked() ? "enabled" : "disabled"));
                 saveSettings();
@@ -311,7 +312,7 @@ public class SettingsScreen implements Screen {
         }
 
         klotski.stopBackgroundMusic();
-        
+
         // Set Klotski.klotskiTheme based on isDarkMode
         if (isDarkMode) {
 		    Music darkMusic = klotski.backgroundMusicDark;
