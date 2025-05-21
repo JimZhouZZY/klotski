@@ -1029,22 +1029,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeObject(moveHistory);
             oos.writeObject(new GameState(currentMoveIndex, elapsedTime));
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
-            // Show a small pop-up window after saving
-            Dialog saveDialog = new Dialog("Save", skin);
-            Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
-            saveMessage.setFontScale(1.5f); // Increase font size for the message
-            saveDialog.getContentTable().add(saveMessage).pad(20).row();
 
-            TextButton cancelButton = new TextButton("Cancel", skin);
-            cancelButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    klotski.playClickSound();
-                }
-            });
-            cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
-            saveDialog.button(cancelButton, true);
-            saveDialog.show(stage);
+            if (!autoSave) {
+                // Show a small pop-up window after saving when manual save
+                Dialog saveDialog = new Dialog("Save", skin);
+                Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
+                saveMessage.setFontScale(1.5f); // Increase font size for the message
+                saveDialog.getContentTable().add(saveMessage).pad(20).row();
+
+                TextButton cancelButton = new TextButton("Cancel", skin);
+                cancelButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        klotski.playClickSound();
+                    }
+                });
+                cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
+                saveDialog.button(cancelButton, true);
+                saveDialog.show(stage);
+            }
+
             // print save file content
             System.out.println("Save file content: " + new String(Files.readAllBytes(file.toPath())));
 
