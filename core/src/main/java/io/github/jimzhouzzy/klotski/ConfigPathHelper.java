@@ -13,6 +13,7 @@ public class ConfigPathHelper {
             return Paths.get(System.getenv("APPDATA"), appName, fileName).toString();
         } else if (osName.contains("mac")) {
             // macOS: 使用 ~/Library/Application Support/ 目录
+            System.out.println(Paths.get(userHome, "Library", "Application Support", appName, fileName).toString());
             return Paths.get(userHome, "Library", "Application Support", appName, fileName).toString();
         } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("aix")) {
             // Linux/Unix: 使用 ~/.config/ 目录
