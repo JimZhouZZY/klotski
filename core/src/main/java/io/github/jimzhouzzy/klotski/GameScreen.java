@@ -179,7 +179,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                             if (!klotski.isOfflineMode())
                                 handleSave(false);
                             else
-                                handleLocalSave();
+                                handleLocalSave(false);
                             break;
                         case "Load":
                             if (!klotski.isOfflineMode())
@@ -1300,7 +1300,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 if (!klotski.isOfflineMode())
                     handleSave(true); // Call the save method
                 else
-                    handleLocalSave();
+                    handleLocalSave(true);
                 System.out.println("Game auto-saved.");
             }
         }, 30, 30); // Delay of 30 seconds, repeat every 30 seconds
