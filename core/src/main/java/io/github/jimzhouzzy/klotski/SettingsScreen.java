@@ -96,37 +96,33 @@ public class SettingsScreen implements Screen {
                 klotski.playClickSound();;
                 if (darkModeCheckBox.isChecked()) {
                     isDarkMode = true;
-                    klotski.stopBackgroundMusic();
                     klotski.klotskiTheme = KlotskiTheme.DARK;
                     klotski.updateMainScreenColors();
+                    
                     // Switch to dark-themed music
-                    if (klotski.getBackgroundMusic() != null) {
-                        klotski.getBackgroundMusic().stop();
-                    }
+                    klotski.stopBackgroundMusic();
                     Music darkMusic = klotski.backgroundMusicDark;
                     darkMusic.setLooping(true);
                     klotski.setBackgroundMusic(darkMusic);
                     if (klotski.isMusicEnabled()) {
                         darkMusic.play();
                     }
-
+                  
                     Gdx.app.log("Settings", "Dark mode enabled");
                 } else {
                     isDarkMode = false;
-                    klotski.stopBackgroundMusic();
                     klotski.klotskiTheme = KlotskiTheme.LIGHT;
                     klotski.updateMainScreenColors();
+                    
                     // Switch to the light-themed music
-                    if (klotski.getBackgroundMusic() != null) {
-                        klotski.getBackgroundMusic().stop();
-                    }
+                    klotski.stopBackgroundMusic();
                     Music lightMusic = klotski.backgroundMusicLight;
                     lightMusic.setLooping(true);
                     klotski.setBackgroundMusic(lightMusic);
                     if (klotski.isMusicEnabled()) {
                         lightMusic.play();
                     }
-
+                  
                     Gdx.app.log("Settings", "Light mode enabled");
                 }
                 saveSettings();
