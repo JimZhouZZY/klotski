@@ -1,3 +1,5 @@
+// TODO: Update or refactor this code to enheritage the GameScreen.java
+
 package io.github.jimzhouzzy.klotski;
 
 import com.badlogic.gdx.Gdx;

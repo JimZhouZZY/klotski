@@ -179,7 +179,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                             if (!klotski.isOfflineMode())
                                 handleSave(false);
                             else
-                                handleLocalSave();
+                                handleLocalSave(false);
                             break;
                         case "Load":
                             if (!klotski.isOfflineMode())
@@ -1030,24 +1030,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeObject(new GameState(currentMoveIndex, elapsedTime));
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
 
-            if (!autoSave) {
-                // Show a small pop-up window after saving when manual save
-                Dialog saveDialog = new Dialog("Save", skin);
-                Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
-                saveMessage.setFontScale(1.5f); // Increase font size for the message
-                saveDialog.getContentTable().add(saveMessage).pad(20).row();
-
-                TextButton cancelButton = new TextButton("Cancel", skin);
-                cancelButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        klotski.playClickSound();
-                    }
-                });
-                cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
-                saveDialog.button(cancelButton, true);
-                saveDialog.show(stage);
-            }
+            if (!autoSave) { showSavePopup(); }
 
             // print save file content
             System.out.println("Save file content: " + new String(Files.readAllBytes(file.toPath())));
@@ -1206,7 +1189,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         });
     }
 
-    private void handleLocalSave() {
+    private void showSavePopup() {
+        // Show a small pop-up window after saving
+        Dialog saveDialog = new Dialog("Save", skin);
+        Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
+        saveMessage.setFontScale(1.5f); // Increase font size for the message
+        saveDialog.getContentTable().add(saveMessage).pad(20).row();
+
+        TextButton cancelButton = new TextButton("Cancel", skin);
+        cancelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                klotski.playClickSound();
+            }
+        });
+        cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
+        saveDialog.button(cancelButton, true);
+        saveDialog.show(stage);
+    }
+
+    private void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
         String saveFileName = getSaveFileName();
         File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
@@ -1218,22 +1220,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeInt(currentMoveIndex);
             oos.writeFloat(elapsedTime);
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
-            // Show a small pop-up window after saving
-            Dialog saveDialog = new Dialog("Save", skin);
-            Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
-            saveMessage.setFontScale(1.5f); // Increase font size for the message
-            saveDialog.getContentTable().add(saveMessage).pad(20).row();
-
-            TextButton cancelButton = new TextButton("Cancel", skin);
-            cancelButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    klotski.playClickSound();
-                }
-            });
-            cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
-            saveDialog.button(cancelButton, true);
-            saveDialog.show(stage);
+            if (!autoSave) { showSavePopup();}
         } catch (IOException e) {
             System.err.println("Failed to save game: " + e.getMessage());
         }
@@ -1313,7 +1300,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 if (!klotski.isOfflineMode())
                     handleSave(true); // Call the save method
                 else
-                    handleLocalSave();
+                    handleLocalSave(true);
                 System.out.println("Game auto-saved.");
             }
         }, 30, 30); // Delay of 30 seconds, repeat every 30 seconds
