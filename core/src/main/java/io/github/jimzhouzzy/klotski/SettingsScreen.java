@@ -104,9 +104,11 @@ public class SettingsScreen implements Screen {
                     }
                     Music darkMusic = klotski.backgroundMusicDark;
                     darkMusic.setLooping(true);
-                    klotski.getBackgroundMusic().setVolume(1f);
-                    darkMusic.play();
                     klotski.setBackgroundMusic(darkMusic);
+                    if (klotski.isMusicEnabled()) {
+                        darkMusic.play();
+                    }
+                    klotski.klotskiTheme = KlotskiTheme.DARK;
 
                     Gdx.app.log("Settings", "Dark mode enabled");
                 } else {
@@ -119,9 +121,11 @@ public class SettingsScreen implements Screen {
                     }
                     Music lightMusic = klotski.backgroundMusicLight;
                     lightMusic.setLooping(true);
-                    klotski.getBackgroundMusic().setVolume(1f);
-                    lightMusic.play();
                     klotski.setBackgroundMusic(lightMusic);
+                    if (klotski.isMusicEnabled()) {
+                        lightMusic.play();
+                    }
+                    klotski.klotskiTheme = KlotskiTheme.DARK;
 
                     Gdx.app.log("Settings", "Light mode enabled");
                 }
@@ -192,7 +196,7 @@ public class SettingsScreen implements Screen {
         });
         table.add(arrowControlCheckBox).padBottom(20).row();
 
-        // Add a checkbox for music
+        // Add a checkbox for online mode
         CheckBox offlineModeCheckBox = new CheckBox("Network - Offline Mode", skin);
         offlineModeCheckBox.setChecked(klotski.isOfflineMode());
         offlineModeCheckBox.addListener(new ClickListener() {
@@ -312,19 +316,21 @@ public class SettingsScreen implements Screen {
 
         // Set Klotski.klotskiTheme based on isDarkMode
         if (isDarkMode) {
-            Music darkMusic = klotski.backgroundMusicDark;
-            darkMusic.setLooping(true);
-            klotski.getBackgroundMusic().setVolume(1f);
-            darkMusic.play();
-            klotski.setBackgroundMusic(darkMusic); 
+		    Music darkMusic = klotski.backgroundMusicDark;
+		    darkMusic.setLooping(true);
+		    klotski.setBackgroundMusic(darkMusic);
+            if (klotski.isMusicEnabled()) {
+		        darkMusic.play();
+            }
             klotski.klotskiTheme = KlotskiTheme.DARK;
         } else {
-            klotski.klotskiTheme = KlotskiTheme.LIGHT;
-            Music lightMusic = klotski.backgroundMusicLight;
-            lightMusic.setLooping(true);
-            klotski.getBackgroundMusic().setVolume(1f);
-            lightMusic.play();
+		    Music lightMusic = klotski.backgroundMusicLight;
             klotski.setBackgroundMusic(lightMusic);
+		    lightMusic.setLooping(true);
+            if (klotski.isMusicEnabled()) {
+		        lightMusic.play();
+            }
+		    klotski.klotskiTheme = KlotskiTheme.LIGHT;
         }
     }
 
