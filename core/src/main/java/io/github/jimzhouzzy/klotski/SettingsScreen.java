@@ -30,8 +30,8 @@ public class SettingsScreen implements Screen {
 
     public SettingsScreen(final Klotski klotski) {
         this.klotski = klotski;
-        create();
         loadSettings(); // Load settings from file
+        create(); // MUST be after loadSettings()
     }
 
     public void create() {
