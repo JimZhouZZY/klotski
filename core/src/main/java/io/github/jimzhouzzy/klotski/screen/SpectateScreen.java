@@ -1,65 +1,58 @@
 // TODO: Update or refactor this code to enheritage the GameScreen.java
 
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.Net.HttpResponseListener;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.net.HttpRequestBuilder;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Timer;
-
-import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.KlotskiGame;
-import io.github.jimzhouzzy.klotski.KlotskiGame.KlotskiPiece;
-import io.github.jimzhouzzy.klotski.KlotskiSolver;
-import io.github.jimzhouzzy.klotski.RectangleBlockActor;
-
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.java_websocket.client.WebSocketClient;
-
-import java.io.*;
-import java.net.http.WebSocket;
-import java.nio.file.Files;
-import java.text.SimpleDateFormat;
-
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Net;
+import com.badlogic.gdx.Net.HttpResponseListener;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.net.HttpRequestBuilder;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+
+import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.logic.GameState;
+import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
+import io.github.jimzhouzzy.klotski.logic.KlotskiSolver;
+import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
+import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
+import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 
 public class SpectateScreen extends ApplicationAdapter implements Screen {
     private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
@@ -201,7 +194,7 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
                         case "Save":
                             if (!klotski.isOfflineMode())
                                 handleSave(false);
-                            else 
+                            else
                                 handleLocalSave();
                             break;
                         case "Load":
@@ -1026,7 +1019,7 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
             }
         });
     }
-    
+
     private void handleLocalSave() {
         // TODO: refactor to math the online method
         String saveFileName = getSaveFileName();

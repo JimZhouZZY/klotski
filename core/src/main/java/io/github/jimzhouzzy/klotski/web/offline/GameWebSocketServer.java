@@ -1,13 +1,15 @@
-package io.github.jimzhouzzy.klotski;
-
-import org.java_websocket.server.WebSocketServer;
-import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
+package io.github.jimzhouzzy.klotski.web.offline;
 
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+
+import io.github.jimzhouzzy.klotski.Klotski;
 
 public class GameWebSocketServer extends WebSocketServer {
     private final Set<WebSocket> connections = Collections.synchronizedSet(new HashSet<>());
@@ -62,7 +64,7 @@ public class GameWebSocketServer extends WebSocketServer {
                 }
                 connections.clear(); // Clear the connections set
             }
-    
+
             // Stop the WebSocket server
             stop();
             System.out.println("WebSocket server stopped.");

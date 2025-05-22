@@ -1,8 +1,29 @@
 package io.github.jimzhouzzy.klotski;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowConfiguration;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -14,29 +35,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 
-import io.github.jimzhouzzy.klotski.GameWebSocketServer;
+import io.github.jimzhouzzy.klotski.screen.GameScreen;
+import io.github.jimzhouzzy.klotski.screen.HelpScreen;
+import io.github.jimzhouzzy.klotski.screen.MainScreen;
+import io.github.jimzhouzzy.klotski.screen.SettingsScreen;
+import io.github.jimzhouzzy.klotski.screen.SpectateChoiceScreen;
+import io.github.jimzhouzzy.klotski.ui.DynamicBoard;
+import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
+import io.github.jimzhouzzy.klotski.web.offline.GameWebSocketServer;
+import io.github.jimzhouzzy.klotski.web.offline.WebServer;
+import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowConfiguration;
-
-import java.io.*;
-import java.lang.reflect.Field;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
-
-enum KlotskiTheme {
-    DARK,
-    LIGHT
-}
 
 public class Klotski extends Game {
     private GameWebSocketServer webSocketServer;

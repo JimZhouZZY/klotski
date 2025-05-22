@@ -1,4 +1,4 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.util;
 
 import java.nio.file.Paths;
 

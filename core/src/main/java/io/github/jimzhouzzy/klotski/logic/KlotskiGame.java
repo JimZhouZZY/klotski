@@ -1,4 +1,4 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.logic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -226,7 +226,7 @@ public class KlotskiGame {
         // Iterate through all pieces
         for (KlotskiPiece piece : pieces) {
             int[] currentPosition = piece.getPosition();
-            
+
             // Check each direction for legal moves
             int[] newPosition = {
                 currentPosition[0] + direction[0],
@@ -237,7 +237,7 @@ public class KlotskiGame {
             if (isLegalMove(currentPosition, newPosition)) {
                 legalMoves.add(new int[][]{currentPosition, newPosition});
             }
-            
+
         }
 
         return legalMoves;
@@ -256,7 +256,7 @@ public class KlotskiGame {
                 {0, -1}, // Left
                 {0, 1}   // Right
             };
-            
+
             for (int[] direction : directions) {
                 // Check each direction for legal moves
                 int[] newPosition = {
@@ -268,7 +268,7 @@ public class KlotskiGame {
                 if (isLegalMove(currentPosition, newPosition)) {
                     legalMoves.add(new int[][]{currentPosition, newPosition});
                 }
-            }   
+            }
         }
 
         return legalMoves;
@@ -294,7 +294,7 @@ public class KlotskiGame {
         System.out.println("Shuffled the game:");
         System.out.println(this.toString());
     }
-    
+
     public void randomShuffle() {
         long seed = System.currentTimeMillis(); // Use the current time as the seed
         randomShuffle(seed);
@@ -348,7 +348,7 @@ public class KlotskiGame {
         if (rows.length != BOARD_HEIGHT) {
             throw new IllegalArgumentException("Invalid board height. Expected " + BOARD_HEIGHT + " rows.");
         }
-    
+
         // Create a temporary board to track which cells are occupied
         char[][] board = new char[BOARD_HEIGHT][BOARD_WIDTH];
         for (int i = 0; i < BOARD_HEIGHT; i++) {
@@ -360,12 +360,12 @@ public class KlotskiGame {
                 board[i][j] = cells[j].charAt(0);
             }
         }
-    
+
         // Reset all pieces' positions
         for (KlotskiPiece piece : pieces) {
             piece.setPosition(new int[]{-1, -1}); // Temporarily mark as unplaced
         }
-    
+
         // Iterate through the board and update piece positions
         for (int row = 0; row < BOARD_HEIGHT; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
@@ -373,7 +373,7 @@ public class KlotskiGame {
                 if (cell == '.') {
                     continue; // Skip empty cells
                 }
-    
+
                 // Find the piece corresponding to the cell's abbreviation
                 for (KlotskiPiece piece : pieces) {
                     if (piece.abbreviation == cell && piece.getPosition()[0] == -1) {
@@ -458,7 +458,7 @@ public class KlotskiGame {
             );
         }
     }
-    
+
     public void setPieces(List<KlotskiPiece> newPieces) {
         if (newPieces == null || newPieces.size() != pieces.length) {
             throw new IllegalArgumentException("Invalid pieces list. It must have the same size as the original.");
