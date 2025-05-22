@@ -1,4 +1,4 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.web.offline;
 
 import com.sun.net.httpserver.*;
 
@@ -12,7 +12,7 @@ public class WebServer {
         server = HttpServer.create(new InetSocketAddress("127.0.0.1", port), 0);
         server.createContext("/", exchange -> {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("web/index.html");
-        
+
             if (inputStream != null) {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                     StringBuilder response = new StringBuilder();
@@ -20,10 +20,10 @@ public class WebServer {
                     while ((line = reader.readLine()) != null) {
                         response.append(line).append("\n");
                     }
-        
+
                     exchange.getResponseHeaders().set("Content-Type", "text/html");
                     exchange.sendResponseHeaders(200, response.length());
-        
+
                     try (OutputStream os = exchange.getResponseBody()) {
                         os.write(response.toString().getBytes());
                     }

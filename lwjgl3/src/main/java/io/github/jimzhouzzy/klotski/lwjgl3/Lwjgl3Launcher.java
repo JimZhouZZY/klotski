@@ -1,20 +1,17 @@
 package io.github.jimzhouzzy.klotski.lwjgl3;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
-import io.github.jimzhouzzy.klotski.ConfigPathHelper;
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {

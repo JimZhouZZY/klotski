@@ -1,11 +1,11 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.web.online;
+
+import java.net.URI;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-import com.badlogic.gdx.Gdx;
-
-import java.net.URI;
+import io.github.jimzhouzzy.klotski.Klotski;
 
 public class GameWebSocketClient extends WebSocketClient {
     private static final int MAX_RETRIES = 999999; // Maximum number of reconnection attempts
@@ -31,7 +31,7 @@ public class GameWebSocketClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         System.out.println("Message from server: " + message);
-    
+
         if (onMessageListener != null) {
             onMessageListener.onMessage(message); // Trigger the callback
         }

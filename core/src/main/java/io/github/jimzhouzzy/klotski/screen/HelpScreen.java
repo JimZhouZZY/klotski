@@ -1,5 +1,6 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.screen;
 
+import io.github.jimzhouzzy.klotski.Klotski;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;

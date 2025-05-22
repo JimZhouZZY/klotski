@@ -1,4 +1,4 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,30 +8,18 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import io.github.jimzhouzzy.klotski.GameModeScreen;
-import io.github.jimzhouzzy.klotski.LoginScreen;
-
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.ScreenUtils;
+
+import io.github.jimzhouzzy.klotski.Klotski;
 
 public class DynamicBoard {
 
@@ -76,7 +64,7 @@ public class DynamicBoard {
     private float interpolationFactor = 0f;
     private float interpolationSpeedMultiplier = 1f; // Speed of color interpolation
     private List<Vector2[]> topRectangleVectors;
-    private List<Float> topRectangleYs; 
+    private List<Float> topRectangleYs;
     private float screenWidth;
     private float screenHeight;
     private float focalLength;
@@ -117,7 +105,7 @@ public class DynamicBoard {
         frameCount = 0;
         frameCountOffset = random.nextInt(10000); // Random offset for the frame count
         yRotationAnimationTemp = 0;
-        
+
         // Initialize ShapeRenderer
         shapeRenderer = new ShapeRenderer();
 
@@ -332,7 +320,7 @@ public class DynamicBoard {
                     String key = entry.getKey();
                     String[] parts = key.split(",");
                     int row = Integer.parseInt(parts[1]);
-                    if (row == yRotationAnimationTemp + yRotationAnimationStartingRow 
+                    if (row == yRotationAnimationTemp + yRotationAnimationStartingRow
                             || (row ==  - yRotationAnimationTemp + yRotationAnimationStartingRow)
                             ) {
                         entry.setValue(true); // Trigger rotation for all tiles
@@ -355,7 +343,7 @@ public class DynamicBoard {
                         || y > screenHeight + 20f * baseTileSize) {
                     continue; // Skip tiles outside the screen
                 }
-                
+
 
                 // Generate a unique key for the current tile
                 String key = (int) ((int) Math.floor(x / baseTileSize) + (int) Math.floor(offsetX / baseTileSize)) + ","
@@ -368,7 +356,7 @@ public class DynamicBoard {
                 boolean mutateColor = false;
                 double yRotationAngle = yRotationCache.computeIfAbsent(key, k -> 0.0);
                 boolean triggerYRotationBool = triggerYRotation.computeIfAbsent(key, k -> false);
-                
+
                 // Apply Y-rotation if needed
                 if (triggerYRotationBool) {
                     updateYRotationCache(key);
@@ -382,15 +370,15 @@ public class DynamicBoard {
                         yRotationAngle = 0;
                         stopTriggering = true;
                     }
-                    /* 
+                    /*
                     } else if ((yRotationAngle < 0.0 && yRotationAngle > -0.01)) {
                         yRotationCache.put(key, 0.0);
                         yRotationAngle = 0.0;
-                        stopTriggering = true; 
+                        stopTriggering = true;
                     } else if ((yRotationAngle < 2 * Math.PI + 0.01 && yRotationAngle > 2 * Math.PI - 0.01)) {
                         yRotationCache.put(key, 0.0);
                         yRotationAngle = 0.0;
-                        stopTriggering = true; 
+                        stopTriggering = true;
                     }
                     */
                 }
@@ -400,7 +388,7 @@ public class DynamicBoard {
                 float cosYRotationAngle = (float) Math.cos(yRotationAngle);
                 yRotatedX = (x + 0.5f * baseTileSize) + (x - (x + 0.5f * baseTileSize)) * cosYRotationAngle;
                 yRotatedTileSize = baseTileSize * cosYRotationAngle;
-                
+
                 // Get or generate a random color for the tile
                 Color tileColorOriginal = colorCache.computeIfAbsent(key, k -> generateSimilarColor(generateSmoothChangingColor(delta), 0.1f, 0.0f, 1.0f));
                 if (klotski.klotskiTheme == klotski.klotskiTheme.DARK) {
@@ -412,7 +400,7 @@ public class DynamicBoard {
                 if (yRotationAngle > 0.5 * Math.PI && yRotationAngle < 1.5 * Math.PI) {
                     mutateColor = true;
                 }
-                if (mutateColor 
+                if (mutateColor
                         || (mutateColorFollowing && (int) ((int) Math.floor(y / baseTileSize) + (int) Math.floor(offsetY / baseTileSize)) >= (yRotationAnimationStartingRow + Math.floor((offsetY + screenHeight + 20f * baseTileSize) / baseTileSize)))) {
                     float[] hsl = rgbToHsl(tileColor.r, tileColor.g, tileColor.b);
                     float alpha = tileColor.a;
@@ -465,7 +453,7 @@ public class DynamicBoard {
                     topRectangleYs.add(y); // original y position
                     topRectangleYRotationAngles.add((float) yRotationAngle);
                 }
-                
+
                 drawTopRectangle(tl, tr, bl, br, y, tileColor, (float) yRotationAngle);
             }
         }
@@ -623,10 +611,10 @@ public void resize(int width, int height) {
             targetColors.add(new Color(153 / 255f, 255 / 255f, 204 / 255f, 1)); // rgb(153, 255, 204)
             targetColors.add(new Color(51 / 255f, 153 / 255f, 255 / 255f, 1)); // rgb(51, 153, 255)
         }
-        
+
         Color currentBaseColor = targetColors.get(currentColorIndex);
         Color nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
-    
+
         interpolationFactor += 0.3 * colorChangeSpeed * interpolationSpeedMultiplier;
         if (interpolationFactor > 1f) {
             interpolationFactor = 0f;
@@ -647,11 +635,11 @@ public void resize(int width, int height) {
         }
         float t = interpolationFactor;
         t = t * t * (3 - 2 * t); // smoothstep(t)
-        
+
         float red   = currentBaseColor.r + t * (nextBaseColor.r - currentBaseColor.r);
         float green = currentBaseColor.g + t * (nextBaseColor.g - currentBaseColor.g);
-        float blue  = currentBaseColor.b + t * (nextBaseColor.b - currentBaseColor.b); 
-    
+        float blue  = currentBaseColor.b + t * (nextBaseColor.b - currentBaseColor.b);
+
         currentColor = new Color(red, green, blue, 1.0f);
         return currentColor;
     }
@@ -755,23 +743,23 @@ public void resize(int width, int height) {
         // Check if the point is in either of the two triangles
         return isPointInTriangle(point, tl, tr, br) || isPointInTriangle(point, tl, br, bl);
     }
-    
+
     private boolean isPointInTriangle(Vector2 point, Vector2 v1, Vector2 v2, Vector2 v3) {
         // Calculate vectors
         Vector2 v1v2 = v2.cpy().sub(v1);
         Vector2 v2v3 = v3.cpy().sub(v2);
         Vector2 v3v1 = v1.cpy().sub(v3);
-    
+
         // Calculate vectors from the point to the vertices
         Vector2 v1p = point.cpy().sub(v1);
         Vector2 v2p = point.cpy().sub(v2);
         Vector2 v3p = point.cpy().sub(v3);
-    
+
         // Calculate cross products
         float cross1 = v1v2.crs(v1p);
         float cross2 = v2v3.crs(v2p);
         float cross3 = v3v1.crs(v3p);
-    
+
         // Check if all cross products have the same sign
         return (cross1 >= 0 && cross2 >= 0 && cross3 >= 0) || (cross1 <= 0 && cross2 <= 0 && cross3 <= 0);
     }
@@ -780,7 +768,7 @@ public void resize(int width, int height) {
         if (!triggerYRotationAnimation || true) {
             yRotationAnimationStartingOffsetY = offsetY;
             yRotationAnimationStartingRow = (int) Math.floor(yRotationAnimationStartingOffsetY / baseTileSize);
-            yRotationAnimationTemp = 0; 
+            yRotationAnimationTemp = 0;
             triggerYRotationAnimation = true;
             System.out.println("Triggering flip animation, with starting row: " + yRotationAnimationStartingRow);
         }
@@ -790,28 +778,28 @@ public void resize(int width, int height) {
         if (!triggerYRotationAnimation || true) {
             yRotationAnimationStartingOffsetY = row * baseTileSize;
             yRotationAnimationStartingRow = row;
-            yRotationAnimationTemp = 0; 
+            yRotationAnimationTemp = 0;
             triggerYRotationAnimation = true;
             System.out.println("Triggering flip animation, with starting row: " + yRotationAnimationStartingRow);
         }
     }
-    
+
     private float[] rgbToHsl(float r, float g, float b) {
         // Normalize RGB values to [0, 1]
         r = Math.min(Math.max(r, 0), 1);
         g = Math.min(Math.max(g, 0), 1);
         b = Math.min(Math.max(b, 0), 1);
-    
+
         float max = Math.max(r, Math.max(g, b));
         float min = Math.min(r, Math.min(g, b));
         float delta = max - min;
-    
+
         float h = 0, s = 0, l = (max + min) / 2;
-    
+
         if (delta != 0) {
             // Calculate saturation
             s = l < 0.5f ? delta / (max + min) : delta / (2 - max - min);
-    
+
             // Calculate hue
             if (max == r) {
                 h = (g - b) / delta + (g < b ? 6 : 0);
@@ -822,13 +810,13 @@ public void resize(int width, int height) {
             }
             h /= 6;
         }
-    
+
         return new float[]{h, s, l};
     }
 
     private float[] hslToRgb(float h, float s, float l) {
         float r, g, b;
-    
+
         if (s == 0) {
             // Achromatic (gray)
             r = g = b = l;
@@ -839,10 +827,10 @@ public void resize(int width, int height) {
             g = hueToRgb(p, q, h);
             b = hueToRgb(p, q, h - 1f / 3f);
         }
-    
+
         return new float[]{r, g, b};
     }
-    
+
     private float hueToRgb(float p, float q, float t) {
         if (t < 0) t += 1;
         if (t > 1) t -= 1;

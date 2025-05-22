@@ -1,4 +1,4 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.logic;
 
 import java.io.Serializable;
 

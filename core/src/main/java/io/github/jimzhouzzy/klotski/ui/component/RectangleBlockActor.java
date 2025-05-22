@@ -1,21 +1,21 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.ui.component;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import io.github.jimzhouzzy.klotski.GameScreen;
 import io.github.jimzhouzzy.klotski.Klotski;
-
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Rectangle;
+import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
+import io.github.jimzhouzzy.klotski.screen.GameScreen;
 
 public class RectangleBlockActor extends Actor {
     private Rectangle rectangle;
@@ -90,7 +90,7 @@ public class RectangleBlockActor extends Actor {
                 if (enableTouch == false) {
                     return;
                 }
-                
+
                 Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
                 GameScreen gameScreen = klotski.gameScreen;
                 if (gameScreen.isAutoSolving()) {
@@ -186,7 +186,7 @@ public class RectangleBlockActor extends Actor {
                 if (enableTouch == false) {
                     return;
                 }
-                
+
                 Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
                 GameScreen gameScreen = klotski.gameScreen;
                 float cellSize = Math.min(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 5f);
