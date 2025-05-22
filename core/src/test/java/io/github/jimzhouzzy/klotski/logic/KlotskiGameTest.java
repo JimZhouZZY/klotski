@@ -1,8 +1,10 @@
-package io.github.jimzhouzzy.klotski;
+package io.github.jimzhouzzy.klotski.logic;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 
 public class KlotskiGameTest {
 
