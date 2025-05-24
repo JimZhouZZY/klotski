@@ -107,7 +107,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     private Label congratsLabel;
 
-    private int blockedId = 10; // no piece is blocked at first
+    public int blockedId = 10; // no piece is blocked at first
 
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
@@ -119,7 +119,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void blockedPieceId(int blockedId) {
         this.blockedId = blockedId;
+        this.blocks.get(blockedId).enableTouch = false;
     }
+
+
     @Override
     public void create() {
         stage = new Stage(new ScreenViewport());
@@ -220,7 +223,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             controlLabel.setFontScale(2f);
             buttonTable.add(controlLabel).padTop(20).row();
             Map<String, TextButton> directionButtons = new HashMap<>();
-//        Table arrowTable = new Table();
             buttonNames = new String[]{"Up", "Down", "Left", "Right"};
             for (String name : buttonNames) {
 
@@ -408,11 +410,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     case Input.Keys.NUM_9: {
                         int digitKey = keycode - Input.Keys.NUM_0; // digitKey = 0~9
                         for (RectangleBlockActor block : blocks) {
+                            block.setSelected(false);
+                        }
+                        for (RectangleBlockActor block : blocks) {
                             if (block.pieceId == digitKey) {
                                 if (selectedBlock != block) {
-                                    if (selectedBlock != null) selectedBlock.setSelected(false);
                                     selectedBlock = block;
                                     selectedBlock.setSelected(true);
+                                    if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
+                                }else{
+                                    selectedBlock.setSelected(false);
+                                    selectedBlock = null;
                                     if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
                                 }
                                 break;
