@@ -107,7 +107,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     private Label congratsLabel;
 
-    private int blockedId;
+    private int blockedId = 10; // no piece is blocked at first
 
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
