@@ -21,9 +21,6 @@ public class HelpScreen extends ProtoScreen {
 
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(stage);
-        klotski.dynamicBoard.setStage(stage);
-        
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -53,7 +50,7 @@ public class HelpScreen extends ProtoScreen {
         ScrollPane scrollPane = new ScrollPane(textBox, skin);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(true, false); // allow vertical scrolling only
-        
+
         // Reduce scroll sensitivity and tweak scroll pane behavior
         scrollPane.setScrollY(0); // Optional reset
         scrollPane.setFlickScroll(false); // Disable flick-based fast scrolling
