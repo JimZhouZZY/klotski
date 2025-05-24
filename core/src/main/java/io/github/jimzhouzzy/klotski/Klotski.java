@@ -1,3 +1,23 @@
+/**
+ * Klotski.java
+ * 
+ * Main class for the Klotski game, responsible for initializing the game,
+ * handling basic user interactions, and managing game resources.
+ * 
+ * This class extends the LibGDX Game class and serves as the entry point
+ * for the application. It sets up the game environment, including the
+ * graphics, audio, and user interface. It also manages the game state,
+ * including the current screen and user settings.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link libgdx.Game}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski;
 
 import java.io.BufferedReader;

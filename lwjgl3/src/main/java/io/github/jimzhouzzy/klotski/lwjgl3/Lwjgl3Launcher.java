@@ -1,3 +1,19 @@
+/**
+ * Lwjgl3Launcher.java
+ * 
+ * This class is the entry point for the Klotski game using LWJGL3.
+ * It sets up the application configuration and starts the game.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link Klotski}
+ * @see {@link Lwjgl3Application}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.lwjgl3;
 
 import java.io.File;

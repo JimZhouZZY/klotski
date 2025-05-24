@@ -1,3 +1,18 @@
+/**
+ * GameState.java
+ * 
+ * Represents the state of the game, including the current move index and elapsed time.
+ * This class is serializable to allow saving and loading game states.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link GameScreen#handleSave()}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.logic;
 
 import java.io.Serializable;

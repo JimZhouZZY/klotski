@@ -1,3 +1,20 @@
+/**
+ * LoginScreen.java
+ * 
+ * This class represents the login and registration screen in the Klotski game.
+ * It also initializes the user database and handles user authentication when 
+ * Klotski is starting.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link Klotski#create()}
+ * @see {@link https://github.com/JimZhouZZY/klotski-server}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.screen;
 
 import java.io.BufferedReader;
@@ -103,9 +120,9 @@ public class LoginScreen extends ProtoScreen {
                 if (!klotski.isOfflineMode()) register(username, password);
                 else {
                     if (registerLocal(username, password)) {
-                        Dialog.showDialog(klotski, skin, stage, "Complete", "Registration successful! Please log in.");
+                        showDialog("Complete", "Registration successful! Please log in.");
                     } else {
-                        Dialog.showErrorDialog(klotski, skin, stage, "Registration failed. Username already exists or invalid input.");
+                        showErrorDialog("Registration failed. Username already exists or invalid input.");
                     }
                 }
             }
@@ -135,7 +152,7 @@ public class LoginScreen extends ProtoScreen {
                 klotski.setLoggedInUser(username); // Set the logged-in user's name
                 klotski.setScreen(klotski.mainScreen); // Navigate to the main screen
             } else {
-                Dialog.showErrorDialog(klotski, skin, stage, "Invalid credentials");
+                showErrorDialog("Invalid credentials");
             }
         }
     }
@@ -229,7 +246,7 @@ public class LoginScreen extends ProtoScreen {
 
     private void login(String username, String password) {
         if (!basicValidation(username, password)) {
-            Dialog.showErrorDialog(klotski, skin, stage, "Invalid username or password");
+            showErrorDialog("Invalid username or password");
             return;
         }
 
@@ -263,21 +280,21 @@ public class LoginScreen extends ProtoScreen {
                         klotski.webSocketClient.send("login:" + username);
                         System.out.println("WebSocket client started for user: " + username);
                     } else if (response.startsWith("failure")) {
-                        Dialog.showErrorDialog(klotski, skin, stage, "Invalid credentials");
+                        showErrorDialog("Invalid credentials");
                     } else {
-                        Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server");
+                        showErrorDialog("Failed to connect to the server");
                     }
                 });
             }
 
             @Override
             public void failed(Throwable t) {
-                Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server: " + t.getMessage());
+                showErrorDialog("Failed to connect to the server: " + t.getMessage());
             }
 
             @Override
             public void cancelled() {
-                Dialog.showErrorDialog(klotski, skin, stage, "Request cancelled");
+                showErrorDialog("Request cancelled");
             }
         });
     }
@@ -285,7 +302,7 @@ public class LoginScreen extends ProtoScreen {
     private void register(String username, String password) {
         try {
             if (!basicValidation(username, password)) {
-                Dialog.showErrorDialog(klotski, skin, stage, "Invalid username or password");
+                showErrorDialog("Invalid username or password");
                 return;
             }
 
@@ -308,29 +325,36 @@ public class LoginScreen extends ProtoScreen {
                 public void handleHttpResponse(Net.HttpResponse httpResponse) {
                     String response = httpResponse.getResultAsString();
                     if ("success".equals(response)) {
-                        Dialog.showDialog(klotski, skin, stage, "Complete", "Registration successful! Please log in.");
+                        showDialog("Complete", "Registration successful! Please log in.");
                     } else if ("failure: invalid input".equals(response)) {
-                        Dialog.showErrorDialog(klotski, skin, stage, "Registration failed. Invalid input.");
+                        showErrorDialog("Registration failed. Invalid input.");
                     } else if ("failure: user already exists".equals(response)) {
-                        Dialog.showErrorDialog(klotski, skin, stage, "Registration failed. Username already exists.");
+                        showErrorDialog("Registration failed. Username already exists.");
                     } else {
-                        Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server");
+                        showErrorDialog("Failed to connect to the server");
                     }
                 }
 
                 @Override
                 public void failed(Throwable t) {
-                    Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server: " + t.getMessage());
+                    showErrorDialog("Failed to connect to the server: " + t.getMessage());
                 }
 
                 @Override
                 public void cancelled() {
-                    Dialog.showErrorDialog(klotski, skin, stage, "Request cancelled");
+                    showErrorDialog("Request cancelled");
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            Dialog.showErrorDialog(klotski, skin, stage, "Failed to encode request parameters: " + e.getMessage());
+            showErrorDialog("Failed to encode request parameters: " + e.getMessage());
         }
     }
 
+    private void showErrorDialog(String message) {
+        Dialog.showErrorDialog(klotski, skin, stage, message);
+    }
+
+    private void showDialog(String title, String message) {
+        Dialog.showDialog(klotski, skin, stage, title, message);
+    }
 }

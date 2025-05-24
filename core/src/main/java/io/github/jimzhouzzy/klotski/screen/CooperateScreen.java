@@ -1,3 +1,21 @@
+/**
+ * CooperateScreen.java
+ * 
+ * This class represents the cooperative game screen in the Klotski game.
+ * It allows two players to play together in a cooperative mode.
+ * The screen connects to a WebSocket server to synchronize game state between players.
+ * It is enherited from the {@link GameScreen} class.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link GameScreen}
+ * @see {@link https://github.com/JimZhouZZY/klotski-server}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.screen;
 
 import io.github.jimzhouzzy.klotski.Klotski;

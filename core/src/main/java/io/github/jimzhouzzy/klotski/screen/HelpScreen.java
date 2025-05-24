@@ -1,3 +1,17 @@
+/**
+ * HelpScreen.java
+ * 
+ * This class represents the help screen in the Klotski game.
+ * It provides instructions and tips for players on how to play the game.
+ * 
+ * @author Tommy-SUStech
+ * @version 1.0
+ * @since 2025-5-25
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.screen;
 
 import com.badlogic.gdx.Gdx;

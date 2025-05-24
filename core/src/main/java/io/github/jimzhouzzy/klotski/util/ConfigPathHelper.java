@@ -1,3 +1,21 @@
+/**
+ * ConfigPathHelper.java
+ * 
+ * This class provides a method to get the configuration file path based on the operating system.
+ * It checks the OS type and returns the appropriate path for Windows, macOS, Linux/Unix, or a default path.
+ * 
+ * It helps in managing configuration files for the Klotski game, 
+ * ensuring that the files are stored in a user-friendly location.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link SettingsScreen}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.util;
 
 import java.nio.file.Paths;

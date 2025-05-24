@@ -1,3 +1,22 @@
+/**
+ * GameWebSocketClient.java
+ * 
+ * This class represents a WebSocket client for the online Klotski game.
+ * It allows the client to connect to a WebSocket server for online multiplayer mode.
+ * It handles sending and receiving messages, as well as reconnection logic.
+ * 
+ * It should only be initialized in {@link Klotski} class.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link Klotski}
+ * @see {@link https://github.com/JimZhouZZY/klotski-server}
+ *
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log 
+ */
+
 package io.github.jimzhouzzy.klotski.web.online;
 
 import java.net.URI;

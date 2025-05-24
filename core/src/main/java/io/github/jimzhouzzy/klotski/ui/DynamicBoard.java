@@ -1,3 +1,28 @@
+/**
+ * DynmaicBoard.java
+ * 
+ * This class represents a dynamic board for the Klotski game.
+ * It handles the rendering of the backgorund board, including
+ * the tiles, colors, and animations.
+ * 
+ * It also handles user input for moving and rotating the tiles.
+ * 
+ * It should only be initialized once in the {@link Klotski} class,
+ * 
+ * It should be staged and displayed with effective input listener
+ * in any non-gaming screen (sub-classes of {@link ProtoScreen}),
+ * which is why it is rerendered in the {@link ProtoScreen} class.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link Klotski}
+ * @see {@link ProtoScreen}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.ui;
 
 import java.util.ArrayList;

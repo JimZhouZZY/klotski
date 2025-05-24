@@ -1,3 +1,21 @@
+/**
+ * GameWebSocketServer.java
+ * 
+ * This class represents a local WebSocket server for the Klotski game.
+ * It allows multiple clients to connect and communicate with the local server.
+ * It is used for offline multiplayer mode.
+ * 
+ * It should only be initialized in {@link Klotski} class.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link Klotski}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.web.offline;
 
 import java.net.InetSocketAddress;

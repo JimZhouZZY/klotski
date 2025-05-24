@@ -1,3 +1,18 @@
+/**
+ * KlotskiGame.java
+ * 
+ * This class represents the game logic for the Klotski game.
+ * It includes the game board, pieces, and methods for moving pieces,
+ * checking legal moves, and determining the game state.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.logic;
 
 import java.io.Serializable;

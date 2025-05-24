@@ -9,8 +9,13 @@
  * their specific UI components, and may optionally override other {@link Screen} interface
  * methods as needed.
  * 
- * @author jimzhouzzy
- * @see Screen
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link com.badlogic.gdx.Screen}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
  */
 
 package io.github.jimzhouzzy.klotski.screen;

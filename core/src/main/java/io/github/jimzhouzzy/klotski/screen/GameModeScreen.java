@@ -1,3 +1,16 @@
+/**
+ * GameModeScreen.java
+ * 
+ * This class represents the game mode selection screen in the Klotski game.
+ *
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.screen;
 
 import com.badlogic.gdx.Gdx;

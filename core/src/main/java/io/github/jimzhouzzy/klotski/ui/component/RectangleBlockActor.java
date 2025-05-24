@@ -1,3 +1,19 @@
+/**
+ * RectangleBlockActor.java
+ * 
+ * This class represents a rectangular block actor in GameScreen.
+ * It handles user interactions such as dragging and dropping the block,
+ * and hooks to updates the game state accordingly.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link GameScreen}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.ui.component;
 
 import com.badlogic.gdx.Gdx;

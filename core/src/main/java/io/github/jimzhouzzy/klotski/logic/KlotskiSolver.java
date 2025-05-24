@@ -1,3 +1,20 @@
+/**
+ * KlotskiSolver.java
+ * 
+ * This class implements a solver for the Klotski game using a breadth-first search (BFS) algorithm.
+ * It explores all possible moves from the initial game state and finds the shortest solution.
+ * The solution is represented as a list of moves, and the solver also provides statistics about
+ * the search process, including the number of states examined and the time taken to find a solution.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link KlotskiGame}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.logic;
 
 import java.util.ArrayDeque;

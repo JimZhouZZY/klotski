@@ -14,6 +14,26 @@
  */
 //Note, the above license and copyright applies to this file only.
 
+/**
+ * StartupHelper.java
+ * 
+ * This class provides a method to start a new JVM on macOS with the
+ * {@code -XstartOnFirstThread} argument if it was not started with it.
+ * It also provides a method to start a new JVM on Windows if the user's
+ * home directory includes certain non-Latin-alphabet characters.
+ * 
+ * It is used to ensure that the LWJGL3 library can function properly on
+ * macOS and to help on Windows when users have names with characters from
+ * outside the Latin alphabet.
+ * 
+ * @author damios, jimzhouzzy
+ * @version 1.0
+ * @since 2025-5-25
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.lwjgl3;
 
 import com.badlogic.gdx.Version;

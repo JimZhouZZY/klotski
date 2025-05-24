@@ -1,3 +1,27 @@
+/**
+ * Dialog.java
+ * 
+ * This class provides static methods to show a dialog box with a message and an OK button.
+ * It is used to display error messages or other information to the user. 
+ * See {@link LoginScreen} for practical usage.
+ * 
+ * Klotski instance is used to play sounds when the dialog is shown and when the OK button is clicked.
+ * Skin instance is used to style the dialog elements.
+ * Stage instance is used to add the dialog to the screen.
+ * 
+ * Example usage:
+ *     Dialog.showErrorDialog(klotski, skin, stage, "An error occurred while loading the game.");
+ *     Dialog.showDialog(klotski, skin, stage, "Notification","User logged in successfully.");
+ *
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link LoginScreen}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.ui;
 
 import com.badlogic.gdx.graphics.Color;

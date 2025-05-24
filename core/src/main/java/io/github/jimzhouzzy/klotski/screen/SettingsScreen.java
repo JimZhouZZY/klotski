@@ -1,3 +1,19 @@
+/**
+ * SettingsScreen.java
+ * 
+ * This class represents the settings screen in the Klotski game.
+ * It loads the settings from a JSON file when Klotski is launched.
+ * It allows users to configure various settings such as graphics, audio, and gameplay options.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link Klotski#create()}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.screen;
 
 import java.util.HashMap;

@@ -1,8 +1,23 @@
-// KNOWN ISSUES:
-// 1. The move count is incorrect when the user dragged a piece
-//    across multiple grid.
-// 2. Restart in an leveled (seedly random shuffeled) game won't
-//    reset the game to the shuffeled state.
+/**
+ * GameScreen.java
+ * 
+ * This class represents the main game screen of the Klotski game.
+ * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * 
+ * KNOWN ISSUES:
+ * 1. The move count is incorrect when the user dragged a piece
+ *    across multiple grid.
+ * 2. Restart in an leveled (seedly random shuffeled) game won't
+ *    reset the game to the shuffeled state.
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 
 package io.github.jimzhouzzy.klotski.screen;
 

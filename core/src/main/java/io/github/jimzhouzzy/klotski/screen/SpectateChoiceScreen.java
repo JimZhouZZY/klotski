@@ -1,3 +1,19 @@
+/**
+ * SpectateChoiceScreen.java
+ * 
+ * This class represents the screen where players can choose a user to spectate.
+ * It connects to a WebSocket server to retrieve the list of online users.
+ * Players can click on a user to start spectating their game.
+ * 
+ * @author JimZhouZZY
+ * @version 1.0
+ * @since 2025-5-25
+ * @see {@link https://github.com/JimZhouZZY/klotski-server}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log
+ */
+
 package io.github.jimzhouzzy.klotski.screen;
 
 import com.badlogic.gdx.Gdx;

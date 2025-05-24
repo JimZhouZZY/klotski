@@ -1,3 +1,21 @@
+/**
+ * WebServer.java
+ * 
+ * This class represents a simple local HTTP server that serves an HTML file.
+ * It is used for offline mode spectating in the browser.
+ * 
+ * It should only be initialized in {@link Klotski} class.
+ * 
+ * @author JimZhouZZY
+ * @version 1.1
+ * @since 2025-5-25
+ * @see {@link Klotski}
+ * 
+ * Change log:
+ * 2025-5-25 v1.0: initialize change log 
+ * 2025-5-25 v1.1: deleted main method, which is used for testing (JimZhouZZY)
+ */
+
 package io.github.jimzhouzzy.klotski.web.offline;
 
 import com.sun.net.httpserver.*;
@@ -43,14 +61,5 @@ public class WebServer {
 
     public void close() {
         server.stop(0);
-    }
-
-    public static void main(String[] args) {
-        try {
-            int port = 8013;  // You can change this port as needed
-            new WebServer(port);  // Create an instance of WebServer to start the server
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
