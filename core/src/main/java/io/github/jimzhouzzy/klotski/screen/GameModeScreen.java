@@ -1,86 +1,22 @@
 package io.github.jimzhouzzy.klotski.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 
-public class GameModeScreen implements Screen {
-
-    private final Klotski klotski;
-    private final Stage stage;
-    private final Skin skin;
+public class GameModeScreen extends ProtoScreen {
 
     public GameModeScreen(final Klotski klotski) {
-        this.klotski = klotski;
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        klotski.dynamicBoard.setStage(stage);
+        super(klotski);
+    }
 
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-            }
-        });
-
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                switch (keycode) {
-                    case Input.Keys.ESCAPE:
-                        handleBack();
-                        return true;
-                }
-                return false;
-            }
-        });
-
-        // Load the skin for UI components
-        skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
-
+    @Override
+    protected void create() {
         // Create a table for layout
         Table table = new Table();
         table.setFillParent(true);
@@ -173,17 +109,9 @@ public class GameModeScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
-        ScreenUtils.clear(klotski.getBackgroundColor());
-        klotski.dynamicBoard.render(delta);
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-        // klotski.dynamicBoard = new DynamicBoard(klotski, stage);
+    protected void handleBack() {
+        klotski.setScreen(klotski.mainScreen); // Navigate back to the main screen
+        klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
     }
 
     @Override
@@ -199,21 +127,4 @@ public class GameModeScreen implements Screen {
         Gdx.input.setInputProcessor(null);
     }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    private void handleBack() {
-        klotski.setScreen(klotski.mainScreen); // Navigate back to the main screen
-        klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
-    }
 }

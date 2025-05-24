@@ -14,81 +14,34 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Net.HttpResponseListener;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.net.HttpRequestBuilder;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.ui.Dialog;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
-public class LoginScreen implements Screen {
+public class LoginScreen extends ProtoScreen {
 
-    private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    private final String USER_DATA_FILE = configPathHelper.getConfigFilePath("Klotski", "users.dat");
-    private final Klotski klotski;
-    private final Stage stage;
-    private final Skin skin;
-    private final Map<String, String> userDatabase = new HashMap<>();
-    private TextField usernameField;
-    private TextField passwordField;
+    private static final ConfigPathHelper configPathHelper = new ConfigPathHelper();
+    private static final String USER_DATA_FILE = configPathHelper.getConfigFilePath("Klotski", "users.dat");
+    private static final Map<String, String> userDatabase = new HashMap<>();
+    private static TextField usernameField;
+    private static TextField passwordField;
 
     public LoginScreen(final Klotski klotski) {
-        this.klotski = klotski;
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        klotski.dynamicBoard.setStage(stage);
+        super(klotski);
+    }
 
+    @Override
+    protected void create() {
         stage.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-            }
-
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 switch (keycode) {
@@ -103,9 +56,6 @@ public class LoginScreen implements Screen {
                 }
             }
         });
-
-        // Load the skin for UI components
-        skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
 
         // Load user data from file
         loadUserData();
@@ -153,9 +103,9 @@ public class LoginScreen implements Screen {
                 if (!klotski.isOfflineMode()) register(username, password);
                 else {
                     if (registerLocal(username, password)) {
-                        showErrorDialog("Registration successful! Please log in.");
+                        Dialog.showDialog(klotski, skin, stage, "Complete", "Registration successful! Please log in.");
                     } else {
-                        showErrorDialog("Registration failed. Username already exists or invalid input.");
+                        Dialog.showErrorDialog(klotski, skin, stage, "Registration failed. Username already exists or invalid input.");
                     }
                 }
             }
@@ -185,7 +135,7 @@ public class LoginScreen implements Screen {
                 klotski.setLoggedInUser(username); // Set the logged-in user's name
                 klotski.setScreen(klotski.mainScreen); // Navigate to the main screen
             } else {
-                showErrorDialog("Invalid credentials");
+                Dialog.showErrorDialog(klotski, skin, stage, "Invalid credentials");
             }
         }
     }
@@ -277,108 +227,9 @@ public class LoginScreen implements Screen {
         }
     }
 
-    // TODO: avoid repeated code.
-    private void showErrorDialog(String message) {
-        // Play alert sound
-        klotski.playAlertSound();
-
-        // Create a group to act as the dialog container
-        Group dialogGroup = new Group();
-
-        // Create a background for the dialog
-        Image background = new Image(skin.newDrawable("white", new Color(1.0f, 1.0f, 1.0f, 0.7f)));
-        background.setSize(400, 250);
-        background.setPosition((stage.getWidth() - background.getWidth()) / 2,
-                (stage.getHeight() - background.getHeight()) / 2);
-        dialogGroup.addActor(background);
-
-        // Create a title label for the dialog
-        Label titleLabel = new Label("Error", skin);
-        titleLabel.setColor(Color.RED);
-        titleLabel.setFontScale(2.0f);
-        titleLabel.setPosition(background.getX() + (background.getWidth() - titleLabel.getWidth()) / 2,
-                background.getY() + 180);
-        dialogGroup.addActor(titleLabel);
-
-        // Create a label for the error message
-        Label messageLabel = new Label(message, skin);
-        messageLabel.setColor(Color.BLACK);
-        messageLabel.setFontScale(1.5f);
-        messageLabel.setWrap(true);
-        messageLabel.setWidth(360);
-        messageLabel.setPosition(background.getX() + 20, background.getY() + 100);
-        dialogGroup.addActor(messageLabel);
-
-        // Create an OK button
-        TextButton okButton = new TextButton("OK", skin);
-        okButton.setSize(100, 40);
-        okButton.setPosition(background.getX() + (background.getWidth() - okButton.getWidth()) / 2,
-                background.getY() + 20);
-        okButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
-                dialogGroup.remove(); // Remove the dialog when OK is clicked
-            }
-        });
-        dialogGroup.addActor(okButton);
-
-        // Add the dialog group to the stage
-        stage.addActor(dialogGroup);
-    }
-    
-    private void showDialog(String title, String message) {
-        // Play alert sound
-        klotski.playAlertSound();
-
-        // Create a group to act as the dialog container
-        Group dialogGroup = new Group();
-
-        // Create a background for the dialog
-        Image background = new Image(skin.newDrawable("white", new Color(1.0f, 1.0f, 1.0f, 0.7f)));
-        background.setSize(400, 250);
-        background.setPosition((stage.getWidth() - background.getWidth()) / 2,
-                (stage.getHeight() - background.getHeight()) / 2);
-        dialogGroup.addActor(background);
-
-        // Create a title label for the dialog
-        Label titleLabel = new Label(title, skin);
-        titleLabel.setFontScale(2.0f);
-        titleLabel.setAlignment(Align.center); // Align the text to the center
-        titleLabel.setSize(background.getWidth(), titleLabel.getHeight()); // Match the width of the background
-        titleLabel.setPosition(background.getX(), background.getY() + 180); // Position it relative to the background
-        dialogGroup.addActor(titleLabel);
-
-        // Create a label for the error message
-        Label messageLabel = new Label(message, skin);
-        messageLabel.setColor(Color.BLACK);
-        messageLabel.setFontScale(1.5f);
-        messageLabel.setWrap(true);
-        messageLabel.setWidth(360);
-        messageLabel.setPosition(background.getX() + 20, background.getY() + 100);
-        dialogGroup.addActor(messageLabel);
-
-        // Create an OK button
-        TextButton okButton = new TextButton("OK", skin);
-        okButton.setSize(100, 40);
-        okButton.setPosition(background.getX() + (background.getWidth() - okButton.getWidth()) / 2,
-                background.getY() + 20);
-        okButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
-                dialogGroup.remove(); // Remove the dialog when OK is clicked
-            }
-        });
-        dialogGroup.addActor(okButton);
-
-        // Add the dialog group to the stage
-        stage.addActor(dialogGroup);
-    }
-
     private void login(String username, String password) {
         if (!basicValidation(username, password)) {
-            showErrorDialog("Invalid username or password");
+            Dialog.showErrorDialog(klotski, skin, stage, "Invalid username or password");
             return;
         }
 
@@ -412,21 +263,21 @@ public class LoginScreen implements Screen {
                         klotski.webSocketClient.send("login:" + username);
                         System.out.println("WebSocket client started for user: " + username);
                     } else if (response.startsWith("failure")) {
-                        showErrorDialog("Invalid credentials");
+                        Dialog.showErrorDialog(klotski, skin, stage, "Invalid credentials");
                     } else {
-                        showErrorDialog("Failed to connect to the server");
+                        Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server");
                     }
                 });
             }
 
             @Override
             public void failed(Throwable t) {
-                showErrorDialog("Failed to connect to the server: " + t.getMessage());
+                Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server: " + t.getMessage());
             }
 
             @Override
             public void cancelled() {
-                showErrorDialog("Request cancelled");
+                Dialog.showErrorDialog(klotski, skin, stage, "Request cancelled");
             }
         });
     }
@@ -434,7 +285,7 @@ public class LoginScreen implements Screen {
     private void register(String username, String password) {
         try {
             if (!basicValidation(username, password)) {
-                showErrorDialog("Invalid username or password");
+                Dialog.showErrorDialog(klotski, skin, stage, "Invalid username or password");
                 return;
             }
 
@@ -457,68 +308,29 @@ public class LoginScreen implements Screen {
                 public void handleHttpResponse(Net.HttpResponse httpResponse) {
                     String response = httpResponse.getResultAsString();
                     if ("success".equals(response)) {
-                        showDialog("Complete", "Registration successful! Please log in.");
+                        Dialog.showDialog(klotski, skin, stage, "Complete", "Registration successful! Please log in.");
                     } else if ("failure: invalid input".equals(response)) {
-                        showErrorDialog("Registration failed. Invalid input.");
+                        Dialog.showErrorDialog(klotski, skin, stage, "Registration failed. Invalid input.");
                     } else if ("failure: user already exists".equals(response)) {
-                        showErrorDialog("Registration failed. Username already exists.");
+                        Dialog.showErrorDialog(klotski, skin, stage, "Registration failed. Username already exists.");
                     } else {
-                        showErrorDialog("Failed to connect to the server");
+                        Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server");
                     }
                 }
 
                 @Override
                 public void failed(Throwable t) {
-                    showErrorDialog("Failed to connect to the server: " + t.getMessage());
+                    Dialog.showErrorDialog(klotski, skin, stage, "Failed to connect to the server: " + t.getMessage());
                 }
 
                 @Override
                 public void cancelled() {
-                    showErrorDialog("Request cancelled");
+                    Dialog.showErrorDialog(klotski, skin, stage, "Request cancelled");
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            showErrorDialog("Failed to encode request parameters: " + e.getMessage());
+            Dialog.showErrorDialog(klotski, skin, stage, "Failed to encode request parameters: " + e.getMessage());
         }
     }
-
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(klotski.getBackgroundColor());
-        klotski.dynamicBoard.render(delta);
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-        // klotski.dynamicBoard = new DynamicBoard(klotski, stage);
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-    }
-
 
 }

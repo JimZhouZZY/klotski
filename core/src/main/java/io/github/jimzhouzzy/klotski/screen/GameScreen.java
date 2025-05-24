@@ -63,49 +63,49 @@ import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
 
 public class GameScreen extends ApplicationAdapter implements Screen {
-    private Sound clickRectangularSound;
-    private Music winSound;
-    private boolean winMusicPlayed = false;
-    private Music loseSound;
-    private boolean loseMusicPlayed = false;
-    private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    private final String SAVE_FILE = configPathHelper.getConfigFilePath("Klotski", "game_save.dat");
+    public Sound clickRectangularSound;
+    public Music winSound;
+    public boolean winMusicPlayed = false;
+    public Music loseSound;
+    public boolean loseMusicPlayed = false;
+    public final ConfigPathHelper configPathHelper = new ConfigPathHelper();
+    public final String SAVE_FILE = configPathHelper.getConfigFilePath("Klotski", "game_save.dat");
 
-    private Stage stage;
-    private Skin skin;
-    private ShapeRenderer shapeRenderer;
-    private float cellSize;
-    private final int rows = 5;
-    private final int cols = 4;
-    private List<RectangleBlockActor> blocks; // List of all blocks
-    private Group congratulationsGroup;
-    private RectangleBlockActor selectedBlock = null;
+    public Stage stage;
+    public Skin skin;
+    public ShapeRenderer shapeRenderer;
+    public float cellSize;
+    public final int rows = 5;
+    public final int cols = 4;
+    public List<RectangleBlockActor> blocks; // List of all blocks
+    public Group congratulationsGroup;
+    public RectangleBlockActor selectedBlock = null;
 
-    private int[][] autoMoves;
-    private int autoStep;
+    public int[][] autoMoves;
+    public int autoStep;
     public boolean isAutoSolving;
     public boolean isTerminal = false;
 
-    private List<int[][]> moveHistory; // Stores the history of moves
-    private int currentMoveIndex; // Tracks the current move in the history
+    public List<int[][]> moveHistory; // Stores the history of moves
+    public int currentMoveIndex; // Tracks the current move in the history
 
-    private float elapsedTime; // Tracks the elapsed time in seconds
-    private Label timerLabel; // Label to display the timer
-    private Label timerLabelCongrats; // Label to display the timer
-    private Label movesLabel; // Label to display the total moves
+    public float elapsedTime; // Tracks the elapsed time in seconds
+    public Label timerLabel; // Label to display the timer
+    public Label timerLabelCongrats; // Label to display the timer
+    public Label movesLabel; // Label to display the total moves
 
-    private KlotskiGame game; // Reference to the game logic
-    private Klotski klotski; // Reference to the main game class
-    private List<String> solution; // Stores the current solution
-    private int solutionIndex; // Tracks the current step in the solution
+    public KlotskiGame game; // Reference to the game logic
+    public Klotski klotski; // Reference to the main game class
+    public List<String> solution; // Stores the current solution
+    public int solutionIndex; // Tracks the current step in the solution
 
-    private TextButton autoButton;
+    public TextButton autoButton;
 
-    private Timer.Task autoSaveTask;
+    public Timer.Task autoSaveTask;
 
-    private boolean isAttackMode; // Flag to track if the game is in 3min-Attack mode
-    private float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
-    private Label congratsLabel;
+    public boolean isAttackMode; // Flag to track if the game is in 3min-Attack mode
+    public float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
+    public Label congratsLabel;
 
     public int blockedId = 10; // no piece is blocked at first
 
@@ -121,7 +121,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.blockedId = blockedId;
         this.blocks.get(blockedId).enableTouch = false;
     }
-
 
     @Override
     public void create() {
@@ -593,7 +592,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     // Helper method to assign colors to pieces
-    private Color getColorForPiece(int id) {
+    public Color getColorForPiece(int id) {
         switch (id) {
             case 0:
                 return new Color(0.95f, 0.25f, 0.25f, 1); // Soft red for Cao Cao
@@ -663,7 +662,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         return new float[] { minX, maxX, minY, maxY };
     }
 
-    private void updateBlocksFromGame(KlotskiGame game) {
+    public void updateBlocksFromGame(KlotskiGame game) {
         for (RectangleBlockActor block : blocks) {
             KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
             float x = piece.position[1] * cellSize; // Column to x-coordinate
@@ -843,7 +842,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void handleRestart(KlotskiGame game) {
+    public void handleRestart(KlotskiGame game) {
         // Stop auto-solving if active
         stopAutoSolving();
 
@@ -874,7 +873,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         System.out.println("Game restarted.");
     }
 
-    private void handleHint(KlotskiGame game) {
+    public void handleHint(KlotskiGame game) {
         // Get the solution from the solver
         List<String> solution = KlotskiSolver.solve(game);
 
@@ -921,7 +920,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void handleAutoSolve(KlotskiGame game, TextButton autoButton) {
+    public void handleAutoSolve(KlotskiGame game, TextButton autoButton) {
         if (isAutoSolving()) {
             stopAutoSolving(); // Stop auto-solving if already active
             autoButton.setText("Auto"); // Change button text back to "Auto"
@@ -941,7 +940,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void handleExit() {
+    public void handleExit() {
         // reset
         winMusicPlayed = false;
         loseMusicPlayed = false;
@@ -962,7 +961,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void createCongratulationsScreen() {
+    public void createCongratulationsScreen() {
         // Create a group for the congratulations screen
         congratulationsGroup = new Group();
 
@@ -1038,7 +1037,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         stage.addActor(congratulationsGroup);
     }
 
-    private void showCongratulationsScreen() {
+    public void showCongratulationsScreen() {
 
         // Play win sound effect
         if (!winMusicPlayed && winSound != null) {
@@ -1057,7 +1056,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         congratulationsGroup.setVisible(true); // Show the congratulations screen
 
     }
-    private void showLosingScreen() {
+    public void showLosingScreen() {
         // Play lose sound effect
         if (!loseMusicPlayed && loseSound != null) {
             loseSound.play();
@@ -1075,7 +1074,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         congratulationsGroup.setVisible(true); // Show the losing screen
     }
 
-    private void updateAutoButtonText(TextButton autoButton) {
+    public void updateAutoButtonText(TextButton autoButton) {
         if (isAutoSolving) {
             autoButton.setText("Stop");
         } else {
@@ -1096,7 +1095,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         movesLabel.setText("Moves: " + (currentMoveIndex + 1));
     }
 
-    private void handleUndo() {
+    public void handleUndo() {
         if (currentMoveIndex >= 0) {
             int[][] lastMove = moveHistory.get(currentMoveIndex);
             int[] from = lastMove[1]; // Reverse the move
@@ -1116,7 +1115,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void handleRedo() {
+    public void handleRedo() {
         if (currentMoveIndex < moveHistory.size() - 1) {
             currentMoveIndex++;
             int[][] nextMove = moveHistory.get(currentMoveIndex);
@@ -1136,7 +1135,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private String getSaveFileName() {
+    public String getSaveFileName() {
         String username = klotski.getLoggedInUser();
         if (username == null || username.isEmpty()) {
             return "Guest_save.dat"; // Default save file for guests
@@ -1144,7 +1143,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         return username + "_save.dat"; // Unique save file for each user
     }
 
-    private void handleSave(boolean autoSave) {
+    public void handleSave(boolean autoSave) {
         String saveFileName = getSaveFileName();
         File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -1167,7 +1166,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void uploadSaveToServer(byte[] saveData, boolean autoSave) {
+    public void uploadSaveToServer(byte[] saveData, boolean autoSave) {
         // print raw data length
         System.out.println("Raw save data length: " + saveData.length);
         // Convert to base 64
@@ -1223,7 +1222,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         });
     }
 
-    private void handleLoad() {
+    public void handleLoad() {
         String username = klotski.getLoggedInUser();
 
         fetchLatestSaveFromServer(username, saveData -> {
@@ -1265,7 +1264,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         });
     }
 
-    private void fetchLatestSaveFromServer(String username, Consumer<String> callback) {
+    public void fetchLatestSaveFromServer(String username, Consumer<String> callback) {
         // Send the HTTP GET request
         String url = "http://42.194.132.147:8001/gameSave/getSaves?username=" + username;
         HttpRequestBuilder requestBuilder = new HttpRequestBuilder();
@@ -1314,7 +1313,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         });
     }
 
-    private void showSavePopup() {
+    public void showSavePopup() {
         // Show a small pop-up window after saving
         Dialog saveDialog = new Dialog("Save", skin);
         Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
@@ -1333,7 +1332,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         saveDialog.show(stage);
     }
 
-    private void handleLocalSave(boolean autoSave) {
+    public void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
         String saveFileName = getSaveFileName();
         File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
@@ -1351,7 +1350,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    private void handleLocalLoad() {
+    public void handleLocalLoad() {
         String saveFileName = getSaveFileName();
         File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
         if (!file.exists()) {
