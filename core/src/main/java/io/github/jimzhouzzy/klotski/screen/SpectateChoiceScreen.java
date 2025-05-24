@@ -87,22 +87,27 @@ public class SpectateChoiceScreen implements Screen {
 
     private void populateUserButtons(Table table, String[] users) {
         table.clear(); // Clear the table before adding new buttons
-        
+
         // Add a title label
         Label titleLabel = new Label("Choose a Player to Spectate", skin);
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
             System.out.println("Adding button for user: " + user);
+            Table buttonContainer = new Table(skin);
+            buttonContainer.setBackground("white"); // Ensure 'white' drawable exists in skin
+
             TextButton userButton = new TextButton(user, skin);
             userButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    klotski.playClickSound();;
+                    klotski.playClickSound();
                     spectateUser(user);
                 }
             });
-            table.add(userButton).width(300).height(50).padBottom(20).row(); // Add each button in a new row
+
+            buttonContainer.add(userButton).width(300).height(50).pad(10);
+            table.add(buttonContainer).padBottom(20).row();
         }
     }
 

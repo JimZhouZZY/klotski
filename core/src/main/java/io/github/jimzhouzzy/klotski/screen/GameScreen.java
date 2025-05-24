@@ -377,27 +377,64 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                             handleAutoSolve(game, autoButton); // Start auto-solving
                         }
                         return true;
-                    case Input.Keys.L:
                     case Input.Keys.LEFT:
                         // Handle left arrow key for moving blocks
                         handleArrowKeys(new int[]{0, -1});
                         return true;
-                    case Input.Keys.K:
                     case Input.Keys.UP:
                         // Handle left arrow key for moving blocks
                         handleArrowKeys(new int[]{-1, 0});
                         return true;
-                    case Input.Keys.H:
                     case Input.Keys.RIGHT:
                         // Handle left arrow key for moving blocks
                         handleArrowKeys(new int[]{0, 1});
                         return true;
-                    case Input.Keys.J:
                     case Input.Keys.DOWN:
                         // Handle left arrow key for moving blocks
                         handleArrowKeys(new int[]{1, 0});
                         return true;
                     // Handle number keys 0-9 and numpad 0-9 for block selection
+                    case Input.Keys.H: { // Left
+                        RectangleBlockActor target = findBlockByOffset(selectedBlock, 0, -1);
+                        if (target != null) {
+                            if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
+                            if (selectedBlock != null) selectedBlock.setSelected(false);
+                            selectedBlock = target;
+                            selectedBlock.setSelected(true);
+                        }
+                        return true;
+                    }
+                    case Input.Keys.L: { // Right
+                        RectangleBlockActor target = findBlockByOffset(selectedBlock, 0, 1);
+                        if (target != null) {
+                            if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
+                            if (selectedBlock != null) selectedBlock.setSelected(false);
+                            selectedBlock = target;
+                            selectedBlock.setSelected(true);
+                        }
+                        return true;
+                    }
+                    case Input.Keys.J: { // Down
+                        RectangleBlockActor target = findBlockByOffset(selectedBlock, 1, 0);
+                        if (target != null) {
+                            if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
+                            if (selectedBlock != null) selectedBlock.setSelected(false);
+                            selectedBlock = target;
+                            selectedBlock.setSelected(true);
+                        }
+                        return true;
+                    }
+                    case Input.Keys.K: { // Up
+                        RectangleBlockActor target = findBlockByOffset(selectedBlock, -1, 0);
+                        if (target != null) {
+                            if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
+                            if (selectedBlock != null) selectedBlock.setSelected(false);
+                            selectedBlock = target;
+                            selectedBlock.setSelected(true);
+                        }
+                        return true;
+                    }
+
                     case Input.Keys.NUM_0:
                     case Input.Keys.NUM_1:
                     case Input.Keys.NUM_2:
@@ -469,6 +506,32 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         });
 
         broadcastGameState();
+    }
+
+    private RectangleBlockActor findBlockByOffset(RectangleBlockActor current, int rowOffset, int colOffset) {
+        if (current == null) return null;
+        KlotskiGame.KlotskiPiece currentPiece = game.getPiece(current.pieceId);
+        int targetRow = currentPiece.getRow();
+        int targetCol = currentPiece.getCol();
+        int k = 0;
+        while (targetRow >= 0 && targetCol >= 0 && targetRow<=4 && targetCol<=3) {
+            targetRow = currentPiece.getRow() + rowOffset * k;
+            targetCol = currentPiece.getCol() + colOffset * k;
+            k++;
+            for (RectangleBlockActor block : blocks) {
+                KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
+                int pieceRow = piece.getRow();
+                int pieceCol = piece.getCol();
+
+                // check if targetRow and targetCol is inside the piece rectangle
+                if (targetRow >= pieceRow && targetRow < pieceRow + piece.height &&
+                    targetCol >= pieceCol && targetCol < pieceCol + piece.width &&
+                    block != current) {
+                    return block;
+                }
+            }
+        }
+        return null;
     }
 
     private void handleAutoArrowKeys(int[] direction) {
