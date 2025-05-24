@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.jimzhouzzy.klotski.Klotski;
 
 public class MainScreen extends ProtoScreen {
-
     private float baseTileSize;
     private Label greetingLabel; // Label to display the greeting message
     private ShapeRenderer shapeRenderer;

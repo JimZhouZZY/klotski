@@ -26,14 +26,8 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.jimzhouzzy.klotski.screen.GameScreen;
@@ -41,13 +35,13 @@ import io.github.jimzhouzzy.klotski.screen.HelpScreen;
 import io.github.jimzhouzzy.klotski.screen.MainScreen;
 import io.github.jimzhouzzy.klotski.screen.SettingsScreen;
 import io.github.jimzhouzzy.klotski.screen.SpectateChoiceScreen;
+import io.github.jimzhouzzy.klotski.ui.Dialog;
 import io.github.jimzhouzzy.klotski.ui.DynamicBoard;
 import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 import io.github.jimzhouzzy.klotski.web.offline.GameWebSocketServer;
 import io.github.jimzhouzzy.klotski.web.offline.WebServer;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
-
 
 public class Klotski extends Game {
     private GameWebSocketServer webSocketServer;
@@ -433,7 +427,7 @@ public class Klotski extends Game {
 
             if (needRestart) {
                 // restartApplication();
-                showErrorDialog("Some changes needs restarting the game to take effect", stage);
+                Dialog.showErrorDialog(this, skin, stage, "Some changes needs restarting the game to take effect", stage);
             }
         }
     }
@@ -523,52 +517,6 @@ public class Klotski extends Game {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void showErrorDialog(String message, Stage stage) {
-        // Play alert sound
-        playAlertSound();
-
-        // Create a group to act as the dialog container
-        Group dialogGroup = new Group();
-
-        // Create a background for the dialog
-        Image background = new Image(skin.newDrawable("white", new Color(1.0f, 1.0f, 1.0f, 0.9f)));
-        background.setSize(400, 250);
-        background.setPosition((stage.getWidth() - background.getWidth()) / 2, (stage.getHeight() - background.getHeight()) / 2);
-        dialogGroup.addActor(background);
-
-        // Create a title label for the dialog
-        Label titleLabel = new Label("Error", skin);
-        titleLabel.setColor(Color.RED);
-        titleLabel.setFontScale(2.0f);
-        titleLabel.setPosition(background.getX() + (background.getWidth() - titleLabel.getWidth()) / 2, background.getY() + 180);
-        dialogGroup.addActor(titleLabel);
-
-        // Create a label for the error message
-        Label messageLabel = new Label(message, skin);
-        messageLabel.setColor(Color.BLACK);
-        messageLabel.setFontScale(1.5f);
-        messageLabel.setWrap(true);
-        messageLabel.setWidth(360);
-        messageLabel.setPosition(background.getX() + 20, background.getY() + 100);
-        dialogGroup.addActor(messageLabel);
-
-        // Create an OK button
-        TextButton okButton = new TextButton("OK", skin);
-        okButton.setSize(100, 40);
-        okButton.setPosition(background.getX() + (background.getWidth() - okButton.getWidth()) / 2, background.getY() + 20);
-        okButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                playClickSound();;
-                dialogGroup.remove(); // Remove the dialog when OK is clicked
-            }
-        });
-        dialogGroup.addActor(okButton);
-
-        // Add the dialog group to the stage
-        stage.addActor(dialogGroup);
     }
 
     public void setMusicEnabled(boolean enabled) {
