@@ -15,6 +15,8 @@
  *    reset the game to the shuffeled state.
  * 
  * Change log:
+ * 2025-05-25: Organize import (doc)
+ * 2025-05-25: Organize import
  * 2025-05-25: generate change log
  */
 

@@ -15,6 +15,8 @@
  * @see {@link com.badlogic.gdx.Screen}
  * 
  * Change log:
+ * 2025-05-25: Organize import (doc)
+ * 2025-05-25: Organize import
  * 2025-05-25: generate change log
  */
 

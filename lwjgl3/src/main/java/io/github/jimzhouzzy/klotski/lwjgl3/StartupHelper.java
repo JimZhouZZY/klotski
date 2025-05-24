@@ -27,11 +27,11 @@
  * outside the Latin alphabet.
  * 
  * @author damios, jimzhouzzy
- * @version 1.2
+ * @version 1.4
  * @since 2025-5-25
  * 
  * Change log:
- * 2025-05-25: generate change log
+ * 2025-04-08: init libgdx
  */
 
 package io.github.jimzhouzzy.klotski.lwjgl3;

@@ -10,12 +10,28 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.29
+ * @version 1.15
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
- * 2025-05-25: generate change log
+ * 2025-04-29: web inspection
+ * 2025-04-29: offline mode & optimize save-load
+ * 2025-04-24: fix resize changed base tile size
+ * 2025-04-24: MSAA & Settings
+ * 2025-04-23: better main screen
+ * 2025-04-22: soundtrace.ogg
+ * 2025-04-22: better dark mode
+ * 2025-04-22: Settings view
+ * 2025-04-16: Login & Levels
+ * 2025-04-16: Login & Game Mode & Save-Load
+ * 2025-04-16: Timer & Moves
+ * 2025-04-15: refactor & basic undo redo
+ * 2025-04-14: Auto solve & unresizable & exit
+ * 2025-04-13: feat: restart hint and congratulations
+ * 2025-04-09: drag and collide
+ * 2025-04-08: libgdx basic GUI
+ * 2025-04-08: init libgdx
  */
 
 package io.github.jimzhouzzy.klotski;
