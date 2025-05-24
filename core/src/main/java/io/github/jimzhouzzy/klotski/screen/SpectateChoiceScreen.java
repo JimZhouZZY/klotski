@@ -175,38 +175,4 @@ public class SpectateChoiceScreen extends ProtoScreen {
         // Add the dialog group to the stage
         stage.addActor(dialogGroup);
     }
-
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(klotski.getBackgroundColor());
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
 }
