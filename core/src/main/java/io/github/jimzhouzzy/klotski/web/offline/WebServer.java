@@ -7,13 +7,15 @@
  * It should only be initialized in {@link Klotski} class.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.2
  * @since 2025-5-25
  * @see {@link Klotski}
  * 
  * Change log:
- * 2025-5-25 v1.0: initialize change log 
- * 2025-5-25 v1.1: deleted main method, which is used for testing (JimZhouZZY)
+ * 2025-05-25: Update documentary
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-04-22: Settings view
  */
 
 package io.github.jimzhouzzy.klotski.web.offline;

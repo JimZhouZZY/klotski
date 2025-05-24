@@ -6,11 +6,22 @@
  * checking legal moves, and determining the game state.
  * 
  * @author JimZhouZZY
- * @version 1.0
+ * @version 1.1
  * @since 2025-5-25
  * 
  * Change log:
- * 2025-5-25 v1.0: initialize change log
+ * 2025-05-25: Update documentary
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-20: Merge branch v1.0.5 into main (#7)
+ * 2025-05-14: add fromString method and test cases (#4)
+ * 2025-04-23: better main screen
+ * 2025-04-16: Login & Levels
+ * 2025-04-16: Login & Game Mode & Save-Load
+ * 2025-04-13: feat: restart hint and congratulations
+ * 2025-04-08: refactor to libgdx structure
+ * 2025-04-08: Implemented KlotskiSovler
+ * 2025-04-08: implemented KlotskiGame.java
  */
 
 package io.github.jimzhouzzy.klotski.logic;

@@ -10,12 +10,40 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.0
+ * @version 1.1
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
- * 2025-5-25 v1.0: initialize change log
+ * 2025-05-25: Update documentary
+ * 2025-05-24: fix: invalid call to Dialog
+ * 2025-05-24: refactor Dialog
+ * 2025-05-24: Refactor screens to enheritage ProtoScreen
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-21: bug fix (#10)
+ * 2025-05-21: code clean up
+ * 2025-05-20: Merge branch v1.0.7 into main (#8)
+ * 2025-05-08: update soundfx
+ * 2025-05-07: formal login & prepare in-game spectate
+ * 2025-04-30: optimize local storage
+ * 2025-04-29: web inspection
+ * 2025-04-29: offline mode & optimize save-load
+ * 2025-04-24: fix resize changed base tile size
+ * 2025-04-24: MSAA & Settings
+ * 2025-04-23: better main screen
+ * 2025-04-22: soundtrace.ogg
+ * 2025-04-22: better dark mode
+ * 2025-04-22: Settings view
+ * 2025-04-16: Login & Levels
+ * 2025-04-16: Login & Game Mode & Save-Load
+ * 2025-04-16: Timer & Moves
+ * 2025-04-15: refactor & basic undo redo
+ * 2025-04-14: Auto solve & unresizable & exit
+ * 2025-04-13: feat: restart hint and congratulations
+ * 2025-04-09: drag and collide
+ * 2025-04-08: libgdx basic GUI
+ * 2025-04-08: init libgdx
  */
 
 package io.github.jimzhouzzy.klotski;

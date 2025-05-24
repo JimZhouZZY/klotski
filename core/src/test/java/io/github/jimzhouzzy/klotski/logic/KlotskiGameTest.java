@@ -1,3 +1,22 @@
+/**
+ * KlotskiGameTest.java
+ * 
+ * This class contains unit tests for the KlotskiGame class.
+ * 
+ * THIS CLASS IS WIP
+ * 
+ * @author JimZhouZZY
+ * @version 1.1
+ * @since 2025-5-25
+ * @see {@link KlotskiGame}
+ * 
+ * Change log:
+ * 2025-05-23: refactor test
+ * 2025-05-23: refactor test
+ * 2025-05-20: Merge branch v1.0.5 into main (#7)
+ * 2025-05-14: add fromString method and test cases (#4)
+ */
+
 package io.github.jimzhouzzy.klotski.logic;
 
 import org.junit.jupiter.api.Test;
@@ -87,4 +106,3 @@ public class KlotskiGameTest {
 
         assertTrue(exception.getMessage().contains("could not be placed on the board"));
     }
-}

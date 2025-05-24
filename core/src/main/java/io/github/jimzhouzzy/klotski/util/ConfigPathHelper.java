@@ -8,12 +8,17 @@
  * ensuring that the files are stored in a user-friendly location.
  * 
  * @author JimZhouZZY
- * @version 1.0
+ * @version 1.1
  * @since 2025-5-25
  * @see {@link SettingsScreen}
  * 
  * Change log:
- * 2025-5-25 v1.0: initialize change log
+ * 2025-05-25: Update documentary
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-21: Thz (#9)
+ * 2025-05-21: bug fix: audio settings (not completed)
+ * 2025-04-30: optimize local storage
  */
 
 package io.github.jimzhouzzy.klotski.util;

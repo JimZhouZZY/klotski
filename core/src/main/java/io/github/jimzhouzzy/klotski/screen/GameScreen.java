@@ -5,7 +5,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  * 
  * @author JimZhouZZY
- * @version 1.0
+ * @version 1.1
  * @since 2025-5-25
  * 
  * KNOWN ISSUES:
@@ -15,7 +15,43 @@
  *    reset the game to the shuffeled state.
  * 
  * Change log:
- * 2025-5-25 v1.0: initialize change log
+ * 2025-05-25: Update documentary
+ * 2025-05-24: Highlight the number of the selected number (#14)
+ * 2025-05-24: Add H,J,K,L for changing the selected  block.
+ * 2025-05-24: Add a possible movement of the block if the block is not selected.`
+ * 2025-05-24: Highlight the number of the selected number
+ * 2025-05-24: refactor spectate
+ * 2025-05-24: fix: piece 0 cannot move
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-21: sync
+ * 2025-05-21: bug fix: do not show dialog when auto save
+ * 2025-05-21: bug fix (#10)
+ * 2025-05-21: prevent pop-up window when auto-saving
+ * 2025-05-20: Merge branch v1.0.7 into main (#8)
+ * 2025-05-08: update soundfx
+ * 2025-04-30: optimize local storage
+ * 2025-04-29: web inspection
+ * 2025-04-29: better error log
+ * 2025-04-29: offline mode & optimize save-load
+ * 2025-04-28: Online server auth & save-load
+ * 2025-04-25: Revert 'fix:resize'
+ * 2025-04-24: fix resize changed base tile size
+ * 2025-04-24: MSAA & Settings
+ * 2025-04-23: better main screen
+ * 2025-04-23: better main menu
+ * 2025-04-22: better dark mode
+ * 2025-04-22: Settings view
+ * 2025-04-21: resizable
+ * 2025-04-16: Login & Levels
+ * 2025-04-16: Login & Game Mode & Save-Load
+ * 2025-04-16: Timer & Moves
+ * 2025-04-15: refactor & basic undo redo
+ * 2025-04-14: Auto solve & unresizable & exit
+ * 2025-04-13: feat: restart hint and congratulations
+ * 2025-04-09: drag and collide
+ * 2025-04-08: libgdx basic GUI
+ * 2025-04-08: init libgdx
  */
 
 
