@@ -186,7 +186,6 @@ public class KlotskiSolver {
                     }
                     sb.append('\n');
                 }
-                //System.out.print(sb.toString());
                 nextStates.add(new BoardState(newPieces, moveDesc, state, sb.toString()));
             }
         }

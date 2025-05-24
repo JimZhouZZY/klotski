@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Net;
@@ -54,7 +55,7 @@ import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 
-public class SpectateScreen extends ApplicationAdapter implements Screen {
+public class SpectateScreen extends GameScreen {
     private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
     private final String SAVE_FILE = configPathHelper.getConfigFilePath("Klotski", "game_save.dat");
 
@@ -96,6 +97,7 @@ public class SpectateScreen extends ApplicationAdapter implements Screen {
     private GameWebSocketClient webSocketClient;
 
     public SpectateScreen(final Klotski klotski, String username, GameWebSocketClient webSocketClient) {
+        super(klotski);
         this.klotski = klotski;
         this.username = username;
         this.webSocketClient = webSocketClient;
