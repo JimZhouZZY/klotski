@@ -471,8 +471,43 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         broadcastGameState();
     }
 
+    private void handleAutoArrowKeys(int[] direction) {
+        List<int[][]> legalMoves = game.getLegalMovesByDirection(direction);
+        if (legalMoves.isEmpty()) {
+            return;
+        }
+        if (isAutoSolving) {
+            stopAutoSolving();
+        }
+        int[][] move = legalMoves.get(0);
+        int fromRow = move[0][0];
+        int fromCol = move[0][1];
+        int toRow = move[1][0];
+        int toCol = move[1][1];
+        for (RectangleBlockActor block : blocks) {
+            KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
+            if (piece.getRow() == fromRow && piece.getCol() == fromCol) {
+                float targetX = toCol * cellSize;
+                float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
+                game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+                piece.setPosition(new int[] { toRow, toCol });
+                recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+                isTerminal = game.isTerminal(); // Check if the game is in a terminal state
+                broadcastGameState();
+                block.addAction(Actions.sequence(
+                    Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
+                    Actions.run(() -> {
+                    })));
+                break;
+            }
+        }
+    }
+
     private void handleArrowKeys(int[] direction) {
-        if (selectedBlock == null || selectedBlock.pieceId == blockedId) return;
+        if (selectedBlock == null || selectedBlock.pieceId == blockedId) {
+            handleAutoArrowKeys(direction);
+            return;
+        }
 
         KlotskiGame.KlotskiPiece piece = game.getPiece(selectedBlock.pieceId);
         int fromRow = piece.getRow();
