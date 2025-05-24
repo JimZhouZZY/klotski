@@ -8,17 +8,12 @@
  * It should only be initialized in {@link Klotski} class.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.6
  * @since 2025-5-25
  * @see {@link Klotski}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-04-29: web inspection
- * 2025-04-22: Settings view
- * 2025-04-16: Login & Levels
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.web.offline;

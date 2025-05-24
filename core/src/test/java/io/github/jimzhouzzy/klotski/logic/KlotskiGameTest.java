@@ -6,24 +6,21 @@
  * THIS CLASS IS WIP
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.4
  * @since 2025-5-25
  * @see {@link KlotskiGame}
  * 
  * Change log:
- * 2025-05-23: refactor test
- * 2025-05-23: refactor test
- * 2025-05-20: Merge branch v1.0.5 into main (#7)
- * 2025-05-14: add fromString method and test cases (#4)
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.logic;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 
 public class KlotskiGameTest {
 
@@ -106,3 +103,4 @@ public class KlotskiGameTest {
 
         assertTrue(exception.getMessage().contains("could not be placed on the board"));
     }
+}

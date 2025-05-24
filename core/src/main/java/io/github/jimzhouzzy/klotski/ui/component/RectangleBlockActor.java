@@ -6,25 +6,12 @@
  * and hooks to updates the game state accordingly.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.14
  * @since 2025-5-25
  * @see {@link GameScreen}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: Highlight the number of the selected number (#14)
- * 2025-05-24: Highlight the number of the selected number
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-05-20: Merge branch v1.0.7 into main (#8)
- * 2025-05-20: Merge branch v1.0.5 into main (#7)
- * 2025-05-08: update soundfx
- * 2025-04-23: better main screen
- * 2025-04-23: better main menu
- * 2025-04-22: better dark mode
- * 2025-04-16: Login & Levels
- * 2025-04-16: Login & Game Mode & Save-Load
- * 2025-04-15: refactor & basic undo redo
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.ui.component;

@@ -4,30 +4,11 @@
  * This class represents the game mode selection screen in the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.20
  * @since 2025-5-25
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: Highlight the number of the selected number (#14)
- * 2025-05-24: Refactor screens to enheritage ProtoScreen
- * 2025-05-24: Highlight the number of the selected number
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-05-20: Merge branch v1.0.7 into main (#8)
- * 2025-05-08: update soundfx
- * 2025-05-07: formal login & prepare in-game spectate
- * 2025-04-29: web inspection
- * 2025-04-29: focal length animation
- * 2025-04-25: Revert 'fix:resize'
- * 2025-04-24: fix resize changed base tile size
- * 2025-04-24: MSAA & Settings
- * 2025-04-23: better main screen
- * 2025-04-22: better dark mode
- * 2025-04-22: Settings view
- * 2025-04-21: resizable
- * 2025-04-16: Login & Levels
- * 2025-04-16: Login & Game Mode & Save-Load
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.screen;

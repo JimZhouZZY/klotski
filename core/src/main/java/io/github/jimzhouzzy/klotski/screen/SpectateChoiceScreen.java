@@ -6,44 +6,24 @@
  * Players can click on a user to start spectating their game.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.14
  * @since 2025-5-25
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: fix code style
- * 2025-05-24: Make the sepctsteScreen more pretty.
- * 2025-05-24: fix: invalid call to Dialog
- * 2025-05-24: fix: SpectateChoiceScreen doesnt has background
- * 2025-05-24: refactor Dialog
- * 2025-05-24: Highlight the number of the selected number (#14)
- * 2025-05-24: Refactor screens to enheritage ProtoScreen
- * 2025-05-24: Add H,J,K,L for changing the selected  block.
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-05-20: Merge branch v1.0.5 into main (#7)
- * 2025-05-08: update soundfx
- * 2025-05-07: formal login & prepare in-game spectate
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.ui.Dialog;

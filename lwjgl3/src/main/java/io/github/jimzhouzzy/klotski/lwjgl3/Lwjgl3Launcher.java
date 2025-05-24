@@ -5,22 +5,13 @@
  * It sets up the application configuration and starts the game.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.10
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link Lwjgl3Application}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-04-30: optimize local storage
- * 2025-04-24: fix resize changed base tile size
- * 2025-04-24: MSAA & Settings
- * 2025-04-22: Settings view
- * 2025-04-21: resizable
- * 2025-04-14: Auto solve & unresizable & exit
- * 2025-04-08: init libgdx
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.lwjgl3;

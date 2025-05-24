@@ -7,23 +7,24 @@
  * It should only be initialized in {@link Klotski} class.
  * 
  * @author JimZhouZZY
- * @version 1.2
+ * @version 1.4
  * @since 2025-5-25
  * @see {@link Klotski}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-04-22: Settings view
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.web.offline;
 
-import com.sun.net.httpserver.*;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
+
+import com.sun.net.httpserver.HttpServer;
 
 public class WebServer {
     HttpServer server;

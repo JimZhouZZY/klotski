@@ -7,20 +7,12 @@
  * the search process, including the number of states examined and the time taken to find a solution.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.9
  * @since 2025-5-25
  * @see {@link KlotskiGame}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: refactor spectate screen to extend GameScreen
- * 2025-05-24: refactor spectate screen to extend GameScreen
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-04-16: Login & Game Mode & Save-Load
- * 2025-04-13: feat: restart hint and congratulations
- * 2025-04-08: refactor to libgdx structure
- * 2025-04-08: Implemented KlotskiSovler
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.logic;

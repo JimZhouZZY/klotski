@@ -4,35 +4,11 @@
  * This class represents the main menu screen of the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.25
  * @since 2025-5-25
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: refactor Dialog
- * 2025-05-24: Refactor screens to enheritage ProtoScreen
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-05-22: Fix the HelpScreen's BUG! (#11)
- * 2025-05-20: Merge branch v1.0.7 into main (#8)
- * 2025-05-08: update soundfx
- * 2025-04-29: focal length animation
- * 2025-04-29: offline mode & optimize save-load
- * 2025-04-27: fix:resize dynamic board
- * 2025-04-25: Revert 'fix:resize'
- * 2025-04-24: fix resize changed base tile size
- * 2025-04-24: MSAA & Settings
- * 2025-04-24: misty & click effect
- * 2025-04-23: better main screen
- * 2025-04-23: better main menu
- * 2025-04-22: soundtrace.ogg
- * 2025-04-22: better color blocks in main screen
- * 2025-04-22: better dark mode
- * 2025-04-22: Settings view
- * 2025-04-22: better main screen dynamic background
- * 2025-04-21: background
- * 2025-04-21: resizable
- * 2025-04-16: Login & Game Mode & Save-Load
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.screen;

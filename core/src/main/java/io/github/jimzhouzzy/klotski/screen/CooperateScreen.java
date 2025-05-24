@@ -7,14 +7,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.2
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: Refactor screens to enheritage ProtoScreen
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.screen;

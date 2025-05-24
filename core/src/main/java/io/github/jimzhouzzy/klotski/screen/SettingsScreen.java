@@ -6,35 +6,12 @@
  * It allows users to configure various settings such as graphics, audio, and gameplay options.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.24
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * 
  * Change log:
- * 2025-05-25: Update documentary
- * 2025-05-24: Refactor screens to enheritage ProtoScreen
- * 2025-05-24: fix: bad init process of HelpScreen
- * 2025-05-23: Refactor project structure (#12)
- * 2025-05-23: Refactor project structure
- * 2025-05-22: Fix the HelpScreen's BUG! (#11)
- * 2025-05-21: bug fix (#10)
- * 2025-05-21: code clean up
- * 2025-05-21: Changed some bug like: 1. When I reopenned the darkMode, two kind of music played together. 2. Fix the failed Mode exchange.
- * 2025-05-21: Thz (#9)
- * 2025-05-21: bug fix: settings doesn't load normally
- * 2025-05-21: bug fix: audio settings (not completed)
- * 2025-05-20: Merge branch v1.0.7 into main (#8)
- * 2025-05-08: update soundfx
- * 2025-05-06: fix file load problem in windows OS
- * 2025-04-30: optimize local storage
- * 2025-04-29: offline mode & optimize save-load
- * 2025-04-25: fix: load config didn't correctly (un)check enable music
- * 2025-04-25: Revert 'fix:resize'
- * 2025-04-24: fix resize changed base tile size
- * 2025-04-24: MSAA & Settings
- * 2025-04-23: better main screen
- * 2025-04-22: better dark mode
- * 2025-04-22: Settings view
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.screen;
@@ -43,22 +20,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;

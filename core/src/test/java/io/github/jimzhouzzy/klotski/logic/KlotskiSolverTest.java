@@ -6,13 +6,12 @@
  * THIS CLASS IS WIP
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.2
  * @since 2025-5-25
  * @see {@link KlotskiSolver}
  * 
  * Change log:
- * 2025-05-23: refactor test
- * 2025-05-23: refactor test
+ * 2025-05-25: generate change log
  */
 
 package io.github.jimzhouzzy.klotski.logic;
