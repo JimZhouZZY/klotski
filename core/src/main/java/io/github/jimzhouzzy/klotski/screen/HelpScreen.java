@@ -26,43 +26,14 @@ public class HelpScreen implements Screen {
 
     public HelpScreen(Klotski klotski) {
         this.klotski = klotski;
-        this.skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
         create();
-
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        Label.LabelStyle labelStyle = skin.get(Label.LabelStyle.class);
-
-        Label textLabel = new Label("Welcome to our game!\n\n"+
-            "Here are some surprises for you to explore!\n\n" +
-            "You can click the background and you can see the ripples!\n\n" +
-            "You can move the background with direction keys to seek your favorite color!\n\n" +
-            "You can change the angle of your background: 'Space' for clockwise and 'control' for counterclockwise\n\n\n\n", labelStyle);
-        textLabel.setFontScale(2.0f);
-
-        textLabel.setWrap(true);
-        textLabel.setAlignment(Align.center); // center text
-
-        Table textBox = new Table(skin);
-        textBox.add(textLabel).width(500).pad(20);
-
-        TextButton backButton = new TextButton("Back", skin);
-        backButton.addListener(event -> {
-            if (event.toString().equals("touchDown")) {
-                klotski.playClickSound();
-                klotski.setScreen(klotski.mainScreen);
-            }
-            return true;
-        });
-
-        table.add(textBox).width(540).height(250).padBottom(40).row();
-        table.add(backButton).width(200).height(50);
     }
+
     public void create() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        klotski.dynamicBoard.setStage(stage);
+
         stage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -98,10 +69,39 @@ public class HelpScreen implements Screen {
                 Gdx.graphics.setCursor(clickedCursor);
             }
         });
-    }
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
+        
+        this.skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
+
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        Label.LabelStyle labelStyle = skin.get(Label.LabelStyle.class);
+
+        Label textLabel = new Label("Welcome to our game!\n\n"+
+            "Here are some surprises for you to explore!\n\n" +
+            "You can click the background and you can see the ripples!\n\n" +
+            "You can move the background with direction keys to seek your favorite color!\n\n" +
+            "You can change the angle of your background: 'Space' for clockwise and 'control' for counterclockwise\n\n\n\n", labelStyle);
+        textLabel.setFontScale(2.0f);
+
+        textLabel.setWrap(true);
+        textLabel.setAlignment(Align.center); // center text
+
+        Table textBox = new Table(skin);
+        textBox.add(textLabel).width(500).pad(20);
+
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(event -> {
+            if (event.toString().equals("touchDown")) {
+                klotski.playClickSound();
+                klotski.setScreen(klotski.mainScreen);
+            }
+            return true;
+        });
+
+        table.add(textBox).width(540).height(250).padBottom(40).row();
+        table.add(backButton).width(200).height(50);
     }
 
     @Override
@@ -116,14 +116,32 @@ public class HelpScreen implements Screen {
         stage.draw();
     }
 
-    @Override public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {Gdx.input.setInputProcessor(null);}
-    @Override public void dispose() {
+
+    @Override
+    public void dispose() {
         stage.dispose();
         skin.dispose();
+    }
+
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
     }
 }
