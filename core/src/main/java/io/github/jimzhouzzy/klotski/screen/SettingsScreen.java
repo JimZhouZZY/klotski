@@ -25,64 +25,20 @@ import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
-public class SettingsScreen implements Screen {
+public class SettingsScreen extends ProtoScreen {
 
-    private final Klotski klotski;
-    private Stage stage;
-    private Skin skin;
-    private boolean isDarkMode = false; // Default to light mode
-    private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    private final String SETTINGS_FILE = configPathHelper.getConfigFilePath("Klotski", "settings.json");
+    private boolean isDarkMode;
+    private static final ConfigPathHelper configPathHelper = new ConfigPathHelper();
+    private static final String SETTINGS_FILE = configPathHelper.getConfigFilePath("Klotski", "settings.json");
 
     public SettingsScreen(final Klotski klotski) {
-        this.klotski = klotski;
+        super(klotski);
+        this.isDarkMode = false;
         loadSettings(); // Load settings from file
         create(); // MUST be after loadSettings()
     }
 
     public void create() {
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        klotski.dynamicBoard.setStage(stage);
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-            }
-        });
-
-        // Load the skin for UI components
-        skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
-
         // Create a table for layout
         Table table = new Table();
         table.setFillParent(true);
@@ -131,6 +87,7 @@ public class SettingsScreen implements Screen {
 
                     Gdx.app.log("Settings", "Light mode enabled");
                 }
+                klotski.setGlClearColor();
                 saveSettings();
             }
 
@@ -337,6 +294,8 @@ public class SettingsScreen implements Screen {
             }
 		    klotski.klotskiTheme = KlotskiTheme.LIGHT;
         }
+
+        klotski.setGlClearColor();
     }
 
     private boolean isSettingsValid(Map<String, Object> settings) {

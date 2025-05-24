@@ -18,22 +18,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 
-public class SpectateChoiceScreen implements Screen {
+public class SpectateChoiceScreen extends ProtoScreen {
 
-    private final Klotski klotski;
-    private final Stage stage;
-    private final Skin skin;
     private final GameWebSocketClient webSocketClient;
 
     public SpectateChoiceScreen(final Klotski klotski, GameWebSocketClient webSocketClient) {
-        this.klotski = klotski;
+        super(klotski);
         this.webSocketClient = webSocketClient;
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+    }
 
-        // Load the skin for UI components
-        skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
-
+    @Override
+    protected void create() {
         // Create a table for layout
         Table table = new Table();
         table.setFillParent(true);

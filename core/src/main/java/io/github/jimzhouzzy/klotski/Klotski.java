@@ -85,7 +85,11 @@ public class Klotski extends Game {
     private Sound clickSound;
     private Sound blockCollideSound;
 
+    private Color glClearColor;
+
     public void create() {
+        // Placeholder defaults to light theme color
+        this.glClearColor = new Color(0.68f, 0.85f, 0.9f, 1);
         // Load the music file
         // MUST before load configurations
         backgroundMusicLight = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/light_theme.mp3"));
@@ -326,10 +330,18 @@ public class Klotski extends Game {
     }
 
     public void setGlClearColor() {
-        if (klotskiTheme == KlotskiTheme.LIGHT)
+        if (klotskiTheme == KlotskiTheme.LIGHT) {
+            this.glClearColor.set(0.68f, 0.85f, 0.9f, 1);
             Gdx.gl.glClearColor(0.68f, 0.85f, 0.9f, 1);
-        else
+        }
+        else {
+            this.glClearColor.set(0.25f, 0.25f, 0.25f, 1);
             Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
+        }
+    }
+
+    public Color getGlClearColor() {
+        return glClearColor;
     }
 
     public Color getBackgroundColor() {

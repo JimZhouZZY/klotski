@@ -1,36 +1,25 @@
 package io.github.jimzhouzzy.klotski.screen;
 
-import io.github.jimzhouzzy.klotski.Klotski;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class HelpScreen implements Screen {
+import io.github.jimzhouzzy.klotski.Klotski;
 
-    private final Klotski klotski;
-    private Stage stage;
-    private Skin skin;
+public class HelpScreen extends ProtoScreen {
 
     public HelpScreen(Klotski klotski) {
-        this.klotski = klotski;
-        create();
+        super(klotski);
     }
 
+    @Override
     public void create() {
-        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         klotski.dynamicBoard.setStage(stage);
 
@@ -70,8 +59,6 @@ public class HelpScreen implements Screen {
             }
         });
         
-        this.skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
-
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -102,46 +89,5 @@ public class HelpScreen implements Screen {
 
         table.add(textBox).width(540).height(250).padBottom(40).row();
         table.add(backButton).width(200).height(50);
-    }
-
-    @Override
-    public void render(float delta) {
-        klotski.setGlClearColor();
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-
-        klotski.dynamicBoard.render(delta); // Render the dynamic board
-
-        // Render the stage
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
     }
 }

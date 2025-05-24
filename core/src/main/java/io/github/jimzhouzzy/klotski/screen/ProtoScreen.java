@@ -1,0 +1,148 @@
+/**
+ * ProtoScreen.java
+ * 
+ * Abstract base class for all game screens in the Klotski game.
+ * Provides common functionality for screen management, UI rendering, and input handling
+ * using LibGDX's {@link Stage} and {@link Skin} system.
+ * 
+ * Subclasses should override {@link #create()} and {@link #handleBack()} to initialize 
+ * their specific UI components, and may optionally override other {@link Screen} interface
+ * methods as needed.
+ * 
+ * @author jimzhouzzy
+ * @see Screen
+ */
+
+package io.github.jimzhouzzy.klotski.screen;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import io.github.jimzhouzzy.klotski.Klotski;
+
+public class ProtoScreen implements Screen {
+    
+    protected final Klotski klotski;
+    protected final Stage stage;
+    protected final Skin skin;
+
+    public ProtoScreen(final Klotski klotski) {
+        this.klotski = klotski;
+        this.stage = new Stage(new ScreenViewport());
+        skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));    
+
+        // Event listener for mouse click
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
+
+                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                resizedClickedPixmap.drawPixmap(clickedPixmap,
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+
+                int xHotspot = 7, yHotspot = 1;
+                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                resizedClickedPixmap.dispose();
+                clickedPixmap.dispose();
+                Gdx.graphics.setCursor(clickedCursor);
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
+
+                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                resizedClickedPixmap.drawPixmap(clickedPixmap,
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+
+                int xHotspot = 7, yHotspot = 1;
+                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                resizedClickedPixmap.dispose();
+                clickedPixmap.dispose();
+                Gdx.graphics.setCursor(clickedCursor);
+            }
+        });
+
+        // Event listener for keyboard stroke
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch (keycode) {
+                    case Input.Keys.ESCAPE:
+                        handleBack();
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        create();
+    }
+
+    protected void create() {
+        // Override and set up the stage and UI elements here
+    }
+
+    protected void handleBack() {
+        // Override to handle ESC key press
+        // Default navigate back to the main screen
+        klotski.setScreen(klotski.mainScreen);
+    }
+
+    @Override
+    public void render(float delta) {
+        // Clear the screen
+        ScreenUtils.clear(klotski.getGlClearColor());
+
+        // Render the dynamic board
+        klotski.dynamicBoard.render(delta);
+
+        // Render the stage
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
+    }
+
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+        klotski.dynamicBoard.setStage(stage);
+    }
+}
