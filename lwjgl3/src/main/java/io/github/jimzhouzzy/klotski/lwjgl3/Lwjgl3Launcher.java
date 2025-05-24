@@ -5,12 +5,20 @@
  * It sets up the application configuration and starts the game.
  * 
  * @author JimZhouZZY
- * @version 1.7
+ * @version 1.14
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link Lwjgl3Application}
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
+ * 2025-05-25: Organize import (doc)
+ * 2025-05-25: Organize import
+ * 2025-05-25: generate change log
+ * 2025-05-25: Update documentary
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-04-30: optimize local storage
  * 2025-04-24: fix resize changed base tile size
  * 2025-04-24: MSAA & Settings
  * 2025-04-22: Settings view

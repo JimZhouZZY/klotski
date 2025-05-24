@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Process all .java files in current directory and subdirectories
-for java_file in $(find ../ -name "*.java"); do
+for java_file in $(find . -name "*.java"); do
     echo "Processing: $java_file"
 
     # Create temporary file for processing
@@ -76,19 +76,6 @@ for java_file in $(find ../ -name "*.java"); do
 
         # Write all other lines
         echo "$line" >> "$temp_file"
-
-        # Add changelog section if we haven't found one yet
-        if [[ "$changelog_written" == false && "$line" =~ ^\ \*\ [^@] && ! "$line" =~ @(author|version) ]]; then
-            echo " * Change log:" >> "$temp_file"
-            while IFS= read -r log_entry; do
-                # Skip empty lines
-                if [[ -z "$log_entry" ]]; then
-                    continue
-                fi
-                echo " * $log_entry" >> "$temp_file"
-            done <<< "$git_log"
-            changelog_written=true
-        fi
     done < "$java_file"
 
     # If we didn't find a place to insert the changelog (malformed file), add it before the */ line

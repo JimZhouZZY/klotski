@@ -5,13 +5,24 @@
  * It provides instructions and tips for players on how to play the game.
  * 
  * @author Tommy-SUStech
- * @version 1.10
+ * @version 1.14
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
  * 2025-05-25: generate change log
+ * 2025-05-25: Update documentary
+ * 2025-05-24: Make the sepctsteScreen more pretty.
+ * 2025-05-24: Highlight the number of the selected number (#14)
+ * 2025-05-24: Refactor screens to enheritage ProtoScreen
+ * 2025-05-24: Add H,J,K,L for changing the selected  block.
+ * 2025-05-24: fix: bad init process of HelpScreen
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-22: Fix the HelpScreen's BUG! (#11)
+ * 2025-05-20: Merge branch v1.0.7 into main (#8)
  */
 
 package io.github.jimzhouzzy.klotski.screen;

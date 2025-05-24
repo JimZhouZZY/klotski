@@ -14,15 +14,34 @@
  * which is why it is rerendered in the {@link ProtoScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.18
+ * @version 1.22
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link ProtoScreen}
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
  * 2025-05-25: generate change log
+ * 2025-05-25: Update documentary
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-04-29: web inspection
+ * 2025-04-29: focal length animation
+ * 2025-04-27: fix:resize dynamic board
+ * 2025-04-24: MSAA & Settings
+ * 2025-04-24: misty & click effect
+ * 2025-04-23: better main screen
+ * 2025-04-23: better main menu
+ * 2025-04-22: soundtrace.ogg
+ * 2025-04-22: better color blocks in main screen
+ * 2025-04-22: better dark mode
+ * 2025-04-22: Settings view
+ * 2025-04-22: better main screen dynamic background
+ * 2025-04-21: background
+ * 2025-04-21: resizable
+ * 2025-04-16: Login & Game Mode & Save-Load
  */
 
 package io.github.jimzhouzzy.klotski.ui;

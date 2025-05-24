@@ -6,14 +6,20 @@
  * THIS CLASS IS WIP
  * 
  * @author JimZhouZZY
- * @version 1.4
+ * @version 1.9
  * @since 2025-5-25
  * @see {@link KlotskiGame}
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
+ * 2025-05-25: fix white line at EOF
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
  * 2025-05-25: generate change log
+ * 2025-05-23: refactor test
+ * 2025-05-23: refactor test
+ * 2025-05-20: Merge branch v1.0.5 into main (#7)
+ * 2025-05-14: add fromString method and test cases (#4)
  */
 
 package io.github.jimzhouzzy.klotski.logic;

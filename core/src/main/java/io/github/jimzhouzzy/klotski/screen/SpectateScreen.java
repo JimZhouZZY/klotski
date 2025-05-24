@@ -7,15 +7,27 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.11
+ * @version 1.15
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
  * 2025-05-25: generate change log
+ * 2025-05-25: Update documentary
+ * 2025-05-24: organize import s
+ * 2025-05-24: refactor spectate
+ * 2025-05-24: refactor spectate screen to extend GameScreen
+ * 2025-05-24: refactor spectate screen to extend GameScreen
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-21: bug fix: do not show dialog when auto save
+ * 2025-05-20: Merge branch v1.0.5 into main (#7)
+ * 2025-05-14: add fromString method and test cases (#4)
+ * 2025-05-07: formal login & prepare in-game spectate
  */
 
 package io.github.jimzhouzzy.klotski.screen;

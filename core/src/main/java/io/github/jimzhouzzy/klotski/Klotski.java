@@ -10,11 +10,27 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.15
+ * @version 1.33
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
+ * 2025-05-25: Organize import (doc)
+ * 2025-05-25: Organize import
+ * 2025-05-25: generate change log
+ * 2025-05-25: Update documentary
+ * 2025-05-24: fix: invalid call to Dialog
+ * 2025-05-24: refactor Dialog
+ * 2025-05-24: Refactor screens to enheritage ProtoScreen
+ * 2025-05-23: Refactor project structure (#12)
+ * 2025-05-23: Refactor project structure
+ * 2025-05-21: bug fix (#10)
+ * 2025-05-21: code clean up
+ * 2025-05-20: Merge branch v1.0.7 into main (#8)
+ * 2025-05-08: update soundfx
+ * 2025-05-07: formal login & prepare in-game spectate
+ * 2025-04-30: optimize local storage
  * 2025-04-29: web inspection
  * 2025-04-29: offline mode & optimize save-load
  * 2025-04-24: fix resize changed base tile size

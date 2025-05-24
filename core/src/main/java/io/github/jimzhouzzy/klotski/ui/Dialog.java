@@ -14,14 +14,17 @@
  *     Dialog.showDialog(klotski, skin, stage, "Notification","User logged in successfully.");
  *
  * @author JimZhouZZY
- * @version 1.2
+ * @version 1.6
  * @since 2025-5-25
  * @see {@link LoginScreen}
  * 
  * Change log:
+ * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
  * 2025-05-25: generate change log
+ * 2025-05-25: Update documentary
+ * 2025-05-24: Refactor screens to enheritage ProtoScreen
  */
 
 package io.github.jimzhouzzy.klotski.ui;
