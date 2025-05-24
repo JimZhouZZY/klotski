@@ -324,10 +324,17 @@ public class RectangleBlockActor extends Actor {
         shapeRenderer.end();
 
         batch.begin(); // Restart the batch
+
         // Draw the pieceId number in the top-right corner
+        if (isSelected) {
+            font.setColor(Color.GREEN); // highlight
+        } else {
+            font.setColor(Color.BLACK); // normal
+        }
         layout.setText(font, String.valueOf(pieceId));
         font.getData().setScale(1.5f); // enlarge font
-        font.setColor(Color.BLACK);   // set color to black
+
+
         float textX = getX() + getWidth() - layout.width - 5f;
         float textY = getY() + getHeight() - 5f;
         font.draw(batch, layout, textX, textY);

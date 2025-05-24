@@ -46,7 +46,6 @@ public class GameModeScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                ;
                 klotski.gameScreen.setGameMode(true); // Set to 3min-Attack mode
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
             }
@@ -63,7 +62,7 @@ public class GameModeScreen extends ProtoScreen {
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
                 int p = 2 + (int) (Math.random() * 8);
                 System.out.println("Random value generated: " + (int) (Math.random() * 8));
-                klotski.gameScreen.blockedPieceId(9); // Select a piece with id 2-9
+                klotski.gameScreen.blockedPieceId(p); // Select a piece with id 2-9
                 System.out.println("Value of p: " + p);
                 klotski.gameScreen.randomShuffle(10101L); // Shuffle with seed for Level 1
             }
