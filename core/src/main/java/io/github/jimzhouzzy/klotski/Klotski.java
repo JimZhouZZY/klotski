@@ -427,7 +427,7 @@ public class Klotski extends Game {
 
             if (needRestart) {
                 // restartApplication();
-                Dialog.showErrorDialog(this, skin, stage, "Some changes needs restarting the game to take effect", stage);
+                Dialog.showErrorDialog(this, skin, stage, "Some changes needs restarting the game to take effect");
             }
         }
     }

@@ -47,7 +47,7 @@ public class SpectateChoiceScreen extends ProtoScreen {
 
         // Check if webSocketClient is null or not connected
         if (webSocketClient == null || !webSocketClient.isConnected()) {
-            Dialog.showErrorDialog(klotski, skin, stage, "Unable to connect to the server. Please try again later.", true);
+            Dialog.showErrorDialog(klotski, skin, stage, "Unable to connect to the server. Please try again later.");
             return;
         }
 
@@ -61,7 +61,7 @@ public class SpectateChoiceScreen extends ProtoScreen {
     private void requestOnlineUsers(Table table) {
         // Check if webSocketClient is null
         if (webSocketClient == null) {
-            Dialog.showErrorDialog(klotski, skin, stage, "Unable to connect to the server. Please try again later.", true);
+            Dialog.showErrorDialog(klotski, skin, stage, "Unable to connect to the server. Please try again later.");
             return;
         }
 
