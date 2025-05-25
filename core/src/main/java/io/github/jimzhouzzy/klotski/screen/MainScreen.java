@@ -4,10 +4,11 @@
  * This class represents the main menu screen of the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.30
+ * @version 1.31
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
@@ -65,7 +66,6 @@ public class MainScreen extends ProtoScreen {
     private Label greetingLabel; // Label to display the greeting message
     private ShapeRenderer shapeRenderer;
     private float offsetY;
-    private static final Random random = new Random();
     private Color currentColor;
     private float colorChangeSpeed = 0.001f; // Speed of color change
     public Color[] colorList; // Predefined list of colors
@@ -176,12 +176,10 @@ public class MainScreen extends ProtoScreen {
     }
 
     public Color generateSimilarColor(Color baseColor, float variability, float offset, float limit) {
-        Random random = new Random();
-
         // Generate small random offsets for RGB values
-        float redOffset = (random.nextFloat() - 0.5f) * variability;
-        float greenOffset = (random.nextFloat() - 0.5f) * variability;
-        float blueOffset = (random.nextFloat() - 0.5f) * variability;
+        float redOffset = (klotski.randomHelper.nextFloat() - 0.5f) * variability;
+        float greenOffset = (klotski.randomHelper.nextFloat() - 0.5f) * variability;
+        float blueOffset = (klotski.randomHelper.nextFloat() - 0.5f) * variability;
 
         // Clamp the values to ensure they remain between 0 and 1
         float newRed = Math.min(Math.max(baseColor.r + redOffset, 0) + offset, 1);
@@ -228,12 +226,12 @@ public class MainScreen extends ProtoScreen {
             interpolationFactor = 0f;
             currentColorIndex = (currentColorIndex + 1) % targetColors.size();
             currentBaseColor = nextBaseColor;
-            nextBaseColor = targetColors.get(random.nextInt(targetColors.size()));
+            nextBaseColor = targetColors.get(klotski.randomHelper.nextInt(targetColors.size()));
             if (currentBaseColor == nextBaseColor) {
                 nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
             }
             // Randomize the interpolation speed
-            interpolationSpeedMultiplier = random.nextFloat() * 0.5f + 0.5f; // Randomize the speed
+            interpolationSpeedMultiplier = klotski.randomHelper.nextFloat() * 0.5f + 0.5f; // Randomize the speed
             if (interpolationSpeedMultiplier > 1.5f) {
                 interpolationSpeedMultiplier = 1.5f; // Limit the maximum speed
             }

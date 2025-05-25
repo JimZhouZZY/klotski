@@ -14,12 +14,13 @@
  * which is why it is rerendered in the {@link ProtoScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.23
+ * @version 1.24
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link ProtoScreen}
  * 
  * Change log:
+ * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated methods and fields in DynamicBoard
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
@@ -67,6 +68,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.util.ColorHelper;
 
 public class DynamicBoard {
 
@@ -121,7 +123,6 @@ public class DynamicBoard {
     public DynamicBoard(final Klotski klotski, Stage stage) {
         this.klotski = klotski;
         this.stage = stage;
-        random = new Random();
         colorCache = new HashMap<>();
         yRotationCache = new HashMap<>();
         zPositionCache = new HashMap<>();
@@ -149,7 +150,7 @@ public class DynamicBoard {
         focalLengthAnimationSpeed = 4.0f;
 
         frameCount = 0;
-        frameCountOffset = random.nextInt(10000); // Random offset for the frame count
+        frameCountOffset = klotski.randomHelper.nextInt(10000); // Random offset for the frame count
         yRotationAnimationTemp = 0;
 
         // Initialize ShapeRenderer
@@ -373,7 +374,8 @@ public class DynamicBoard {
                     }
                 }
                 yRotationAnimationTemp ++;
-                if (yRotationAnimationTemp == 200 || yRotationAnimationTemp >= (offsetY + screenHeight + 20f * baseTileSize) / baseTileSize) {
+                if (yRotationAnimationTemp == 200 || yRotationAnimationTemp >= (offsetY + screenHeight 
+                        + 20f * baseTileSize) / baseTileSize) {
                     System.out.println("Stop triggering Y rotation, with step: " + yRotationAnimationTemp);
                     triggerYRotationAnimation = false;
                     mutateColorFollowing = true;
@@ -385,14 +387,17 @@ public class DynamicBoard {
         for (float y = -offsetY - 2f * baseTileSize; y < screenHeight + 20f * baseTileSize; y += baseTileSize) {
             for (float x = -offsetX - 100f * baseTileSize; x <= -offsetX + screenWidth
                     + 100f * baseTileSize; x += baseTileSize) {
-                if (x < 0f - 50f * baseTileSize || x > screenWidth + 50f * baseTileSize || y < 0f - 2f * baseTileSize
+                if (x < 0f - 50f * baseTileSize 
+                        || x > screenWidth + 50f * baseTileSize 
+                        || y < 0f - 2f * baseTileSize
                         || y > screenHeight + 20f * baseTileSize) {
                     continue; // Skip tiles outside the screen
                 }
 
 
                 // Generate a unique key for the current tile
-                String key = (int) ((int) Math.floor(x / baseTileSize) + (int) Math.floor(offsetX / baseTileSize)) + ","
+                String key = (int) ((int) Math.floor(x / baseTileSize) + (int) Math.floor(offsetX / baseTileSize)) 
+                        + ","
                         + (int) ((int) Math.floor(y / baseTileSize) + (int) Math.floor(offsetY / baseTileSize));
                 double zPositionChange = 0.0;
                 float zPositionChangedY = (float) (y);
@@ -408,7 +413,8 @@ public class DynamicBoard {
                     updateYRotationCache(key);
                     String lastKey = (int) ((int) Math.floor(x / baseTileSize)
                             + (int) Math.floor(offsetX / baseTileSize)) + ","
-                            + (int) ((int) Math.floor(y / baseTileSize) - 1 + (int) Math.floor(offsetY / baseTileSize));
+                            + (int) ((int) Math.floor(y / baseTileSize) - 1 
+                            + (int) Math.floor(offsetY / baseTileSize));
                     final double lastYRotationCache = yRotationCache.getOrDefault(lastKey, 0.0);
                     yRotationAngle = yRotationCache.computeIfAbsent(key, k -> lastYRotationCache);
                     if ((yRotationAngle < 2 * Math.PI + 0.05 && yRotationAngle > 2 * Math.PI - 0.05)) {
@@ -416,17 +422,6 @@ public class DynamicBoard {
                         yRotationAngle = 0;
                         stopTriggering = true;
                     }
-                    /*
-                    } else if ((yRotationAngle < 0.0 && yRotationAngle > -0.01)) {
-                        yRotationCache.put(key, 0.0);
-                        yRotationAngle = 0.0;
-                        stopTriggering = true;
-                    } else if ((yRotationAngle < 2 * Math.PI + 0.01 && yRotationAngle > 2 * Math.PI - 0.01)) {
-                        yRotationCache.put(key, 0.0);
-                        yRotationAngle = 0.0;
-                        stopTriggering = true;
-                    }
-                    */
                 }
                 if (stopTriggering) {
                     triggerYRotation.put(key, false);
@@ -436,9 +431,19 @@ public class DynamicBoard {
                 yRotatedTileSize = baseTileSize * cosYRotationAngle;
 
                 // Get or generate a random color for the tile
-                Color tileColorOriginal = colorCache.computeIfAbsent(key, k -> generateSimilarColor(generateSmoothChangingColor(delta), 0.1f, 0.0f, 1.0f));
+                Color tileColorOriginal = colorCache.computeIfAbsent(
+                    key, 
+                    k -> ColorHelper.generateSimilarColor(klotski, generateSmoothChangingColor(delta), 
+                    0.1f, 
+                    0.0f, 
+                    1.0f)
+                );
+                
                 if (klotski.klotskiTheme == KlotskiTheme.DARK) {
-                    tileColorOriginal = new Color(tileColorOriginal.r * 0.65f, tileColorOriginal.g * 0.65f, tileColorOriginal.b * 0.65f, tileColorOriginal.a);
+                    tileColorOriginal = new Color(tileColorOriginal.r * 0.65f, 
+                                                  tileColorOriginal.g * 0.65f, 
+                                                  tileColorOriginal.b * 0.65f, 
+                                                  tileColorOriginal.a);
                 }
                 Color tileColor = tileColorOriginal.cpy();
                 float luminanceAdjustment = Math.min(1.0f, Math.max(-1.0f, (y - 8 * baseTileSize) / (2.5f * screenHeight)));
@@ -450,10 +455,10 @@ public class DynamicBoard {
                         || (mutateColorFollowing && (int) ((int) Math.floor(y / baseTileSize) 
                         + (int) Math.floor(offsetY / baseTileSize)) >= (yRotationAnimationStartingRow 
                         + Math.floor((offsetY + screenHeight + 20f * baseTileSize) / baseTileSize)))) {
-                    float[] hsl = rgbToHsl(tileColor.r, tileColor.g, tileColor.b);
+                    float[] hsl = ColorHelper.rgbToHsl(tileColor.r, tileColor.g, tileColor.b);
                     float alpha = tileColor.a;
                     hsl[0] = (hsl[0] + 0.5f) % 1.0f; // Rotate hue by 180 degrees
-                    float[] rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
+                    float[] rgb = ColorHelper.hslToRgb(hsl[0], hsl[1], hsl[2]);
                     tileColor = new Color(rgb[0], rgb[1], rgb[2], alpha);
                 }
 
@@ -518,10 +523,6 @@ public class DynamicBoard {
                 topRectangleYRotationAngles.get(i)
             );
         }
-
-        // Render the stage
-        // stage.act(delta);
-        // stage.draw();
     }
 
     // Projection 'Matrix'
@@ -602,93 +603,11 @@ public class DynamicBoard {
             for (int j = -50; j <= -5; j++) {
                 String key = i + "," + j;
                 if (!colorCache.containsKey(key)) {
-                    Color chosenColor = colorList[random.nextInt(colorList.length)];
+                    Color chosenColor = colorList[klotski.randomHelper.nextInt(colorList.length)];
                     colorCache.put(key, chosenColor);
                 }
             }
         }
-    }
-
-    public Color generateSimilarColor(Color baseColor, float variability, float offset, float limit) {
-        Random random = new Random();
-
-        // Generate small random offsets for RGB values
-        float redOffset = (random.nextFloat() - 0.5f) * variability;
-        float greenOffset = (random.nextFloat() - 0.5f) * variability;
-        float blueOffset = (random.nextFloat() - 0.5f) * variability;
-
-        // Clamp the values to ensure they remain between 0 and 1
-        float newRed = Math.min(Math.max(baseColor.r + redOffset, 0) + offset, 1);
-        float newGreen = 0.9f * Math.min(Math.max(baseColor.g + greenOffset, 0) + offset, 1); // Eliminate green
-        float newBlue = Math.min(Math.max(baseColor.b + blueOffset, 0) + offset, 1);
-
-        // Create the new color
-        Color newColor = new Color(newRed, newGreen, newBlue, baseColor.a); // Preserve the alpha value
-
-        // Adjust luminance if necessary
-        float luminance = calculateLuminance(newColor);
-        if (klotski.klotskiTheme == KlotskiTheme.LIGHT && luminance < 0.3f) {
-            if (variability > 0.01f * limit) {
-                return generateSimilarColor(baseColor, 0.5f * variability, 0.2f, 1.0f);
-            } else {
-                return baseColor;
-            }
-        } else if (klotski.klotskiTheme != KlotskiTheme.LIGHT && luminance > 0.8f) {
-            if (variability > 0.01f * limit) {
-                return generateSimilarColor(baseColor, 0.5f * variability, -0.2f, 1.0f);
-            } else {
-                return baseColor;
-            }
-        }
-
-        return newColor;
-    }
-
-    public Color generateSmoothChangingColor(float delta) {
-        if (targetColors == null) {
-            targetColors = new ArrayList<>();
-            targetColors.add(new Color(204 / 255f, 204 / 255f, 255 / 255f, 1)); // rgb(204, 204, 255)
-            targetColors.add(new Color(255 / 255f, 204 / 255f, 153 / 255f, 1)); // rgb(255, 204, 153)
-            targetColors.add(new Color(255 / 255f, 153 / 255f, 255 / 255f, 1)); // rgb(255, 153, 255)
-            targetColors.add(new Color(153 / 255f, 255 / 255f, 204 / 255f, 1)); // rgb(153, 255, 204)
-            targetColors.add(new Color(51 / 255f, 153 / 255f, 255 / 255f, 1)); // rgb(51, 153, 255)
-        }
-
-        Color currentBaseColor = targetColors.get(currentColorIndex);
-        Color nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
-
-        interpolationFactor += 0.3 * colorChangeSpeed * interpolationSpeedMultiplier;
-        if (interpolationFactor > 1f) {
-            interpolationFactor = 0f;
-            currentColorIndex = (currentColorIndex + 1) % targetColors.size();
-            currentBaseColor = nextBaseColor;
-            nextBaseColor = targetColors.get(random.nextInt(targetColors.size()));
-            if (currentBaseColor == nextBaseColor) {
-                nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
-            }
-            // Randomize the interpolation speed
-            interpolationSpeedMultiplier = random.nextFloat() * 0.5f + 0.5f; // Randomize the speed
-            if (interpolationSpeedMultiplier > 1.5f) {
-                interpolationSpeedMultiplier = 1.5f; // Limit the maximum speed
-            }
-            if (interpolationSpeedMultiplier < 0.8f) {
-                interpolationSpeedMultiplier = 0.8f; // Limit the minimum speed
-            }
-        }
-        float t = interpolationFactor;
-        t = t * t * (3 - 2 * t); // smoothstep(t)
-
-        float red   = currentBaseColor.r + t * (nextBaseColor.r - currentBaseColor.r);
-        float green = currentBaseColor.g + t * (nextBaseColor.g - currentBaseColor.g);
-        float blue  = currentBaseColor.b + t * (nextBaseColor.b - currentBaseColor.b);
-
-        currentColor = new Color(red, green, blue, 1.0f);
-        return currentColor;
-    }
-
-    private float calculateLuminance(Color color) {
-        // Use the standard formula for relative luminance
-        return 0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b;
     }
 
     private Vector2 applyRotation(float x, float y, float centerX, float centerY, float angle) {
@@ -793,62 +712,6 @@ public class DynamicBoard {
         }
     }
 
-    private float[] rgbToHsl(float r, float g, float b) {
-        // Normalize RGB values to [0, 1]
-        r = Math.min(Math.max(r, 0), 1);
-        g = Math.min(Math.max(g, 0), 1);
-        b = Math.min(Math.max(b, 0), 1);
-
-        float max = Math.max(r, Math.max(g, b));
-        float min = Math.min(r, Math.min(g, b));
-        float delta = max - min;
-
-        float h = 0, s = 0, l = (max + min) / 2;
-
-        if (delta != 0) {
-            // Calculate saturation
-            s = l < 0.5f ? delta / (max + min) : delta / (2 - max - min);
-
-            // Calculate hue
-            if (max == r) {
-                h = (g - b) / delta + (g < b ? 6 : 0);
-            } else if (max == g) {
-                h = (b - r) / delta + 2;
-            } else if (max == b) {
-                h = (r - g) / delta + 4;
-            }
-            h /= 6;
-        }
-
-        return new float[]{h, s, l};
-    }
-
-    private float[] hslToRgb(float h, float s, float l) {
-        float r, g, b;
-
-        if (s == 0) {
-            // Achromatic (gray)
-            r = g = b = l;
-        } else {
-            float q = l < 0.5f ? l * (1 + s) : l + s - l * s;
-            float p = 2 * l - q;
-            r = hueToRgb(p, q, h + 1f / 3f);
-            g = hueToRgb(p, q, h);
-            b = hueToRgb(p, q, h - 1f / 3f);
-        }
-
-        return new float[]{r, g, b};
-    }
-
-    private float hueToRgb(float p, float q, float t) {
-        if (t < 0) t += 1;
-        if (t > 1) t -= 1;
-        if (t < 1f / 6f) return p + (q - p) * 6 * t;
-        if (t < 1f / 2f) return q;
-        if (t < 2f / 3f) return p + (q - p) * (2f / 3f - t) * 6;
-        return p;
-    }
-
     public void setStage(Stage stage) {
         this.stage = stage;
         create();
@@ -871,5 +734,49 @@ public class DynamicBoard {
 
     public void triggerAnimateFocalLengthRevert(){
         triggerAnimateFocalLength(focalLengthPrevious, 10.0f);
+    }
+
+
+    // This method is too associated with the instance, so we dont use it as static method
+    public Color generateSmoothChangingColor(float delta) {
+        if (targetColors == null) {
+            targetColors = new ArrayList<>();
+            targetColors.add(new Color(204 / 255f, 204 / 255f, 255 / 255f, 1)); // rgb(204, 204, 255)
+            targetColors.add(new Color(255 / 255f, 204 / 255f, 153 / 255f, 1)); // rgb(255, 204, 153)
+            targetColors.add(new Color(255 / 255f, 153 / 255f, 255 / 255f, 1)); // rgb(255, 153, 255)
+            targetColors.add(new Color(153 / 255f, 255 / 255f, 204 / 255f, 1)); // rgb(153, 255, 204)
+            targetColors.add(new Color(51 / 255f, 153 / 255f, 255 / 255f, 1)); // rgb(51, 153, 255)
+        }
+
+        Color currentBaseColor = targetColors.get(currentColorIndex);
+        Color nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
+
+        interpolationFactor += 0.3 * colorChangeSpeed * interpolationSpeedMultiplier;
+        if (interpolationFactor > 1f) {
+            interpolationFactor = 0f;
+            currentColorIndex = (currentColorIndex + 1) % targetColors.size();
+            currentBaseColor = nextBaseColor;
+            nextBaseColor = targetColors.get(klotski.randomHelper.nextInt(targetColors.size()));
+            if (currentBaseColor == nextBaseColor) {
+                nextBaseColor = targetColors.get((currentColorIndex + 1) % targetColors.size());
+            }
+            // Randomize the interpolation speed
+            interpolationSpeedMultiplier = klotski.randomHelper.nextFloat() * 0.5f + 0.5f; // Randomize the speed
+            if (interpolationSpeedMultiplier > 1.5f) {
+                interpolationSpeedMultiplier = 1.5f; // Limit the maximum speed
+            }
+            if (interpolationSpeedMultiplier < 0.8f) {
+                interpolationSpeedMultiplier = 0.8f; // Limit the minimum speed
+            }
+        }
+        float t = interpolationFactor;
+        t = t * t * (3 - 2 * t); // smoothstep(t)
+
+        float red = currentBaseColor.r + t * (nextBaseColor.r - currentBaseColor.r);
+        float green = currentBaseColor.g + t * (nextBaseColor.g - currentBaseColor.g);
+        float blue = currentBaseColor.b + t * (nextBaseColor.b - currentBaseColor.b);
+
+        currentColor = new Color(red, green, blue, 1.0f);
+        return currentColor;
     }
 }

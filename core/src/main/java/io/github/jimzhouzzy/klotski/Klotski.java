@@ -10,11 +10,12 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.35
+ * @version 1.36
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Show dialog instead of error when changing MSAA settings
  * 2025-05-25: Refactor all the change logs
@@ -93,6 +94,7 @@ import io.github.jimzhouzzy.klotski.ui.Dialog;
 import io.github.jimzhouzzy.klotski.ui.DynamicBoard;
 import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
+import io.github.jimzhouzzy.klotski.util.RandomHelper;
 import io.github.jimzhouzzy.klotski.web.offline.GameWebSocketServer;
 import io.github.jimzhouzzy.klotski.web.offline.WebServer;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
@@ -116,6 +118,7 @@ public class Klotski extends Game {
     public Music backgroundMusic;
     public Music backgroundMusicLight;
     public Music backgroundMusicDark;
+    public RandomHelper randomHelper;
     private boolean arrowControlsEnabled = true;
 
     public KlotskiTheme klotskiTheme;
@@ -136,8 +139,12 @@ public class Klotski extends Game {
     private Color glClearColor;
 
     public void create() {
+        // Initialize random helper
+        randomHelper = new RandomHelper();
+
         // Placeholder defaults to light theme color
         this.glClearColor = new Color(0.68f, 0.85f, 0.9f, 1);
+
         // Load the music file
         // MUST before load configurations
         backgroundMusicLight = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/light_theme.mp3"));
