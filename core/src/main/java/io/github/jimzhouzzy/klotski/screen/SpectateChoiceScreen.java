@@ -6,11 +6,12 @@
  * Players can click on a user to start spectating their game.
  * 
  * @author JimZhouZZY
- * @version 1.18
+ * @version 1.19
  * @since 2025-5-25
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-25: Remove duplicated network check
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -75,12 +76,6 @@ public class SpectateChoiceScreen extends ProtoScreen {
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(50).row();
 
-        // Check if webSocketClient is null or not connected
-        if (webSocketClient == null || !webSocketClient.isConnected()) {
-            Dialog.showErrorDialog(klotski, skin, stage, "Unable to connect to the server. Please try again later.");
-            return;
-        }
-
         // Request online users from the server
         requestOnlineUsers(table);
         
@@ -101,7 +96,6 @@ public class SpectateChoiceScreen extends ProtoScreen {
 
         // Set a callback to handle the server's response
         webSocketClient.setOnMessageListener(message -> {
-            System.out.println("Test output");
             if (message.startsWith("Online users: ")) {
                 String[] users = message.substring("Online users: ".length()).split(", ");
                 Gdx.app.postRunnable(() -> {
