@@ -6,11 +6,12 @@
  * It allows users to configure various settings such as graphics, audio, and gameplay options.
  * 
  * @author JimZhouZZY
- * @version 1.28
+ * @version 1.29
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * 
  * Change log:
+ * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -95,7 +96,6 @@ public class SettingsScreen extends ProtoScreen {
                 if (darkModeCheckBox.isChecked()) {
                     isDarkMode = true;
                     klotski.klotskiTheme = KlotskiTheme.DARK;
-                    klotski.updateMainScreenColors();
 
                     // Switch to dark-themed music
                     klotski.stopBackgroundMusic();
@@ -110,7 +110,6 @@ public class SettingsScreen extends ProtoScreen {
                 } else {
                     isDarkMode = false;
                     klotski.klotskiTheme = KlotskiTheme.LIGHT;
-                    klotski.updateMainScreenColors();
 
                     // Switch to the light-themed music
                     klotski.stopBackgroundMusic();

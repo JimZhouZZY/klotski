@@ -4,10 +4,11 @@
  * This class represents the main menu screen of the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.29
+ * @version 1.30
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -68,7 +69,6 @@ public class MainScreen extends ProtoScreen {
     private Color currentColor;
     private float colorChangeSpeed = 0.001f; // Speed of color change
     public Color[] colorList; // Predefined list of colors
-    public static final Map<String, Color> colorCache = new HashMap<>(); // Cache for storing colors
     public Map<String, Double> zPositionCache;
     public Map<String, Double> zPositionTempCache;
     public Map<String, Double> yRotationCache;
@@ -97,9 +97,6 @@ public class MainScreen extends ProtoScreen {
     }
 
     public void create() {
-        // Load colors
-        loadColors();
-
         // Create a table for layout
         Table table = new Table();
         table.setFillParent(true);
@@ -176,27 +173,6 @@ public class MainScreen extends ProtoScreen {
             }
         });
         table.add(exitButton).width(200).height(50);
-    }
-
-    public void loadColors() {
-        // Predefined list of colors
-        colorCache.clear();
-
-        // Curently just get Light color, and dark is adopted when rendering
-        colorList = klotski.getMainScreenLightColorList();
-
-        for (int i = -500; i <= 500; i++) {
-            // This control the length of defined color blocks
-            // currently we are not showing them, but we can use them to generate colors
-            // e.g. for (int j = -50; j <= 50; j++) {
-            for (int j = -50; j <= -5; j++) {
-                String key = i + "," + j;
-                if (!colorCache.containsKey(key)) {
-                    Color chosenColor = colorList[random.nextInt(colorList.length)];
-                    colorCache.put(key, chosenColor);
-                }
-            }
-        }
     }
 
     public Color generateSimilarColor(Color baseColor, float variability, float offset, float limit) {

@@ -10,11 +10,13 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.33
+ * @version 1.35
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-25: remove deprecated loadColors method
+ * 2025-05-25: Show dialog instead of error when changing MSAA settings
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -427,10 +429,6 @@ public class Klotski extends Game {
                 Color.GRAY
         };
         return colorList;
-    }
-
-    public void updateMainScreenColors() {
-        mainScreen.loadColors();
     }
 
     public boolean isAntialiasingEnabled() {
