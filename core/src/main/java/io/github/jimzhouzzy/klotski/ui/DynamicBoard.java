@@ -14,12 +14,13 @@
  * which is why it is rerendered in the {@link ProtoScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.22
+ * @version 1.23
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link ProtoScreen}
  * 
  * Change log:
+ * 2025-05-25: remove deprecated methods and fields in DynamicBoard
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -104,7 +105,6 @@ public class DynamicBoard {
     private int yRotationAnimationStartingRow;
     private float yRotationAnimationStartingOffsetY;
     private boolean mutateColorFollowing;
-    private float generateSmoothChangingColorTime = 0.0f;
     private List<Color> targetColors; // List of target colors
     private int currentColorIndex = 0; // Index of the current base color
     private float interpolationFactor = 0f;
@@ -437,7 +437,7 @@ public class DynamicBoard {
 
                 // Get or generate a random color for the tile
                 Color tileColorOriginal = colorCache.computeIfAbsent(key, k -> generateSimilarColor(generateSmoothChangingColor(delta), 0.1f, 0.0f, 1.0f));
-                if (klotski.klotskiTheme == klotski.klotskiTheme.DARK) {
+                if (klotski.klotskiTheme == KlotskiTheme.DARK) {
                     tileColorOriginal = new Color(tileColorOriginal.r * 0.65f, tileColorOriginal.g * 0.65f, tileColorOriginal.b * 0.65f, tileColorOriginal.a);
                 }
                 Color tileColor = tileColorOriginal.cpy();
@@ -447,7 +447,9 @@ public class DynamicBoard {
                     mutateColor = true;
                 }
                 if (mutateColor
-                        || (mutateColorFollowing && (int) ((int) Math.floor(y / baseTileSize) + (int) Math.floor(offsetY / baseTileSize)) >= (yRotationAnimationStartingRow + Math.floor((offsetY + screenHeight + 20f * baseTileSize) / baseTileSize)))) {
+                        || (mutateColorFollowing && (int) ((int) Math.floor(y / baseTileSize) 
+                        + (int) Math.floor(offsetY / baseTileSize)) >= (yRotationAnimationStartingRow 
+                        + Math.floor((offsetY + screenHeight + 20f * baseTileSize) / baseTileSize)))) {
                     float[] hsl = rgbToHsl(tileColor.r, tileColor.g, tileColor.b);
                     float alpha = tileColor.a;
                     hsl[0] = (hsl[0] + 0.5f) % 1.0f; // Rotate hue by 180 degrees
@@ -549,29 +551,23 @@ public class DynamicBoard {
         return veryComplexFunction((double) x);
     }
 
-public void resize(int width, int height) {
-    // Store old dimensions
-    float oldWidth = screenWidth;
-    float oldHeight = screenHeight;
-    float oldBaseTileSize = baseTileSize;
+    public void resize(int width, int height) {
+        // Store old dimensions
+        float oldBaseTileSize = baseTileSize;
 
-    // Recalculate offsets and scaling factors based on the new dimensions
-    screenWidth = Gdx.graphics.getWidth();
-    screenHeight = Gdx.graphics.getHeight();
+        // Recalculate offsets and scaling factors based on the new dimensions
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
 
-    // Adjust the base tile size to maintain aspect ratio
-    baseTileSize = Math.min(screenWidth, screenHeight + 1000000) / 21.6f;
-    shapeRenderer = new ShapeRenderer();
+        // Adjust the base tile size to maintain aspect ratio
+        baseTileSize = Math.min(screenWidth, screenHeight + 1000000) / 21.6f;
+        shapeRenderer = new ShapeRenderer();
 
-    // Update offsets to center the content
-    offsetX = offsetX / oldBaseTileSize * baseTileSize;
-    offsetY = offsetY / oldBaseTileSize * baseTileSize;
-    offsetZ = offsetZ / oldBaseTileSize * baseTileSize;
-
-    // Log the new dimensions for debugging
-    // System.out.println("Resized to: " + width + "x" + height);
-    // System.out.println("Base tile size: " + baseTileSize);
-}
+        // Update offsets to center the content
+        offsetX = offsetX / oldBaseTileSize * baseTileSize;
+        offsetY = offsetY / oldBaseTileSize * baseTileSize;
+        offsetZ = offsetZ / oldBaseTileSize * baseTileSize;
+    }
 
     public void dispose() {
         skin.dispose();
@@ -631,13 +627,13 @@ public void resize(int width, int height) {
 
         // Adjust luminance if necessary
         float luminance = calculateLuminance(newColor);
-        if (klotski.klotskiTheme == klotski.klotskiTheme.LIGHT && luminance < 0.3f) {
+        if (klotski.klotskiTheme == KlotskiTheme.LIGHT && luminance < 0.3f) {
             if (variability > 0.01f * limit) {
                 return generateSimilarColor(baseColor, 0.5f * variability, 0.2f, 1.0f);
             } else {
                 return baseColor;
             }
-        } else if (klotski.klotskiTheme != klotski.klotskiTheme.LIGHT && luminance > 0.8f) {
+        } else if (klotski.klotskiTheme != KlotskiTheme.LIGHT && luminance > 0.8f) {
             if (variability > 0.01f * limit) {
                 return generateSimilarColor(baseColor, 0.5f * variability, -0.2f, 1.0f);
             } else {
@@ -695,11 +691,6 @@ public void resize(int width, int height) {
         return 0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b;
     }
 
-    private float calculateLuminance1(Color color) {
-        // Use the standard formula for relative luminance
-        return 0.5f * color.r + 0.5f * color.g + 0.5f * color.b;
-    }
-
     private Vector2 applyRotation(float x, float y, float centerX, float centerY, float angle) {
         float radians = (float) Math.toRadians(angle);
         float cos = (float) Math.cos(radians);
@@ -717,18 +708,6 @@ public void resize(int width, int height) {
         return new Vector2(rotatedX + centerX, rotatedY + centerY);
     }
 
-    private void updateAllYRotationCache() {
-        for (Map.Entry<String, Double> entry : yRotationCache.entrySet()) {
-            String key = entry.getKey();
-            double yRotation = entry.getValue();
-            if (yRotation > 2 * Math.PI) {
-                yRotation = 0; // Reset if it exceeds 2π
-            }
-            yRotation += 0.01; // Increment by 0.01 radians
-            yRotationCache.put(key, yRotation);
-        }
-    }
-
     private void updateYRotationCache(String key) {
         double yRotation = yRotationCache.getOrDefault(key, 0.0);
         if (yRotation > 2 * Math.PI) {
@@ -736,22 +715,6 @@ public void resize(int width, int height) {
         }
         yRotation += 0.05; // Increment by 0.01 radians
         yRotationCache.put(key, yRotation);
-    }
-
-    private void updateZPositionCache() {
-        for (Map.Entry<String, Double> entry : zPositionCache.entrySet()) {
-            String key = entry.getKey();
-            // Although I added default value, it is a MUST NEED to ENSURE every position
-            // has a temp
-            double zPositionTemp = zPositionTempCache.getOrDefault(key, 0.0);
-            double zPosition = entry.getValue();
-            if (zPositionTemp > 2 * Math.PI) {
-                zPositionTemp = 0; // Reset if it exceeds 2π
-            }
-            zPositionTemp += 0.1; // Increment by 0.01 radians
-            zPosition = 100 * Math.sin(zPositionTemp);
-            zPositionCache.put(key, zPosition);
-        }
     }
 
     public void drawTopRectangle(Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br, float y, Color tileColor, float yRotateAngle) {
