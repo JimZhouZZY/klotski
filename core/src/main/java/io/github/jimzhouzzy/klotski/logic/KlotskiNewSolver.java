@@ -1,15 +1,8 @@
 package io.github.jimzhouzzy.klotski.logic;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class KlotskiSolver {
+public class KlotskiNewSolver {
     private static class BoardState {
         final KlotskiGame.KlotskiPiece[] pieces;
         final String move;
@@ -60,7 +53,7 @@ public class KlotskiSolver {
         }
     }
 
-    public static List<String> solve(KlotskiGame initialGame, int blockedId) {
+    public static List<String> solve(KlotskiGame initialGame) {
         long startTime = System.currentTimeMillis();
         int statesExamined = 0;
         int solutionsFound = 0;
@@ -92,7 +85,7 @@ public class KlotskiSolver {
             }
 
             // Generate all possible next moves
-            for (BoardState nextState : generateNextStates(current, blockedId)) {
+            for (BoardState nextState : generateNextStates(current)) {
                 if (!visited.contains(nextState.state)) {
                     visited.add(nextState.state);
                     //System.out.println(visited.size());
@@ -124,23 +117,16 @@ public class KlotskiSolver {
         return false;
     }
 
-    private static List<BoardState> generateNextStates(BoardState state, int blockedId) {
+    private static List<BoardState> generateNextStates(BoardState state) {
         List<BoardState> nextStates = new ArrayList<>();
 
         // Create a temporary game to check moves
-        KlotskiGame tempGame;
-        if (state.pieces[0] instanceof KlotskiNewGame.KlotskiPiece) {
-            tempGame = new KlotskiNewGame();
-        } else {
-            tempGame = new KlotskiGame();
-        }
-
+        KlotskiGame tempGame = new KlotskiNewGame();
         setGameState(tempGame, state);
 
         // Try moving each piece in all possible directions
         //System.out.println(tempGame);
         for (KlotskiGame.KlotskiPiece piece : state.pieces) {
-            if (piece.id == blockedId) continue; // skip blocked piece
             //System.out.print(piece);
             int[] position = {piece.position[0], piece.position[1]};
             List<int[]> legalMoves = tempGame.getLegalMovesForPiece(position);
@@ -229,12 +215,12 @@ public class KlotskiSolver {
     }
 
     public static void main(String[] args) {
-        KlotskiGame game = new KlotskiGame();
+        KlotskiGame game = new KlotskiNewGame();
         System.out.println("Initial board:");
         System.out.println(game);
 
         System.out.println("\nSolving...");
-        List<String> solution = solve(game,7);
+        List<String> solution = solve(game);
         printSolution(solution);
 
         // Optional: Replay the solution

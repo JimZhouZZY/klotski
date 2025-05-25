@@ -56,7 +56,7 @@ public class SpectateChoiceScreen extends ProtoScreen {
 
         //Request online users from the server
         requestOnlineUsers(table);
-        
+
         // Manually populate user list for testing
 //        populateUserButtons(table, new String[]{"Alice", "Bob", "Charlie", "Dana","1","2","3","4","5","6","7","8","9"});
 

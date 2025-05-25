@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
+import io.github.jimzhouzzy.klotski.logic.KlotskiNewGame;
 
 public class GameModeScreen extends ProtoScreen {
 
@@ -33,7 +35,6 @@ public class GameModeScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                ;
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
             }
@@ -60,10 +61,7 @@ public class GameModeScreen extends ProtoScreen {
                 klotski.playClickSound();
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
-                int p = 2 + (int) (Math.random() * 8);
-                System.out.println("Random value generated: " + (int) (Math.random() * 8));
-                klotski.gameScreen.blockedPieceId(p); // Select a piece with id 2-9
-                System.out.println("Value of p: " + p);
+                klotski.gameScreen.setGame(new KlotskiGame());
                 klotski.gameScreen.randomShuffle(10101L); // Shuffle with seed for Level 1
             }
         });
@@ -75,9 +73,10 @@ public class GameModeScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                ;
                 klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
                 klotski.gameScreen.setGameMode(false); // Set to Free Game mode
+                klotski.gameScreen.blockedPieceId(7);
+                klotski.gameScreen.setGame(new KlotskiNewGame()); // new
                 klotski.gameScreen.randomShuffle(10102L); // Shuffle with seed for Level 2
             }
         });

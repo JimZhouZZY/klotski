@@ -88,7 +88,7 @@ public class KlotskiGame {
     }
 
     public KlotskiPiece[] pieces;
-    private int moveCount;
+    public int moveCount;
     public static final int BOARD_WIDTH = 4;
     public static final int BOARD_HEIGHT = 5;
 

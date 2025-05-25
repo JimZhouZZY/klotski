@@ -15,9 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
+import io.github.jimzhouzzy.klotski.logic.KlotskiNewGame;
 import io.github.jimzhouzzy.klotski.screen.GameScreen;
 
 public class RectangleBlockActor extends Actor {
+    public static int blockedID = 10;
     private Rectangle rectangle;
     private Color color;
     private static ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -45,14 +47,26 @@ public class RectangleBlockActor extends Actor {
         this.pieceId = pieceId;
         this.game = game;
 
-        if (pieceId == 0) {
-            pieceTexture = new Texture(Gdx.files.internal("assets/image/CaoCao.png"));
-        } else if (pieceId == 1) {
-            pieceTexture = new Texture(Gdx.files.internal("assets/image/Guanyu.png"));
-        } else if ((pieceId >= 2 && pieceId <= 5)) {
-            pieceTexture = new Texture(Gdx.files.internal("assets/image/Normal.png"));
-        } else if (pieceId >= 6 && pieceId <= 9) {
-            pieceTexture = new Texture(Gdx.files.internal("assets/image/Soldier.png"));
+        if (game instanceof KlotskiNewGame) {
+            if (pieceId == 0) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/CaoCao.png"));
+            } else if (pieceId == 1) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/Guanyu.png"));
+            } else if ((pieceId >= 2 && pieceId <= 4)) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/Normal.png"));
+            } else if (pieceId >= 5 && pieceId <= 9) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/Soldier.png"));
+            }
+        } else {
+            if (pieceId == 0) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/CaoCao.png"));
+            } else if (pieceId == 1) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/Guanyu.png"));
+            } else if ((pieceId >= 2 && pieceId <= 5)) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/Normal.png"));
+            } else if (pieceId >= 6 && pieceId <= 9) {
+                pieceTexture = new Texture(Gdx.files.internal("assets/image/Soldier.png"));
+            }
         }
 
         setBounds(x, y, width, height);
@@ -62,7 +76,7 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (enableTouch == false) {
+                if (pieceId == blockedID) {
                     return false;
                 }
 
@@ -87,7 +101,7 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (enableTouch == false) {
+                if (pieceId == blockedID) {
                     return;
                 }
 
@@ -183,7 +197,7 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (enableTouch == false) {
+                if (pieceId == blockedID) {
                     return;
                 }
 
@@ -357,4 +371,9 @@ public class RectangleBlockActor extends Actor {
         }
         font.dispose();
     }
+
+    public static void setBlockedId(int id) {
+        blockedID = id;
+    }
 }
+

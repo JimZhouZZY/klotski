@@ -56,6 +56,7 @@ import com.google.gson.Gson;
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.logic.GameState;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
+import io.github.jimzhouzzy.klotski.logic.KlotskiNewSolver;
 import io.github.jimzhouzzy.klotski.logic.KlotskiSolver;
 import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
@@ -111,6 +112,82 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
+    }
+
+    public void setGame(KlotskiGame newGame) {
+        this.game = newGame;
+        // clear the old blocks
+        for (RectangleBlockActor block : blocks) {
+            block.remove(); // remove the stage
+        }
+        blocks.clear();
+
+        RectangleBlockActor.setBlockedId(blockedId);// Set blockedId
+
+        // Create blocks based on the game pieces
+        for (KlotskiGame.KlotskiPiece piece : newGame.getPieces()) {
+            // Convert logical position to graphical position
+            float x = piece.position[1] * cellSize; // Column to x-coordinate
+            float y = (rows - piece.position[0] - piece.height) * cellSize; // Invert y-axis and adjust for height
+            float width = piece.width * cellSize;
+            float height = piece.height * cellSize;
+
+            // Create a block with a unique color for each piece
+            Color color = getNewColorForPiece(piece.id);
+            RectangleBlockActor block = new RectangleBlockActor(x, y, width, height, color, piece.id, newGame);
+
+            blocks.add(block); // Add block to the list
+            stage.addActor(block); // Add block to the stage
+
+            blocks.add(block); // Add block to the list
+            stage.addActor(block); // Add block to the stage
+
+            block.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Play rectangular block click sound
+                    if (clickRectangularSound != null) {
+                        clickRectangularSound.play(1.0f);
+                    }
+                    if (selectedBlock == block) {
+                        selectedBlock.setSelected(false);
+                        selectedBlock = null;
+                    } else {
+                        if (selectedBlock != null) {
+                            selectedBlock.setSelected(false);
+                        }
+                        selectedBlock = block;
+                        selectedBlock.setSelected(true); // Thicker border
+                    }
+                }
+            });
+        }
+
+        if (congratulationsGroup != null) {
+            congratulationsGroup.toFront();
+        }
+
+        updateBlocksFromGame(game);
+
+        // Notation of the blocked id.
+        if (blockedId >= 0 && blockedId <= 9) {
+            Dialog blockedDialog = new Dialog("Blocked Piece", skin);
+            Label blockedLabel = new Label("The piece with ID " + blockedId + " is blocked and cannot be moved.", skin);
+            blockedLabel.setFontScale(2f);
+            blockedDialog.getContentTable().add(blockedLabel).pad(20).row();
+
+            TextButton okButton = new TextButton("Cancel", skin);
+            okButton.getLabel().setFontScale(1.0f);
+            okButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    blockedDialog.hide();
+                }
+            });
+            blockedDialog.button(okButton);
+            blockedDialog.show(stage);
+        }
     }
 
     public void setGameMode(boolean isAttackMode) {
@@ -566,10 +643,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleArrowKeys(int[] direction) {
-        if (selectedBlock == null || selectedBlock.pieceId == blockedId) {
+        if (selectedBlock == null)  {
             handleAutoArrowKeys(direction);
             return;
         }
+        if (selectedBlock.pieceId == blockedId) return;
 
         KlotskiGame.KlotskiPiece piece = game.getPiece(selectedBlock.pieceId);
         int fromRow = piece.getRow();
@@ -603,6 +681,27 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             case 4:
             case 5:
                 return new Color(204f / 255f, 51f / 255f, 255f / 255f, 1); // Soft purple for Generals
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                return new Color(0.95f, 0.95f, 0.25f, 1); // Soft yellow for Soldiers
+            default:
+                return new Color(0.8f, 0.8f, 0.8f, 1); // Light gray for default
+        }
+    }
+
+    public Color getNewColorForPiece(int id) {
+        switch (id) {
+            case 0:
+                return new Color(0.95f, 0.25f, 0.25f, 1); // Soft red for Cao Cao
+            case 1:
+                return new Color(0.25f, 0.25f, 0.95f, 1); // Soft blue for Guan Yu
+            case 2:
+            case 3:
+            case 4:
+                return new Color(204f / 255f, 51f / 255f, 255f / 255f, 1); // Soft purple for Generals
+            case 5:
             case 6:
             case 7:
             case 8:
@@ -842,40 +941,47 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    public void handleRestart(KlotskiGame game) {
-        // Stop auto-solving if active
-        stopAutoSolving();
+public void handleRestart(KlotskiGame game) {
+    // Stop auto-solving if active
+    stopAutoSolving();
+    autoButton.setText("Auto");
 
-        // Reset the timer
-        elapsedTime = 0;
-        timerLabel.setText("Time: 00:00");
-        currentMoveIndex = -1;
-        movesLabel.setText("Moves: 0");
+    // Reset the timer and move history
+    elapsedTime = 0;
+    timerLabel.setText("Time: 00:00");
+    currentMoveIndex = -1;
+    movesLabel.setText("Moves: 0");
 
-        // Stop all animations
-        for (RectangleBlockActor block : blocks) {
-            block.clearActions(); // Clear all actions for this block
-        }
-
-        // Reset the game logic
-        game.initialize();
-
-        // Update the blocks to match the game state
-        updateBlocksFromGame(game);
-
-        // Reset terminal state
-        isTerminal = false;
-        winMusicPlayed = false;
-        loseMusicPlayed = false;
-
-        broadcastGameState();
-
-        System.out.println("Game restarted.");
+    // Stop all animations
+    for (RectangleBlockActor block : blocks) {
+        block.clearActions();
     }
+
+    // Restart logic depending on level/mode
+    if (isAttackMode) {
+        setGame(new KlotskiGame());
+        setGameMode(true);
+    } else if (game instanceof io.github.jimzhouzzy.klotski.logic.KlotskiNewGame) {
+        setGame(new io.github.jimzhouzzy.klotski.logic.KlotskiNewGame());
+        randomShuffle(10102L);
+    } else {
+        setGame(new KlotskiGame());
+        randomShuffle(10101L); // fallback to Level 1 setup; customize if needed
+    }
+
+    // Reset win/lose state
+    isTerminal = false;
+    winMusicPlayed = false;
+    loseMusicPlayed = false;
+
+    broadcastGameState();
+
+    System.out.println("Game restarted.");
+}
 
     public void handleHint(KlotskiGame game) {
         // Get the solution from the solver
-        List<String> solution = KlotskiSolver.solve(game);
+        List<String> solution = KlotskiSolver.solve(game, blockedId);
 
         if (solution != null && !solution.isEmpty()) {
             // Parse the first move from the solution
@@ -927,7 +1033,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } else {
             solution = null; // Clear the previous solution
             solutionIndex = 0; // Reset the solution index
-            List<String> newSolution = KlotskiSolver.solve(game); // Get the new solution
+            List<String> newSolution = KlotskiSolver.solve(game, blockedId); // Get the new solution
 
             if (newSolution != null && !newSolution.isEmpty()) {
                 solution = newSolution; // Store the solution
