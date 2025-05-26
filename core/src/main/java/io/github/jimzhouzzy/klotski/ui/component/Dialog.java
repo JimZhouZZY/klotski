@@ -14,11 +14,12 @@
  *     Dialog.showDialog(klotski, skin, stage, "Notification","User logged in successfully.");
  *
  * @author JimZhouZZY
- * @version 1.6
+ * @version 1.7
  * @since 2025-5-25
  * @see {@link LoginScreen}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -27,7 +28,7 @@
  * 2025-05-24: Refactor screens to enheritage ProtoScreen
  */
 
-package io.github.jimzhouzzy.klotski.ui;
+package io.github.jimzhouzzy.klotski.ui.component;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;

@@ -6,12 +6,13 @@
  * Klotski is starting.
  * 
  * @author JimZhouZZY
- * @version 1.26
+ * @version 1.27
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -66,7 +67,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.ui.Dialog;
+import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
+import io.github.jimzhouzzy.klotski.ui.component.Dialog;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
 public class LoginScreen extends ProtoScreen {

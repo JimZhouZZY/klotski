@@ -7,12 +7,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.15
+ * @version 1.16
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -53,7 +54,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
-import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 

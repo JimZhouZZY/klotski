@@ -8,21 +8,20 @@
  * It is used in the Klotski game to generate colors for various UI elements and game pieces.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.2
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  */
 
 package io.github.jimzhouzzy.klotski.util;
 
-import java.util.Random;
-
 import com.badlogic.gdx.graphics.Color;
 
 import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 
 public class ColorHelper {
     public static Color generateSimilarColor(Klotski klotski, Color baseColor, float variability, float offset,

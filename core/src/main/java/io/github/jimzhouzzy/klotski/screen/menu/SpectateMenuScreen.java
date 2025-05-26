@@ -1,16 +1,18 @@
 /**
- * SpectateChoiceScreen.java
+ * SpectateMenuScreen.java
  * 
  * This class represents the screen where players can choose a user to spectate.
  * It connects to a WebSocket server to retrieve the list of online users.
  * Players can click on a user to start spectating their game.
  * 
  * @author JimZhouZZY
- * @version 1.19
+ * @version 1.20
  * @since 2025-5-25
+ * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Remove duplicated network check
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
@@ -32,7 +34,7 @@
  * 2025-05-07: formal login & prepare in-game spectate
  */
 
-package io.github.jimzhouzzy.klotski.screen;
+package io.github.jimzhouzzy.klotski.screen.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -44,18 +46,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.ui.Dialog;
+import io.github.jimzhouzzy.klotski.screen.SpectateScreen;
+import io.github.jimzhouzzy.klotski.screen.core.MenuScreen;
+import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
+import io.github.jimzhouzzy.klotski.ui.component.Dialog;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 
-public class SpectateChoiceScreen extends ProtoScreen {
+public class SpectateMenuScreen extends MenuScreen {
 
     private final GameWebSocketClient webSocketClient;
     private static final Skin newSkin = new Skin(Gdx.files.internal("skins/cloud-form/skin/cloud-form-ui.json"));
 
     private Table userListTable; // for scrollable user list
 
-    public SpectateChoiceScreen(final Klotski klotski, GameWebSocketClient webSocketClient) {
-        super(klotski);
+    public SpectateMenuScreen(final Klotski klotski, GameWebSocketClient webSocketClient, ProtoScreen lastScreen) {
+        super(klotski, lastScreen);
         this.webSocketClient = webSocketClient;
     }
 
@@ -146,8 +151,8 @@ public class SpectateChoiceScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();;
-                klotski.setScreen(new GameModeScreen(klotski)); // Navigate to the GameModeScreen
                 klotski.dynamicBoard.triggerAnimateFocalLength(10000.0f, 1.0f);
+                handleBack();
             }
         });
         table.add(backButton).width(300).height(50).padTop(20).expandY().bottom(); // Ensure it's at the bottom

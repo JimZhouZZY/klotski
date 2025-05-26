@@ -4,10 +4,11 @@
  * This class represents the main menu screen of the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.31
+ * @version 1.32
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Refactor all the change logs
@@ -60,6 +61,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
+import io.github.jimzhouzzy.klotski.screen.menu.GameModeMenuScreen;
 
 public class MainScreen extends ProtoScreen {
     private float baseTileSize;
@@ -124,8 +127,7 @@ public class MainScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();;
-                klotski.setScreen(new GameModeScreen(klotski)); // Navigate to the GameModeScreen
-                klotski.dynamicBoard.triggerAnimateFocalLength(10000.0f, 1.0f);
+                klotski.setScreen(new GameModeMenuScreen(klotski, klotski.mainScreen)); // Navigate to the GameModeScreen
             }
         });
         table.add(playButton).width(200).height(50).padBottom(20).row();

@@ -5,10 +5,11 @@
  * It provides instructions and tips for players on how to play the game.
  * 
  * @author Tommy-SUStech
- * @version 1.14
+ * @version 1.15
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -34,6 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
 
 public class HelpScreen extends ProtoScreen {
 

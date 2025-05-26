@@ -5,7 +5,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  * 
  * @author JimZhouZZY
- * @version 1.41
+ * @version 1.42
  * @since 2025-5-25
  * 
  * KNOWN ISSUES:
@@ -15,6 +15,7 @@
  *    reset the game to the shuffeled state.
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -112,7 +113,7 @@ import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.logic.GameState;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.KlotskiSolver;
-import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
@@ -937,7 +938,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             String move = solution.get(0);
             System.out.println("Hint: " + move);
 
-            String[] parts = move.split(" ");
             int fromIndex = move.indexOf(" from ");
             String fromPart = move.substring(fromIndex + 6, move.indexOf(" to "));
             String toPart = move.substring(move.indexOf(" to ") + 4);
@@ -952,7 +952,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
                 System.out.printf("Block ID: %d, Position: (%d, %d)\n", piece.id, piece.position[0], piece.position[1]);
                 if (piece.position[0] == fromRow && piece.position[1] == fromCol) {
-//                    if (piece.id == blockedId) return; // Skip the hint if the suggested piece is blockedId
                     // Animate the block's movement to the target position
                     float targetX = toCol * cellSize;
                     float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis

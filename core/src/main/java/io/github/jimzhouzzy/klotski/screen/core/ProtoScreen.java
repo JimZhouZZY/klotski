@@ -10,11 +10,12 @@
  * methods as needed.
  * 
  * @author JimZhouZZY
- * @version 1.12
+ * @version 1.13
  * @since 2025-5-25
  * @see {@link com.badlogic.gdx.Screen}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import
@@ -29,7 +30,7 @@
  * 2025-05-20: Merge branch v1.0.7 into main (#8)
  */
 
-package io.github.jimzhouzzy.klotski.screen;
+package io.github.jimzhouzzy.klotski.screen.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

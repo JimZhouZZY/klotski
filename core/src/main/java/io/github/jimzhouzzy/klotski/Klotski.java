@@ -10,11 +10,12 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.36
+ * @version 1.37
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Show dialog instead of error when changing MSAA settings
@@ -89,10 +90,10 @@ import io.github.jimzhouzzy.klotski.screen.GameScreen;
 import io.github.jimzhouzzy.klotski.screen.HelpScreen;
 import io.github.jimzhouzzy.klotski.screen.MainScreen;
 import io.github.jimzhouzzy.klotski.screen.SettingsScreen;
-import io.github.jimzhouzzy.klotski.screen.SpectateChoiceScreen;
-import io.github.jimzhouzzy.klotski.ui.Dialog;
+import io.github.jimzhouzzy.klotski.screen.menu.SpectateMenuScreen;
 import io.github.jimzhouzzy.klotski.ui.DynamicBoard;
-import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.ui.component.Dialog;
+import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 import io.github.jimzhouzzy.klotski.util.RandomHelper;
 import io.github.jimzhouzzy.klotski.web.offline.GameWebSocketServer;
@@ -110,7 +111,7 @@ public class Klotski extends Game {
     public FitViewport viewport;
     public GameScreen gameScreen;
     public MainScreen mainScreen;
-    public SpectateChoiceScreen spectateChoiceScreen;
+    public SpectateMenuScreen spectateChoiceScreen;
     public DynamicBoard dynamicBoard;
     public WebServer webServer;
     public SettingsScreen settingsScreen;

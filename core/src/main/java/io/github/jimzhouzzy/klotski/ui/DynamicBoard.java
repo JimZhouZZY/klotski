@@ -13,13 +13,18 @@
  * in any non-gaming screen (sub-classes of {@link ProtoScreen}),
  * which is why it is rerendered in the {@link ProtoScreen} class.
  * 
+ * It is extended by the {@link KlotzkiBoard} class to provide a 
+ * basic board for the **Klotzki** game.
+ * 
  * @author JimZhouZZY
- * @version 1.24
+ * @version 1.25
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link ProtoScreen}
+ * @see {@link KlotzkiBoard}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated methods and fields in DynamicBoard
  * 2025-05-25: Refactor all the change logs
@@ -52,7 +57,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -68,57 +72,60 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
+import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ColorHelper;
 
 public class DynamicBoard {
 
     final Klotski klotski;
-    private int frameCount;
-    private int frameCountOffset;
-    private float baseTileSize;
-    private Stage stage;
-    private Skin skin;
-    private ShapeRenderer shapeRenderer;
-    private float offsetX; // Offset for translation animation
-    private float offsetY;
-    private float offsetZ;
-    private Random random;
-    private boolean moveForward;
-    private boolean moveBackward;
-    private boolean moveLeft;
-    private boolean moveRight;
-    private boolean moveShifted;
-    private boolean moveUpward;
-    private boolean moveDownward;
-    private boolean rotateClockwise;
-    private boolean rotateCounterClockwise;
-    private float rotationAngle = 0f; // Rotation angle in degrees
-    private float rotationSpeed = 10f; // Degrees per second
-    private Color currentColor;
-    private float colorChangeSpeed = 0.001f; // Speed of color change
+    protected int frameCount;
+    protected int frameCountOffset;
+    protected float baseTileSize;
+    protected Stage stage;
+    protected Skin skin;
+    protected ShapeRenderer shapeRenderer;
+    protected float offsetX; // Offset for translation animation
+    protected float offsetY;
+    protected float offsetZ;
+    protected boolean moveForward;
+    protected boolean moveBackward;
+    protected boolean moveLeft;
+    protected boolean moveRight;
+    protected boolean moveShifted;
+    protected boolean moveUpward;
+    protected boolean moveDownward;
+    protected boolean rotateClockwise;
+    protected boolean rotateCounterClockwise;
+    protected float rotationAngle = 0f; // Rotation angle in degrees
+    protected float rotationSpeed = 10f; // Degrees per second
+    protected Color currentColor;
+    protected float colorChangeSpeed = 0.001f; // Speed of color change
     public Color[] colorList; // Predefined list of colors
     public Map<String, Color> colorCache; // Cache for storing colors
     public Map<String, Double> zPositionCache;
     public Map<String, Double> zPositionTempCache;
     public Map<String, Double> yRotationCache;
     public Map<String, Boolean> triggerYRotation; // Flag to trigger Y rotation
-    private boolean triggerYRotationAnimation;
-    private int yRotationAnimationTemp;
-    private int yRotationAnimationStartingRow;
-    private float yRotationAnimationStartingOffsetY;
-    private boolean mutateColorFollowing;
-    private List<Color> targetColors; // List of target colors
-    private int currentColorIndex = 0; // Index of the current base color
-    private float interpolationFactor = 0f;
-    private float interpolationSpeedMultiplier = 1f; // Speed of color interpolation
-    private List<Vector2[]> topRectangleVectors;
-    private List<Float> topRectangleYs;
-    private float screenWidth;
-    private float screenHeight;
-    private float focalLength;
-    private float focalLengthPrevious;
-    private float focalLengthTarget;
-    private float focalLengthAnimationSpeed;
+    protected boolean triggerYRotationAnimation;
+    protected int yRotationAnimationTemp;
+    protected int yRotationAnimationStartingRow;
+    protected float yRotationAnimationStartingOffsetY;
+    protected boolean mutateColorFollowing;
+    protected List<Color> targetColors; // List of target colors
+    protected int currentColorIndex = 0; // Index of the current base color
+    protected float interpolationFactor = 0f;
+    protected float interpolationSpeedMultiplier = 1f; // Speed of color interpolation
+    protected List<Vector2[]> topRectangleVectors;
+    protected List<Float> topRectangleYs;
+    protected float screenWidth;
+    protected float screenHeight;
+    protected float focalLength;
+    protected float focalLengthPrevious;
+    protected float focalLengthTarget;
+    protected float focalLengthAnimationSpeed;
+    protected List<Color> levelColorCache = new ArrayList<>();
+    protected int levelColorCacheIndex = 0;
 
     public DynamicBoard(final Klotski klotski, Stage stage) {
         this.klotski = klotski;
@@ -384,8 +391,8 @@ public class DynamicBoard {
             }
         }
 
-        for (float y = -offsetY - 2f * baseTileSize; y < screenHeight + 20f * baseTileSize; y += baseTileSize) {
-            for (float x = -offsetX - 100f * baseTileSize; x <= -offsetX + screenWidth
+        for (float y = -offsetY - 2f * baseTileSize; y < -0.01 + screenHeight + 20f * baseTileSize; y += baseTileSize) {
+            for (float x = -offsetX - 100f * baseTileSize; x < -0.01 + -offsetX + screenWidth
                     + 100f * baseTileSize; x += baseTileSize) {
                 if (x < 0f - 50f * baseTileSize 
                         || x > screenWidth + 50f * baseTileSize 
@@ -396,9 +403,9 @@ public class DynamicBoard {
 
 
                 // Generate a unique key for the current tile
-                String key = (int) ((int) Math.floor(x / baseTileSize) + (int) Math.floor(offsetX / baseTileSize)) 
+                String key = (int) ((int) Math.floor((x) / baseTileSize) + (int) Math.floor(offsetX / baseTileSize)) 
                         + ","
-                        + (int) ((int) Math.floor(y / baseTileSize) + (int) Math.floor(offsetY / baseTileSize));
+                        + (int) ((int) Math.floor((y) / baseTileSize) + (int) Math.floor(offsetY / baseTileSize));
                 double zPositionChange = 0.0;
                 float zPositionChangedY = (float) (y);
                 float yRotatedX = x;
@@ -479,8 +486,7 @@ public class DynamicBoard {
                 Vector2 bl = projectPerspective(rotatedPosition.x, rotatedPositionBR.y + (float) zPositionChange,
                         focalLength, centerX, centerZ);
                 Vector2 br = projectPerspective(rotatedPositionBR.x, rotatedPositionBR.y + (float) zPositionChange,
-                        focalLength, centerX,
-                        centerZ);
+                        focalLength, centerX, centerZ);
 
                 // If cursor is inside the rectangle, change zPositionChange to 100
                 float cursorX = Gdx.input.getX();
@@ -526,29 +532,29 @@ public class DynamicBoard {
     }
 
     // Projection 'Matrix'
-    private Vector2 projectPerspective(float x, float y, float focal, float cx, float cy) {
+    protected Vector2 projectPerspective(float x, float y, float focal, float cx, float cy) {
         float scale = focal / (focal + y);
         float screenX = cx + (x - cx) * scale;
         float screenY = cy + (y - cy) * scale;
         return new Vector2(screenX, screenY);
     }
 
-    private static double simpleComplexFunction(double x) {
+    protected static double simpleComplexFunction(double x) {
         return Math.sin(x);
     }
 
-    private static double simpleComplexFunction(float x) {
+    protected static double simpleComplexFunction(float x) {
         return simpleComplexFunction((double) x);
     }
 
-    // A very complex function in [0, 1] to shake the camera
-    private static double veryComplexFunction(double x) {
+    // A 'very' complex function in [0, 1] to shake the camera
+    protected static double veryComplexFunction(double x) {
         double term1 = 0.5 * (Math.sin(5 * Math.PI * x) * Math.cos(3 * Math.PI * x * x) + 1);
         double term2 = 0.1 * Math.sin(20 * Math.PI * x);
         return term1 * Math.exp(-x) + term2;
     }
 
-    private static double veryComplexFunction(float x) {
+    protected static double veryComplexFunction(float x) {
         return veryComplexFunction((double) x);
     }
 
@@ -610,7 +616,7 @@ public class DynamicBoard {
         }
     }
 
-    private Vector2 applyRotation(float x, float y, float centerX, float centerY, float angle) {
+    protected Vector2 applyRotation(float x, float y, float centerX, float centerY, float angle) {
         float radians = (float) Math.toRadians(angle);
         float cos = (float) Math.cos(radians);
         float sin = (float) Math.sin(radians);
@@ -627,7 +633,7 @@ public class DynamicBoard {
         return new Vector2(rotatedX + centerX, rotatedY + centerY);
     }
 
-    private void updateYRotationCache(String key) {
+    protected void updateYRotationCache(String key) {
         double yRotation = yRotationCache.getOrDefault(key, 0.0);
         if (yRotation > 2 * Math.PI) {
             yRotation = 0; // Reset if it exceeds 2π
@@ -667,12 +673,12 @@ public class DynamicBoard {
         Gdx.gl.glLineWidth(1f); // Set back line width
     }
 
-    private boolean isPointInQuadrilateral(Vector2 point, Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br) {
+    protected boolean isPointInQuadrilateral(Vector2 point, Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br) {
         // Check if the point is in either of the two triangles
         return isPointInTriangle(point, tl, tr, br) || isPointInTriangle(point, tl, br, bl);
     }
 
-    private boolean isPointInTriangle(Vector2 point, Vector2 v1, Vector2 v2, Vector2 v3) {
+    protected boolean isPointInTriangle(Vector2 point, Vector2 v1, Vector2 v2, Vector2 v3) {
         // Calculate vectors
         Vector2 v1v2 = v2.cpy().sub(v1);
         Vector2 v2v3 = v3.cpy().sub(v2);

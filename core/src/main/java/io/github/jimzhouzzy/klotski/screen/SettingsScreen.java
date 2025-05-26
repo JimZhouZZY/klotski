@@ -6,11 +6,12 @@
  * It allows users to configure various settings such as graphics, audio, and gameplay options.
  * 
  * @author JimZhouZZY
- * @version 1.29
+ * @version 1.30
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * 
  * Change log:
+ * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: remove deprecated loadColors method
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
@@ -59,7 +60,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
 
 import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.ui.KlotskiTheme;
+import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
+import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
 public class SettingsScreen extends ProtoScreen {
