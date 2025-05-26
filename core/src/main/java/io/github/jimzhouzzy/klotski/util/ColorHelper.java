@@ -26,10 +26,12 @@
  * It is used in the Klotski game to generate colors for various UI elements and game pieces.
  * 
  * @author JimZhouZZY
- * @version 1.3
+ * @version 1.5
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper

@@ -23,10 +23,12 @@
  * It provides instructions and tips for players on how to play the game.
  * 
  * @author Tommy-SUStech
- * @version 1.16
+ * @version 1.18
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs

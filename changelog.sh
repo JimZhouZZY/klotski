@@ -8,7 +8,7 @@ for java_file in $(find . -name "*.java"); do
     temp_file=$(mktemp)
 
     # Get all git commits for this file (only message and date)
-    git_log=$(git log refs/heads/main --follow --pretty=format:"%ad: %s" --date=short -- "$java_file")
+    git_log=$(git log refs/heads/dev1.1.0 --follow --pretty=format:"%ad: %s" --date=short -- "$java_file")
 
     # Initialize variables
     version_line=""

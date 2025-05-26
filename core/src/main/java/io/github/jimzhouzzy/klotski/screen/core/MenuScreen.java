@@ -26,13 +26,15 @@
  * It should be enherited by other menu screens except {@link MainScreen}.
  *
  * @author JimZhouZZY
- * @version 1.2
+ * @version 1.4
  * @since 2025-5-25
  * @see {@link ProtoScreen}
  * @see {@link GameModeMenuScreen}
  * @see {@link MainScreen}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  */

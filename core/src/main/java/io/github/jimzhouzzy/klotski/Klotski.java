@@ -28,11 +28,13 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.38
+ * @version 1.40
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper

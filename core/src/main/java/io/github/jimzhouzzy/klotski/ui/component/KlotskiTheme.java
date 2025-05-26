@@ -22,10 +22,12 @@
  * Enumerates the themes available for the Klotski game UI.
  * 
  * @author JimZhouZZY
- * @version 1.10
+ * @version 1.12
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs

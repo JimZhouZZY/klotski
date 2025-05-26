@@ -35,13 +35,15 @@
  * basic board for the **Klotzki** game.
  * 
  * @author JimZhouZZY
- * @version 1.26
+ * @version 1.28
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link ProtoScreen}
  * @see {@link KlotzkiBoard}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper

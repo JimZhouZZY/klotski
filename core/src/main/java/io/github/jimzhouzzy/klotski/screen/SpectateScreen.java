@@ -25,12 +25,14 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.17
+ * @version 1.19
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs

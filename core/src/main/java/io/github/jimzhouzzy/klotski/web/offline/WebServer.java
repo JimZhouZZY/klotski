@@ -25,11 +25,13 @@
  * It should only be initialized in {@link Klotski} class.
  * 
  * @author JimZhouZZY
- * @version 1.9
+ * @version 1.11
  * @since 2025-5-25
  * @see {@link Klotski}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)

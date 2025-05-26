@@ -24,12 +24,14 @@
  * Klotski is starting.
  * 
  * @author JimZhouZZY
- * @version 1.28
+ * @version 1.30
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs

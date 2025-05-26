@@ -27,10 +27,12 @@
  * It should only be initialized once, in {@link Klotski} and used multiple times.
  * 
  * @author JimZhouZZY
- * @version 1.2
+ * @version 1.4
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  */

@@ -26,11 +26,13 @@
  * game mechanics.
  * 
  * @author JimZhouZZY
- * @version 1.29
+ * @version 1.31
  * @since 2025-5-25
  * @see {@link DynamicBoard}
  * 
  * Change log:
+ * 2025-05-26: Update changelog
+ * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: HD-font & UX improvement
  * 2025-05-26: Klotzki game
