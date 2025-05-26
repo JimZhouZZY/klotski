@@ -1,3 +1,6 @@
+#!/bin/bash
+
+LICENSE_HEADER=$(cat << 'EOF'
 /*
  * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
  * This file is part of github.com/jimzhouzzy/Klotski.
@@ -15,42 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+EOF
+)
 
-/**
- * KlotskiSolverTest.java
- * 
- * This class contains unit tests for the KlotskiSolver class.
- * 
- * THIS CLASS IS WIP
- * 
- * @author JimZhouZZY
- * @version 1.6
- * @since 2025-5-25
- * @see {@link KlotskiSolver}
- * 
- * Change log:
- * 2025-05-25: Refactor all the change logs
- * 2025-05-25: Organize import (doc)
- * 2025-05-25: Organize import
- * 2025-05-25: generate change log
- * 2025-05-23: refactor test
- * 2025-05-23: refactor test
- */
+if [ ! -d "./core" ]; then
+    echo "Error: ./core directory does not exist."
+    exit 1
+fi
 
-package io.github.jimzhouzzy.klotski.logic;
+find ./core -type f -name "*.java" | while read -r file; do
+    if ! grep -q "GNU General Public License" "$file"; then
+        temp_file=$(mktemp)
+        echo "$LICENSE_HEADER" > "$temp_file"
+        echo "" >> "$temp_file"
+        cat "$file" >> "$temp_file"
+        mv "$temp_file" "$file"
+        echo "Added license to $file"
+    else
+        echo "License already exists in $file, skipping"
+    fi
+done
 
-import org.junit.jupiter.api.Test;
-
-public class KlotskiSolverTest {
-
-
-    @Test
-    void testPrintSolution() {
-
-    }
-
-    @Test
-    void testSolve() {
-
-    }
-}
+echo "License addition process completed."
