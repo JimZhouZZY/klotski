@@ -24,11 +24,12 @@
  * and hooks to updates the game state accordingly.
  * 
  * @author JimZhouZZY
- * @version 1.21
+ * @version 1.22
  * @since 2025-5-25
  * @see {@link GameScreen}
  * 
  * Change log:
+ * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -84,6 +85,7 @@ public class RectangleBlockActor extends Actor {
     private float oldVelocityY;
     private boolean isSelected = false;
     private Texture pieceTexture;
+    private GameScreen gameScreen; // Reference to the GameScreen for boundary checks
 
     // Font for drawing pieceId
     private static final BitmapFont font = new BitmapFont();
@@ -93,11 +95,12 @@ public class RectangleBlockActor extends Actor {
         isSelected = selected;
     }
 
-    public RectangleBlockActor(float x, float y, float width, float height, Color color, int pieceId, KlotskiGame game) {
+    public RectangleBlockActor(float x, float y, float width, float height, Color color, int pieceId, KlotskiGame game, GameScreen gameScreen) {
         this.rectangle = new Rectangle(x, y, width, height);
         this.color = color;
         this.pieceId = pieceId;
         this.game = game;
+        this.gameScreen = gameScreen;
 
         if (pieceId == 0) {
             pieceTexture = new Texture(Gdx.files.internal("assets/image/CaoCao.png"));
@@ -120,8 +123,7 @@ public class RectangleBlockActor extends Actor {
                     return false;
                 }
 
-                Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
-                GameScreen gameScreen = klotski.gameScreen;
+                GameScreen gameScreen = RectangleBlockActor.this.gameScreen;
                 if (gameScreen.isAutoSolving()) {
                     gameScreen.stopAutoSolving(); // Stop auto-solving if the user interacts with a block
                 }
@@ -145,8 +147,7 @@ public class RectangleBlockActor extends Actor {
                     return;
                 }
 
-                Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
-                GameScreen gameScreen = klotski.gameScreen;
+                GameScreen gameScreen = RectangleBlockActor.this.gameScreen;
                 if (gameScreen.isAutoSolving()) {
                     gameScreen.stopAutoSolving(); // Stop auto-solving if the user interacts with a block
                 }
@@ -241,8 +242,7 @@ public class RectangleBlockActor extends Actor {
                     return;
                 }
 
-                Klotski klotski = (Klotski) Gdx.app.getApplicationListener();
-                GameScreen gameScreen = klotski.gameScreen;
+                GameScreen gameScreen = RectangleBlockActor.this.gameScreen;
                 float cellSize = Math.min(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 5f);
 
                 // Calculate the snapped position

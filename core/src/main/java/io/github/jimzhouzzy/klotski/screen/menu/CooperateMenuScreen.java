@@ -24,12 +24,13 @@
  * Players can click on a user to start cooperating with other players.
  * 
  * @author JimZhouZZY
- * @version 1.24
+ * @version 1.25
  * @since 2025-5-25
  * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -66,6 +67,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.screen.CooperateScreen;
@@ -80,6 +82,7 @@ public class CooperateMenuScreen extends MenuScreen {
     private static final Skin newSkin = new Skin(Gdx.files.internal("skins/cloud-form/skin/cloud-form-ui.json"));
 
     private Table userListTable; // for scrollable user list
+    private Timer.Task refreshOnlineUsersTask;
 
     public CooperateMenuScreen(final Klotski klotski, GameWebSocketClient webSocketClient, ProtoScreen lastScreen) {
         super(klotski, lastScreen);
@@ -104,14 +107,28 @@ public class CooperateMenuScreen extends MenuScreen {
         table.add(titleLabel).padBottom(50).row();
 
         // Request online users from the server
-        requestOnlineUsers(table);
-        
+        // requestOnlineUsers(table);
+
+        startOnlineUsersAutoRefresh(table);
+
         // ** TEST **
         // Manually populate user list for testing
         // populateUserButtons(table, new String[]{"Alice", "Bob", "Charlie", "Dana","1","2","3","4","5","6","7","8","9"});
 
         // Add a "Back" button at the bottom
         addBackButton(table);
+    }
+
+    private void startOnlineUsersAutoRefresh(Table table) {
+        if (refreshOnlineUsersTask != null) {
+            refreshOnlineUsersTask.cancel();
+        }
+        refreshOnlineUsersTask = Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                requestOnlineUsers(table);
+            }
+        }, 1, 1); // 1s interval
     }
 
     private void requestOnlineUsers(Table table) {
@@ -146,6 +163,10 @@ public class CooperateMenuScreen extends MenuScreen {
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
+            if (user == klotski.getLoggedInUser()) {
+                // Skip yourself
+                continue;
+            }
             System.out.println("Adding button for user: " + user);
             TextButton userButton = new TextButton(user, newSkin);
             userButton.getLabel().setFontScale(1.5f); // Increase font size
@@ -153,7 +174,7 @@ public class CooperateMenuScreen extends MenuScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     klotski.playClickSound();
-                    cooperateWithUser(user);
+                    sooperateUser(user);
                 }
             });
             userListTable.add(userButton).width(300).height(50).padBottom(20).row();
@@ -180,8 +201,17 @@ public class CooperateMenuScreen extends MenuScreen {
         table.add(backButton).width(300).height(50).padTop(20).expandY().bottom(); // Ensure it's at the bottom
     }
 
-    private void cooperateWithUser(String user) {
-        System.out.println("Cooperating with user: " + user);
-        klotski.setScreen(new CooperateScreen(klotski, user, klotski.webSocketClient)); // Navigate to the SpectateScreen
+    private void sooperateUser(String user) {
+        System.out.println("Spectating user: " + user);
+        klotski.setScreen(new CooperateScreen(klotski, user, klotski.webSocketClient)); // Navigate to the CooperateScreen
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        if (refreshOnlineUsersTask != null) {
+            refreshOnlineUsersTask.cancel();
+            refreshOnlineUsersTask = null;
+        }
     }
 }

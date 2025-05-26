@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  * 
  * @author JimZhouZZY
- * @version 1.46
+ * @version 1.47
  * @since 2025-5-25
  * 
  * KNOWN ISSUES:
@@ -33,6 +33,7 @@
  *    reset the game to the shuffeled state.
  * 
  * Change log:
+ * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -370,7 +371,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
             // Create a block with a unique color for each piece
             Color color = getColorForPiece(piece.id);
-            RectangleBlockActor block = new RectangleBlockActor(x, y, width, height, color, piece.id, game);
+            RectangleBlockActor block = new RectangleBlockActor(x, y, width, height, color, piece.id, game, this);
 
             blocks.add(block); // Add block to the list
             stage.addActor(block); // Add block to the stage

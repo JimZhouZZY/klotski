@@ -25,12 +25,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.19
+ * @version 1.20
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -211,7 +212,7 @@ public class SpectateScreen extends GameScreen {
 
             // Create a block with a unique color for each piece
             Color color = getColorForPiece(piece.id);
-            RectangleBlockActor block = new RectangleBlockActor(x, y, width, height, color, piece.id, game);
+            RectangleBlockActor block = new RectangleBlockActor(x, y, width, height, color, piece.id, game, this);
             block.enableTouch = false; // Disable touch events for blocks
 
             blocks.add(block); // Add block to the list

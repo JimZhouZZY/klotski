@@ -25,12 +25,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.9
+ * @version 1.10
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -57,11 +58,12 @@ public class CooperateScreen extends GameScreen {
         this.username = username;
         this.webSocketClient = webSocketClient;
         connectWebSocket();
+        webSocketClient.send("coop:" + klotski.getLoggedInUser() + ";" + username);
     }
 
 
     private void connectWebSocket() {
-        System.out.println("SpectateScreen is trying to connect the websocket");
+        System.out.println("CooperateScreen is trying to connect the websocket");
         if (webSocketClient == null || !webSocketClient.isConnected()) {
             System.err.println("WebSocket client is not connected.");
             return;
@@ -69,7 +71,10 @@ public class CooperateScreen extends GameScreen {
 
         webSocketClient.setOnMessageListener(message -> {
             System.out.println("Spec Message from server: " + message);
-            if (message.startsWith("Board state updated:") && message.contains(username + ":")) {
+            if (message.startsWith("Board state updated:") 
+                    && (message.contains(username + ":")) 
+                        || message.contains(webSocketClient.cooperateUsername + ":")
+                ) {
                 String state = message
                         .replace("Board state updated:", "")
                         .replace(username + ":", "")

@@ -26,12 +26,13 @@
  * It should only be initialized in {@link Klotski} class.
  * 
  * @author JimZhouZZY
- * @version 1.13
+ * @version 1.14
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  *
  * Change log:
+ * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -64,6 +65,7 @@ public class GameWebSocketClient extends WebSocketClient {
     private boolean isReconnecting = false; // Flag to prevent overlapping reconnections
     public boolean closeSocket = false; // Flag to indicate if the socket should be closed
     private Klotski klotski;
+    public String cooperateUsername = null;
 
     public String[] onlineUsers = new String[0];
 
@@ -83,6 +85,24 @@ public class GameWebSocketClient extends WebSocketClient {
 
         if (onMessageListener != null) {
             onMessageListener.onMessage(message); // Trigger the callback
+        }
+        
+        if (message.startsWith("coop:")) {
+            // message is like "coop:<username_soucrce>;<username_target>"
+            // get the source username
+            String sourceUsername = message.substring(5, message.indexOf(";")); // Extract the source username
+            // get the target username
+            String targetUsername = message.substring(message.indexOf(";") + 1); // Extract the target username
+            // broadcast the coop message to all users
+            if (klotski.getLoggedInUser().equals(sourceUsername)) {
+                // If the logged-in user is the source, set the cooperateUsername
+                this.cooperateUsername = targetUsername;
+                System.out.println("Cooperate with: " + cooperateUsername);
+            } else if (klotski.getLoggedInUser().equals(targetUsername)) {
+                // If the logged-in user is the target, set the cooperateUsername
+                this.cooperateUsername = sourceUsername;
+                System.out.println("Cooperate with: " + cooperateUsername);
+            }
         }
     }
 
