@@ -21,7 +21,14 @@
  * 
  * This class represents the game screen in the Klotzki game.
  * 
+ * @author JimZhouZZY
+ * @version 1.4
+ * @since 2025-5-25
+ * 
  * Change log:
+ * 2025-05-26: add comment
+ * 2025-05-26: Copyright Header
+ * 2025-05-26: HD-font & UX improvement
  * 2025-05-26: refactor screens & add Kltozki game
  */
 

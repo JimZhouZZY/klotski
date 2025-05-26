@@ -24,12 +24,14 @@
  * Players can click on a user to start spectating their game.
  * 
  * @author JimZhouZZY
- * @version 1.20
+ * @version 1.22
  * @since 2025-5-25
  * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
+ * 2025-05-26: HD-font & UX improvement
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Remove duplicated network check
  * 2025-05-25: Refactor all the change logs

@@ -25,11 +25,12 @@
  * the search process, including the number of states examined and the time taken to find a solution.
  * 
  * @author JimZhouZZY
- * @version 1.13
+ * @version 1.14
  * @since 2025-5-25
  * @see {@link KlotskiGame}
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import

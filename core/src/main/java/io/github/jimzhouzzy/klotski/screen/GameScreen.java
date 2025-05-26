@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  * 
  * @author JimZhouZZY
- * @version 1.42
+ * @version 1.44
  * @since 2025-5-25
  * 
  * KNOWN ISSUES:
@@ -33,6 +33,8 @@
  *    reset the game to the shuffeled state.
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
+ * 2025-05-26: HD-font & UX improvement
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)

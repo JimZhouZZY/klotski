@@ -35,13 +35,14 @@
  * basic board for the **Klotzki** game.
  * 
  * @author JimZhouZZY
- * @version 1.25
+ * @version 1.26
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link ProtoScreen}
  * @see {@link KlotzkiBoard}
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated methods and fields in DynamicBoard

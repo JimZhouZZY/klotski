@@ -22,10 +22,12 @@
  * This class represents the main menu screen of the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.32
+ * @version 1.34
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
+ * 2025-05-26: HD-font & UX improvement
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper
  * 2025-05-25: remove deprecated loadColors method

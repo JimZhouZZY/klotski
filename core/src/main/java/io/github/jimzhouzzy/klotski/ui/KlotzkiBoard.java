@@ -26,11 +26,14 @@
  * game mechanics.
  * 
  * @author JimZhouZZY
- * @version 1.26
+ * @version 1.29
  * @since 2025-5-25
  * @see {@link DynamicBoard}
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
+ * 2025-05-26: HD-font & UX improvement
+ * 2025-05-26: Klotzki game
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-26: create KlotzkiGame and KlotzkiBoard
  * 2025-05-25: refactor util code to ColorHelper and RandomHelper

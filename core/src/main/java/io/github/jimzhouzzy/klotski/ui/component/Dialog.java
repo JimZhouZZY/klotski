@@ -32,11 +32,12 @@
  *     Dialog.showDialog(klotski, skin, stage, "Notification","User logged in successfully.");
  *
  * @author JimZhouZZY
- * @version 1.7
+ * @version 1.8
  * @since 2025-5-25
  * @see {@link LoginScreen}
  * 
  * Change log:
+ * 2025-05-26: Copyright Header
  * 2025-05-26: refactor screens & add Kltozki game
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
