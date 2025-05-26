@@ -38,10 +38,107 @@ public class KlotzkiGameScreen extends ApplicationAdapter implements Screen {
         skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json")); 
 
         klotzkiBoard = new KlotzkiBoard(klotski, stage);
+        create();
     }
 
+    @Override
     public void create() {
         // Override and set up the stage and UI elements here
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch (keycode) {
+                    case Input.Keys.ESCAPE:
+                        handleBack(); // Handle exit when ESC is pressed
+                        return true;
+                    case Input.Keys.R:
+                        // handleRestart(game); // Handle restart when R is pressed
+                        return true;
+                    case Input.Keys.I:
+                        // handleHint(game); // Handle hint when H is pressed
+                        return true;
+                    case Input.Keys.U:
+                        // handleUndo(); // Handle undo when U is pressed
+                        return true;
+                    case Input.Keys.Y:
+                        // handleRedo(); // Handle redo when Y is pressed
+                        return true;
+                    case Input.Keys.A:
+                        // handleAutoSolve(game, autoButton); // Handle auto-solving when A is pressed
+                        return true;
+                    case Input.Keys.SPACE:
+                        // Handle space key for auto-solving
+                        // if (isAutoSolving) {
+                        //     stopAutoSolving(); // Stop auto-solving if already active
+                        //     autoButton.setText("Auto"); // Change button text back to "Auto"
+                        //} else {
+                        //    handleAutoSolve(game, autoButton); // Start auto-solving
+                        //}
+                        //return true;
+                    case Input.Keys.ENTER:
+                        // Handle enter key for auto-solving
+                        //if (isAutoSolving) {
+                        //    stopAutoSolving(); // Stop auto-solving if already active
+                        //    autoButton.setText("Auto"); // Change button text back to "Auto"
+                        //} else {
+                        //    handleAutoSolve(game, autoButton); // Start auto-solving
+                        //}
+                        //return true;
+                    case Input.Keys.LEFT:
+                        // Handle left arrow key for moving blocks
+                        //handleArrowKeys(new int[]{0, -1});
+                        //return true;
+                    case Input.Keys.UP:
+                        // Handle left arrow key for moving blocks
+                        //handleArrowKeys(new int[]{-1, 0});
+                        //return true;
+                    case Input.Keys.RIGHT:
+                        // Handle left arrow key for moving blocks
+                        //handleArrowKeys(new int[]{0, 1});
+                        //return true;
+                    case Input.Keys.DOWN:
+                        // Handle left arrow key for moving blocks
+                        //handleArrowKeys(new int[]{1, 0});
+                        //return true;
+                    // Handle number keys 0-9 and numpad 0-9 for block selection
+                }
+                return false;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
+
+                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                resizedClickedPixmap.drawPixmap(clickedPixmap,
+                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+
+                int xHotspot = 7, yHotspot = 1;
+                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                resizedClickedPixmap.dispose();
+                clickedPixmap.dispose();
+                Gdx.graphics.setCursor(clickedCursor);
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
+
+                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                resizedClickedPixmap.drawPixmap(clickedPixmap,
+                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+
+                int xHotspot = 7, yHotspot = 1;
+                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                resizedClickedPixmap.dispose();
+                clickedPixmap.dispose();
+                Gdx.graphics.setCursor(clickedCursor);
+            }
+        });
     }
 
     protected void handleBack() {
@@ -70,8 +167,10 @@ public class KlotzkiGameScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+        Gdx.input.setInputProcessor(null);
         stage.dispose();
         skin.dispose();
+        klotzkiBoard.dispose();
     }
 
     @Override

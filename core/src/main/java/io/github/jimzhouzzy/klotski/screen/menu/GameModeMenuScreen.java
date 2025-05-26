@@ -101,6 +101,18 @@ public class GameModeMenuScreen extends MenuScreen {
             }
         });
         table.add(spectateButton).width(300).height(50).padBottom(20).row();
+        
+        // Add "Cooperate" button
+        TextButton cooperateButton = new TextButton("Cooperate", skin);
+        cooperateButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                klotski.playClickSound();
+                ;
+                klotski.setScreen(new CooperateMenuScreen(klotski, klotski.webSocketClient, GameModeMenuScreen.this));
+            }
+        });
+        table.add(cooperateButton).width(300).height(50).padBottom(20).row();
 
         // Add "Back" button
         TextButton backButton = new TextButton("Back", skin);

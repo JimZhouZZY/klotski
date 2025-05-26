@@ -1,9 +1,9 @@
 /**
- * SpectateMenuScreen.java
+ * CooperateMenuScreen.java
  * 
- * This class represents the screen where players can choose a user to spectate.
+ * This class represents the screen where players can choose a user to cooperate.
  * It connects to a WebSocket server to retrieve the list of online users.
- * Players can click on a user to start spectating their game.
+ * Players can click on a user to start cooperating with other players.
  * 
  * @author JimZhouZZY
  * @version 1.20
@@ -44,24 +44,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Timer;
 
 import io.github.jimzhouzzy.klotski.Klotski;
-import io.github.jimzhouzzy.klotski.screen.SpectateScreen;
+import io.github.jimzhouzzy.klotski.screen.CooperateScreen;
 import io.github.jimzhouzzy.klotski.screen.core.MenuScreen;
 import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
 import io.github.jimzhouzzy.klotski.ui.component.Dialog;
 import io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient;
 
-public class SpectateMenuScreen extends MenuScreen {
+public class CooperateMenuScreen extends MenuScreen {
 
     private final GameWebSocketClient webSocketClient;
     private static final Skin newSkin = new Skin(Gdx.files.internal("skins/cloud-form/skin/cloud-form-ui.json"));
 
     private Table userListTable; // for scrollable user list
-    private Timer.Task refreshOnlineUsersTask;
 
-    public SpectateMenuScreen(final Klotski klotski, GameWebSocketClient webSocketClient, ProtoScreen lastScreen) {
+    public CooperateMenuScreen(final Klotski klotski, GameWebSocketClient webSocketClient, ProtoScreen lastScreen) {
         super(klotski, lastScreen);
         this.webSocketClient = webSocketClient;
     }
@@ -79,33 +77,19 @@ public class SpectateMenuScreen extends MenuScreen {
         stage.addActor(table);
 
         // Add a title label
-        Label titleLabel = new Label("Choose a Player to Spectate", skin);
+        Label titleLabel = new Label("Choose a Player to Cooperate", skin);
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(50).row();
 
         // Request online users from the server
-        // requestOnlineUsers(table);
-
-        startOnlineUsersAutoRefresh(table);
-
+        requestOnlineUsers(table);
+        
         // ** TEST **
         // Manually populate user list for testing
         // populateUserButtons(table, new String[]{"Alice", "Bob", "Charlie", "Dana","1","2","3","4","5","6","7","8","9"});
 
         // Add a "Back" button at the bottom
         addBackButton(table);
-    }
-
-    private void startOnlineUsersAutoRefresh(Table table) {
-        if (refreshOnlineUsersTask != null) {
-            refreshOnlineUsersTask.cancel();
-        }
-        refreshOnlineUsersTask = Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                requestOnlineUsers(table);
-            }
-        }, 1, 1); // 1s interval
     }
 
     private void requestOnlineUsers(Table table) {
@@ -136,7 +120,7 @@ public class SpectateMenuScreen extends MenuScreen {
         userListTable = new Table(newSkin);
 
         // Add a title label
-        Label titleLabel = new Label("Choose a Player to Spectate", skin);
+        Label titleLabel = new Label("Choose a Player to Cooperate", skin);
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
@@ -147,7 +131,7 @@ public class SpectateMenuScreen extends MenuScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     klotski.playClickSound();
-                    spectateUser(user);
+                    cooperateWithUser(user);
                 }
             });
             userListTable.add(userButton).width(300).height(50).padBottom(20).row();
@@ -174,17 +158,8 @@ public class SpectateMenuScreen extends MenuScreen {
         table.add(backButton).width(300).height(50).padTop(20).expandY().bottom(); // Ensure it's at the bottom
     }
 
-    private void spectateUser(String user) {
-        System.out.println("Spectating user: " + user);
-        klotski.setScreen(new SpectateScreen(klotski, user, klotski.webSocketClient)); // Navigate to the SpectateScreen
-    }
-
-    @Override
-    public void hide() {
-        super.hide();
-        if (refreshOnlineUsersTask != null) {
-            refreshOnlineUsersTask.cancel();
-            refreshOnlineUsersTask = null;
-        }
+    private void cooperateWithUser(String user) {
+        System.out.println("Cooperating with user: " + user);
+        klotski.setScreen(new CooperateScreen(klotski, user, klotski.webSocketClient)); // Navigate to the SpectateScreen
     }
 }

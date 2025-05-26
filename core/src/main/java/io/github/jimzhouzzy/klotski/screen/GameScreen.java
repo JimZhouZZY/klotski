@@ -162,6 +162,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public boolean isAttackMode; // Flag to track if the game is in 3min-Attack mode
     public float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     public Label congratsLabel;
+    private Group badgeGroup;
+    private Timer.Task badgeHideTask;
 
     public int blockedId = 10; // no piece is blocked at first
 
@@ -188,7 +190,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
         });
         Gdx.input.setInputProcessor(stage);
-        klotski.dynamicBoard.setStage(stage);
 
         skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
         shapeRenderer = new ShapeRenderer();
@@ -217,58 +218,66 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         gridTable.setFillParent(false);
 
         // Right side: Button column
+        // Create a table for buttons, arrange in two columns
         Table buttonTable = new Table();
+
+        // Set default button size (1.5x original)
+        float buttonWidth = 150;
+        float buttonHeight = 45;
+
         String[] buttonNames = { "Restart", "Hint", "Auto", "Undo", "Redo", "Save", "Load", "Exit" };
 
-        // Add buttons with listeners
-        for (String name : buttonNames) {
+        // Add buttons in two columns
+        for (int i = 0; i < buttonNames.length; i++) {
+            String name = buttonNames[i];
             TextButton button = new TextButton(name, skin);
-            button.getLabel().setFontScale(0.5f);
-            buttonTable.add(button).height(30).width(100).pad(10);
-            buttonTable.row();
+            button.getLabel().setFontScale(0.75f); // 1.5x original font scale
+            buttonTable.add(button).height(buttonHeight).width(buttonWidth).pad(10);
+
+            if (i % 2 == 1) buttonTable.row(); // New row after every two buttons
 
             if (name.equals("Auto")) {
-                autoButton = button;
+            autoButton = button;
             }
 
             // Add functionality to each button
             button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    klotski.playClickSound();
-                    switch (name) {
-                        case "Restart":
-                            handleRestart(game);
-                            break;
-                        case "Hint":
-                            handleHint(game);
-                            break;
-                        case "Auto":
-                            handleAutoSolve(game, button);
-                            break;
-                        case "Undo":
-                            handleUndo();
-                            break;
-                        case "Redo":
-                            handleRedo();
-                            break;
-                        case "Save":
-                            if (!klotski.isOfflineMode())
-                                handleSave(false);
-                            else
-                                handleLocalSave(false);
-                            break;
-                        case "Load":
-                            if (!klotski.isOfflineMode())
-                                handleLoad();
-                            else
-                                handleLocalLoad();
-                            break;
-                        case "Exit":
-                            handleExit();
-                            break;
-                    }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                klotski.playClickSound();
+                switch (name) {
+                case "Restart":
+                    handleRestart(game);
+                    break;
+                case "Hint":
+                    handleHint(game);
+                    break;
+                case "Auto":
+                    handleAutoSolve(game, button);
+                    break;
+                case "Undo":
+                    handleUndo();
+                    break;
+                case "Redo":
+                    handleRedo();
+                    break;
+                case "Save":
+                    if (!klotski.isOfflineMode())
+                    handleSave(false);
+                    else
+                    handleLocalSave(false);
+                    break;
+                case "Load":
+                    if (!klotski.isOfflineMode())
+                    handleLoad();
+                    else
+                    handleLocalLoad();
+                    break;
+                case "Exit":
+                    handleExit();
+                    break;
                 }
+            }
             });
         }
 
@@ -388,6 +397,29 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         movesLabel.setFontScale(1.2f);
         movesLabel.setAlignment(Align.center);
         buttonTable.add(movesLabel).width(100).pad(10).row();
+
+        badgeGroup = new Group();
+        badgeGroup.setVisible(false);
+
+        Label badgeLabel = new Label("", skin);
+        badgeLabel.setName("badgeLabel");
+        badgeLabel.setFontScale(1.2f);
+        badgeLabel.setAlignment(Align.center);
+
+        Image badgeBg = new Image(skin.newDrawable("white", new Color(1, 1, 1, 0.5f)));
+        badgeBg.setSize(400, 50);
+        badgeBg.setPosition(-30, 0);
+
+        badgeLabel.setSize(300, 50);
+        badgeLabel.setPosition(0, 0);
+
+        badgeGroup.addActor(badgeBg);
+        badgeGroup.addActor(badgeLabel);
+
+        badgeGroup.setSize(300, 50);
+        badgeGroup.setPosition(Gdx.graphics.getWidth() - 400, 20);
+
+        stage.addActor(badgeGroup);
 
         // Reset elapsed time
         elapsedTime = 0;
@@ -737,7 +769,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Optional, render dynamic board
-        // klotski.dynamicBoard.render(delta);
+        klotski.dynamicBoard.render(delta);
 
         // Handle 3min-Attack mode
         if (isAttackMode && elapsedTime >= attackModeTimeLimit) {
@@ -867,6 +899,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
+
+        if (badgeGroup != null) {
+            badgeGroup.setPosition(width - 320, 20);
+        }
 
         // Magically make the resize work without problems
         // I dont't know why, but it works
@@ -1208,7 +1244,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeObject(new GameState(currentMoveIndex, elapsedTime));
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
 
-            if (!autoSave) { showSavePopup(); }
+            // Now I decided to show the save popup every time
+            if (!autoSave)
+                showBadge("Game saved successfully for user: " + klotski.getLoggedInUser());
+            else
+                showBadge("Game auto-saved for user: " + klotski.getLoggedInUser());
 
             // print save file content
             System.out.println("Save file content: " + new String(Files.readAllBytes(file.toPath())));
@@ -1282,7 +1322,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         fetchLatestSaveFromServer(username, saveData -> {
             if (saveData == null) {
                 System.out.println("No save file found for user: " + username);
-//                System.out.println("!!!!!!");
                 return;
             }
 
@@ -1367,25 +1406,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         });
     }
 
-    public void showSavePopup() {
-        // Show a small pop-up window after saving
-        Dialog saveDialog = new Dialog("Save", skin);
-        Label saveMessage = new Label("Game saved successfully for user: " + klotski.getLoggedInUser(), skin);
-        saveMessage.setFontScale(1.5f); // Increase font size for the message
-        saveDialog.getContentTable().add(saveMessage).pad(20).row();
-
-        TextButton cancelButton = new TextButton("Cancel", skin);
-        cancelButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-            }
-        });
-        cancelButton.getLabel().setFontScale(1.0f); // Slightly smaller button
-        saveDialog.button(cancelButton, true);
-        saveDialog.show(stage);
-    }
-
     public void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
         String saveFileName = getSaveFileName();
@@ -1398,7 +1418,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             oos.writeInt(currentMoveIndex);
             oos.writeFloat(elapsedTime);
             System.out.println("Game saved successfully for user: " + klotski.getLoggedInUser());
-            if (!autoSave) { showSavePopup();}
+            if (!autoSave)
+                showBadge("Game saved successfully for user: " + klotski.getLoggedInUser());
+            else
+                showBadge("Game auto-saved for user: " + klotski.getLoggedInUser());
         } catch (IOException e) {
             System.err.println("Failed to save game: " + e.getMessage());
         }
@@ -1453,8 +1476,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         Music bgm = klotski.getBackgroundMusic();
         if (bgm != null) {
-            bgm.setVolume(1.0f); // 恢复音量
+            bgm.setVolume(1.0f);
         }
+        
+        klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
     }
 
     @Override
@@ -1468,6 +1493,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     @Override
     public void show() {
         create();
+        //klotski.dynamicBoard.setStage(stage);
+        klotski.dynamicBoard.triggerAnimateFocalLength(10000.0f, 1.0f);
         handleRestart(game);
         Gdx.input.setInputProcessor(stage);
 
@@ -1505,5 +1532,24 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } catch (Exception e) {
             System.err.println("Failed to broadcast game state: " + e.getMessage());
         }
+    }
+
+    public void showBadge(String message) {
+        if (badgeHideTask != null) {
+            badgeHideTask.cancel();
+        }
+        Label badgeLabel = badgeGroup.findActor("badgeLabel");
+        badgeLabel.setText(message);
+        badgeGroup.setVisible(true);
+        badgeGroup.toFront();
+
+        badgeGroup.setPosition(Gdx.graphics.getWidth() - 320, 20);
+
+        badgeHideTask = Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                badgeGroup.setVisible(false);
+            }
+        }, 3);
     }
 }

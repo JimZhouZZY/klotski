@@ -101,7 +101,7 @@ public class KlotzkiBoard extends DynamicBoard {
                 switch (keycode) {
                     case Input.Keys.W:
                     case Input.Keys.UP:
-                        if (keyDownW || keyDownS) break;
+                        if (keyDownW || keyDownS || moveBackward) break;
                         if (nextY + 1 < numRows && map[nextX + (nextY + 1) * numCols] == 0
                                 || nextX == nextGyX && nextY + 1 == nextGyY) {
                             keyDownW = true;
@@ -111,7 +111,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         break;
                     case Input.Keys.S:
                     case Input.Keys.DOWN:
-                        if (keyDownS || keyDownW) break;
+                        if (keyDownS || keyDownW || moveForward) break;
                         if (nextY - 1 >= 0 && map[nextX + (nextY - 1) * numCols] == 0
                                 || nextX == nextGyX && nextY - 1 == nextGyY) {
                             keyDownS = true;
@@ -121,7 +121,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         break;
                     case Input.Keys.A:
                     case Input.Keys.LEFT:
-                        if (keyDownA || keyDownD) break;
+                        if (keyDownA || keyDownD || moveRight) break;
                         if (nextX - 1 >= 0 && map[(nextX - 1) + nextY * numCols] == 0
                                 || nextX - 1 == nextGyX && nextY == nextGyY) {
                             keyDownA = true;
@@ -131,7 +131,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         break;
                     case Input.Keys.D:
                     case Input.Keys.RIGHT:
-                        if (keyDownD || keyDownA) break;
+                        if (keyDownD || keyDownA || moveLeft) break;
                         if (nextX + 1 < numCols && map[(nextX + 1) + nextY * numCols] == 0
                                 || nextX + 1 == nextGyX && nextY == nextGyY) {
                             keyDownD = true;
@@ -141,7 +141,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         break;
                     case Input.Keys.SHIFT_LEFT:
                     case Input.Keys.SHIFT_RIGHT:
-                        moveShifted = true;
+                        // moveShifted = true;
                         break;
                     case Input.Keys.CONTROL_LEFT:
                         moveDownward = true;
@@ -160,10 +160,9 @@ public class KlotzkiBoard extends DynamicBoard {
                         break;
                 }
                 
-                // Gy（关羽）操作逻辑，参照曹操
                 switch (keycode) {
                     case Input.Keys.I:
-                        if (keyGyUp || keyGyDown) break;
+                        if (keyGyUp || keyGyDown || moveGyBackward) break;
                         if (nextGyY + 1 < numRows && map[nextGyX + (nextGyY + 1) * numCols] == 1) {
                             keyGyUp = true;
                             moveGyForward = true;
@@ -171,7 +170,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         }
                         break;
                     case Input.Keys.K:
-                        if (keyGyDown || keyGyUp) break;
+                        if (keyGyDown || keyGyUp || moveGyForward) break;
                         if (nextGyY - 1 >= 0 && map[nextGyX + (nextGyY - 1) * numCols] == 1) {
                             keyGyDown = true;
                             moveGyBackward = true;
@@ -179,7 +178,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         }
                         break;
                     case Input.Keys.J:
-                        if (keyGyLeft || keyGyRight) break;
+                        if (keyGyLeft || keyGyRight || moveGyRight) break;
                         if (nextGyX - 1 >= 0 && map[(nextGyX - 1) + nextGyY * numCols] == 1) {
                             keyGyLeft = true;
                             moveGyLeft = true;
@@ -187,7 +186,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         }
                         break;
                     case Input.Keys.L:
-                        if (keyGyRight || keyGyLeft) break;
+                        if (keyGyRight || keyGyLeft || moveGyLeft) break;
                         if (nextGyX + 1 < numCols && map[(nextGyX + 1) + nextGyY * numCols] == 1) {
                             keyGyRight = true;
                             moveGyRight = true;
@@ -368,7 +367,7 @@ public class KlotzkiBoard extends DynamicBoard {
                     int numRows = map.length / numCols;
                     int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
                     int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
-                    if (nextX - 1 >= 0 && map[(nextX - 1) + nextY * numCols] == 0)
+                    if (nextX + 1 >= 0 && map[(nextX + 1) + nextY * numCols] == 0)
                         ccPositionOffset[0]++;
                 }
                 isAnimating = false;
@@ -386,7 +385,7 @@ public class KlotzkiBoard extends DynamicBoard {
                     int numRows = map.length / numCols;
                     int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
                     int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
-                    if (nextX + 1 < numCols && map[(nextX + 1) + nextY * numCols] == 0)
+                    if (nextX - 1 < numCols && map[(nextX - 1) + nextY * numCols] == 0)
                         ccPositionOffset[0]--;
                 }
                 isAnimating = false;
@@ -417,8 +416,8 @@ public class KlotzkiBoard extends DynamicBoard {
                 if (keyGyUp) {
                     int numCols = 20;
                     int numRows = map.length / numCols;
-                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
-                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
                     if (nextGyY + 1 < numRows && map[nextGyX + (nextGyY + 1) * numCols] == 1) {
                         gyPositionOffset[1]++;
                     }
@@ -436,8 +435,8 @@ public class KlotzkiBoard extends DynamicBoard {
                 if (keyGyDown) {
                     int numCols = 20;
                     int numRows = map.length / numCols;
-                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
-                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
                     if (nextGyY - 1 >= 0 && map[nextGyX + (nextGyY - 1) * numCols] == 1) {
                         gyPositionOffset[1]--;
                     }
@@ -455,8 +454,8 @@ public class KlotzkiBoard extends DynamicBoard {
                 if (keyGyRight) {
                     int numCols = 20;
                     int numRows = map.length / numCols;
-                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
-                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
                     if (nextGyX + 1 < numCols && map[(nextGyX + 1) + nextGyY * numCols] == 1) {
                         gyPositionOffset[0]++;
                     }
@@ -474,8 +473,8 @@ public class KlotzkiBoard extends DynamicBoard {
                 if (keyGyLeft) {
                     int numCols = 20;
                     int numRows = map.length / numCols;
-                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
-                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
                     if (nextGyX - 1 >= 0 && map[(nextGyX - 1) + nextGyY * numCols] == 1) {
                         gyPositionOffset[0]--;
                     }
@@ -668,7 +667,7 @@ public class KlotzkiBoard extends DynamicBoard {
                 focalLength, centerX, centerZ);
         Vector2 ccbr = projectPerspective(ccRotatedPositionBR.x, ccRotatedPositionBR.y,
                 focalLength, centerX, centerZ);
-        drawTopRectangle(cctl, cctr, ccbl, ccbr, 100f, new Color(0.8f, 0f, 0f, 1f), 0.0f);
+        drawTopRectangle(cctl, cctr, ccbl, ccbr, 100f, new Color(0.8f, 0.5f, 0.5f, 0.25f), 0.0f);
 
         // Add Guan yu block
         Vector2 gyRotatedPosition = applyRotation((gyPosition[0] + 0.0f) * baseTileSize + screenWidth / 2f - offsetX + gyOffsetX, gyPosition[1] * baseTileSize - offsetY + gyOffsetY,
@@ -683,7 +682,7 @@ public class KlotzkiBoard extends DynamicBoard {
                 focalLength, centerX, centerZ);
         Vector2 gybr = projectPerspective(gyRotatedPositionBR.x, gyRotatedPositionBR.y,
                 focalLength, centerX, centerZ);
-        drawTopRectangle(gytl, gytr, gybl, gybr, 100f, new Color(0f, 0f, 0.8f, 1f), 0.0f);
+        drawTopRectangle(gytl, gytr, gybl, gybr, 100f, new Color(0.5f, 0.5f, 0.8f, 0.25f), 0.0f);
 
         // Draw top layer
         for (int i = 0; i < topRectangleVectors.size(); i ++) {
@@ -701,6 +700,7 @@ public class KlotzkiBoard extends DynamicBoard {
 
     @Override
     public void loadColors() {
+        colorChangeSpeed  = 0.01f;
         this.map = new int[40000];
         
         // Predefined list of colors
@@ -763,9 +763,9 @@ public class KlotzkiBoard extends DynamicBoard {
                     if (idx < levelColorCache.size()) {
                         Color c = levelColorCache.get(idx);
                         float gray = (c.r + c.g + c.b) / 3f;
-                        c.r = c.r * 0.25f + 1 * 0.75f;
-                        c.g = c.g * 0.25f + 1 * 0.75f;
-                        c.b = c.b * 0.25f + 1 * 0.75f;
+                        c.r = c.r * 0.5f + 1 * 0.5f;
+                        c.g = c.g * 0.5f + 1 * 0.5f;
+                        c.b = c.b * 0.5f + 1 * 0.5f;
                     }
                 }
             }

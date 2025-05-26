@@ -66,7 +66,7 @@ import io.github.jimzhouzzy.klotski.screen.menu.GameModeMenuScreen;
 
 public class MainScreen extends ProtoScreen {
     private float baseTileSize;
-    private Label greetingLabel; // Label to display the greeting message
+    private Label greetingLabel; // Attribute for greeting label
     private ShapeRenderer shapeRenderer;
     private float offsetY;
     private Color currentColor;
@@ -86,16 +86,16 @@ public class MainScreen extends ProtoScreen {
 
     public MainScreen(final Klotski klotski) {
         super(klotski);
-        
+
         yRotationCache = new HashMap<>();
         zPositionCache = new HashMap<>();
         zPositionTempCache = new HashMap<>();
         triggerYRotation = new HashMap<>();
-        
+
         triggerYRotationAnimation = false;
         baseTileSize = 50f;
         offsetY = 0f;
-        
+
         create();
     }
 
@@ -114,11 +114,9 @@ public class MainScreen extends ProtoScreen {
 
         // Add a greeting label
         Label.LabelStyle narrationStyle = skin.get("narration", Label.LabelStyle.class);
-        String username = klotski.getLoggedInUser();
-        String greetingText = username != null ? "Welcome, " + username + "!" : "Welcome, Guest!";
-        this.greetingLabel = new Label(greetingText, narrationStyle);
+        greetingLabel = new Label(getGreetingText(), narrationStyle);
         greetingLabel.setFontScale(2.0f);
-        greetingLabel.setColor(Color.WHITE); // Set the title color to white
+        greetingLabel.setColor(Color.WHITE);
         table.add(greetingLabel).padBottom(30).row();
 
         // Add a "Play" button
@@ -175,6 +173,19 @@ public class MainScreen extends ProtoScreen {
             }
         });
         table.add(exitButton).width(200).height(50);
+    }
+
+    // Method to get greeting text
+    private String getGreetingText() {
+        String username = klotski.getLoggedInUser();
+        return username != null ? "Welcome, " + username + "!" : "Welcome, Guest!";
+    }
+
+    // Method to update greeting label with current username
+    public void updateGreetingLabel() {
+        if (greetingLabel != null) {
+            greetingLabel.setText(getGreetingText());
+        }
     }
 
     public Color generateSimilarColor(Color baseColor, float variability, float offset, float limit) {
@@ -304,5 +315,12 @@ public class MainScreen extends ProtoScreen {
             triggerYRotationAnimation = true;
             System.out.println("Triggering flip animation, with starting row: " + yRotationAnimationStartingRow);
         }
+    }
+
+    @Override
+    public void show() {
+        updateGreetingLabel(); // in case the username changed
+        Gdx.input.setInputProcessor(stage);
+        klotski.dynamicBoard.setStage(stage);
     }
 }
