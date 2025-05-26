@@ -46,23 +46,261 @@ package io.github.jimzhouzzy.klotski.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Stack;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ColorHelper;
+import io.github.jimzhouzzy.klotski.logic.MazeGenerator;
 
 public class KlotzkiBoard extends DynamicBoard {
 
-    private int[] ccPosition = new int[] { 10, 2 }; // Cao cao position in the grid
+    private int[] ccPosition = new int[] { 0, 8 }; // Cao cao position in the grid
+    private int[] ccPositionOffset = new int[] { 0, 0 }; // Cao cao position in the grid
+    private boolean isAnimating = false;
+    private int[] map;
+    private boolean keyDownW = false;
+    private boolean keyDownA = false;
+    private boolean keyDownS = false;
+    private boolean keyDownD = false;
+    private int[] gyPosition = new int[] { 1, 8 }; // Cao cao position in the grid
+    private int[] gyPositionOffset = new int[] {0, 0};
+    private boolean keyGyUp = false, keyGyDown = false, keyGyLeft = false, keyGyRight = false;
+    private boolean moveGyForward = false, moveGyBackward = false, moveGyLeft = false, moveGyRight = false;
+    private float gyOffsetX = 0f, gyOffsetY = 0f;
 
     public KlotzkiBoard(final Klotski klotski, Stage stage) {
         super(klotski, stage);
+    }
+
+    @Override
+    public void create() {
+        offsetX = 0f;
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                int numCols = 20;
+                int numRows = map.length / numCols;
+                int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
+                int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
+                int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
+                int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
+                switch (keycode) {
+                    case Input.Keys.W:
+                    case Input.Keys.UP:
+                        if (keyDownW || keyDownS) break;
+                        if (nextY + 1 < numRows && map[nextX + (nextY + 1) * numCols] == 0
+                                || nextX == nextGyX && nextY + 1 == nextGyY) {
+                            keyDownW = true;
+                            moveForward = true;
+                            ccPositionOffset[1] += 1;
+                        }
+                        break;
+                    case Input.Keys.S:
+                    case Input.Keys.DOWN:
+                        if (keyDownS || keyDownW) break;
+                        if (nextY - 1 >= 0 && map[nextX + (nextY - 1) * numCols] == 0
+                                || nextX == nextGyX && nextY - 1 == nextGyY) {
+                            keyDownS = true;
+                            moveBackward = true;
+                            ccPositionOffset[1] -= 1;
+                        }
+                        break;
+                    case Input.Keys.A:
+                    case Input.Keys.LEFT:
+                        if (keyDownA || keyDownD) break;
+                        if (nextX - 1 >= 0 && map[(nextX - 1) + nextY * numCols] == 0
+                                || nextX - 1 == nextGyX && nextY == nextGyY) {
+                            keyDownA = true;
+                            moveLeft = true;
+                            ccPositionOffset[0] -= 1;
+                        }
+                        break;
+                    case Input.Keys.D:
+                    case Input.Keys.RIGHT:
+                        if (keyDownD || keyDownA) break;
+                        if (nextX + 1 < numCols && map[(nextX + 1) + nextY * numCols] == 0
+                                || nextX + 1 == nextGyX && nextY == nextGyY) {
+                            keyDownD = true;
+                            moveRight = true;
+                            ccPositionOffset[0] += 1;
+                        }
+                        break;
+                    case Input.Keys.SHIFT_LEFT:
+                    case Input.Keys.SHIFT_RIGHT:
+                        moveShifted = true;
+                        break;
+                    case Input.Keys.CONTROL_LEFT:
+                        moveDownward = true;
+                        break;
+                    case Input.Keys.SPACE:
+                        moveUpward = true;
+                        break;
+                    case Input.Keys.Q:
+                        rotateCounterClockwise = true;
+                        break;
+                    case Input.Keys.E:
+                        rotateClockwise = true;
+                        break;
+                    case Input.Keys.F:
+                        triggerFlip();
+                        break;
+                }
+                
+                // Gy（关羽）操作逻辑，参照曹操
+                switch (keycode) {
+                    case Input.Keys.I:
+                        if (keyGyUp || keyGyDown) break;
+                        if (nextGyY + 1 < numRows && map[nextGyX + (nextGyY + 1) * numCols] == 1) {
+                            keyGyUp = true;
+                            moveGyForward = true;
+                            gyPositionOffset[1] += 1;
+                        }
+                        break;
+                    case Input.Keys.K:
+                        if (keyGyDown || keyGyUp) break;
+                        if (nextGyY - 1 >= 0 && map[nextGyX + (nextGyY - 1) * numCols] == 1) {
+                            keyGyDown = true;
+                            moveGyBackward = true;
+                            gyPositionOffset[1] -= 1;
+                        }
+                        break;
+                    case Input.Keys.J:
+                        if (keyGyLeft || keyGyRight) break;
+                        if (nextGyX - 1 >= 0 && map[(nextGyX - 1) + nextGyY * numCols] == 1) {
+                            keyGyLeft = true;
+                            moveGyLeft = true;
+                            gyPositionOffset[0] -= 1;
+                        }
+                        break;
+                    case Input.Keys.L:
+                        if (keyGyRight || keyGyLeft) break;
+                        if (nextGyX + 1 < numCols && map[(nextGyX + 1) + nextGyY * numCols] == 1) {
+                            keyGyRight = true;
+                            moveGyRight = true;
+                            gyPositionOffset[0] += 1;
+                        }
+                        break;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(InputEvent event, int keycode) {
+                switch (keycode) {
+                    case Input.Keys.W:
+                    case Input.Keys.UP:
+                        keyDownW = false;
+                        break;
+                    case Input.Keys.S:
+                    case Input.Keys.DOWN:
+                        keyDownS = false;
+                        break;
+                    case Input.Keys.A:
+                    case Input.Keys.LEFT:
+                        keyDownA = false;
+                        break;
+                    case Input.Keys.D:
+                    case Input.Keys.RIGHT:
+                        keyDownD = false;
+                        break;
+                    case Input.Keys.SHIFT_LEFT:
+                    case Input.Keys.SHIFT_RIGHT:
+                        moveShifted = false;
+                        break;
+                    case Input.Keys.CONTROL_LEFT:
+                        moveDownward = false;
+                        break;
+                    case Input.Keys.SPACE:
+                        moveUpward = false;
+                        break;
+                    case Input.Keys.Q:
+                        rotateCounterClockwise = false;
+                        break;
+                    case Input.Keys.E:
+                        rotateClockwise = false;
+                        break;
+                    case Input.Keys.I:
+                        keyGyUp = false;
+                        break;
+                    case Input.Keys.K:
+                        keyGyDown = false;
+                        break;
+                    case Input.Keys.J:
+                        keyGyLeft = false;
+                        break;
+                    case Input.Keys.L:
+                        keyGyRight = false;
+                        break;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // Update cursor
+                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
+
+                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                resizedClickedPixmap.drawPixmap(clickedPixmap,
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight()
+                );
+
+                int xHotspot = 7, yHotspot = 1;
+                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                resizedClickedPixmap.dispose();
+                clickedPixmap.dispose();
+                Gdx.graphics.setCursor(clickedCursor);
+
+                // If the cursor is clicked inside a quadrant, trigger the flip
+                for (int i = 0; i < topRectangleVectors.size(); i++) {
+                    Vector2[] vector  = topRectangleVectors.get(i);
+                    float rectY = topRectangleYs.get(i);
+                    float screenHeight = Gdx.graphics.getHeight();
+                    float cursorX = Gdx.input.getX();
+                    float cursorY = screenHeight - Gdx.input.getY();
+                    if (isPointInQuadrilateral(new Vector2(cursorX, cursorY), vector[0], vector[1], vector[2], vector[3])) {
+                        //triggerFlip((int) ((rectY + offsetY) / baseTileSize));
+                        break;
+                    }
+                }
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
+
+                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                resizedClickedPixmap.drawPixmap(clickedPixmap,
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight()
+                );
+
+                int xHotspot = 7, yHotspot = 1;
+                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                resizedClickedPixmap.dispose();
+                clickedPixmap.dispose();
+                Gdx.graphics.setCursor(clickedCursor);
+            }
+        });
+
+        
     }
 
     @Override
@@ -83,17 +321,77 @@ public class KlotzkiBoard extends DynamicBoard {
         if (moveShifted) {
             moveSpeed = 3 * moveSpeed;
         }
-        if (moveForward) {
+        if (keyDownW || moveForward) {
+            isAnimating = true;
+            moveForward = true;
             offsetY += delta * moveSpeed;
+            if (Math.abs(offsetY - (ccPositionOffset[1] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                offsetY = ccPositionOffset[1] * baseTileSize;
+                if (keyDownW) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
+                    int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
+                    if (nextY + 1 < numRows && map[nextX + (nextY + 1) * numCols] == 0) 
+                        ccPositionOffset[1] ++;
+                }
+                isAnimating = false;
+                moveForward = false;
+            }
         }
-        if (moveBackward) {
+        if (keyDownS || moveBackward) {
+            isAnimating = true;
+            moveBackward = true;
             offsetY -= delta * moveSpeed;
+            if (Math.abs(offsetY - (ccPositionOffset[1] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                offsetY = ccPositionOffset[1] * baseTileSize;
+                if (keyDownS) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
+                    int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
+                    if (nextY - 1 >= 0 && map[nextX + (nextY - 1) * numCols] == 0) 
+                        ccPositionOffset[1]--;
+                }
+                isAnimating = false;
+                moveBackward = false;
+            }
         }
-        if (moveRight) {
+        if (keyDownD || moveRight) {
+            isAnimating = true;
+            moveRight = true;
             offsetX += delta * moveSpeed;
+            if (Math.abs(offsetX - (ccPositionOffset[0] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                offsetX = ccPositionOffset[0] * baseTileSize;
+                if (keyDownD) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
+                    int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
+                    if (nextX - 1 >= 0 && map[(nextX - 1) + nextY * numCols] == 0)
+                        ccPositionOffset[0]++;
+                }
+                isAnimating = false;
+                moveRight = false;
+            }
         }
-        if (moveLeft) {
+        if (keyDownA || moveLeft) {
+            isAnimating = true;
+            moveLeft = true;
             offsetX -= delta * moveSpeed;
+            if (Math.abs(offsetX - (ccPositionOffset[0] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                offsetX = ccPositionOffset[0] * baseTileSize;
+                if (keyDownA) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
+                    int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
+                    if (nextX + 1 < numCols && map[(nextX + 1) + nextY * numCols] == 0)
+                        ccPositionOffset[0]--;
+                }
+                isAnimating = false;
+                moveLeft = false;
+            }
         }
         if (moveUpward) {
             offsetZ += 3 * delta * moveSpeed;
@@ -109,10 +407,87 @@ public class KlotzkiBoard extends DynamicBoard {
             if (rotationAngle < 3f && rotationAngle > -2f)
                 rotationAngle -= rotationSpeed * delta;
         }
+        
+        if (keyGyUp || moveGyForward) {
+            isAnimating = true;
+            moveGyForward = true;
+            gyOffsetY += delta * moveSpeed;
+            if (Math.abs(gyOffsetY - (gyPositionOffset[1] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                gyOffsetY = gyPositionOffset[1] * baseTileSize;
+                if (keyGyUp) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    if (nextGyY + 1 < numRows && map[nextGyX + (nextGyY + 1) * numCols] == 1) {
+                        gyPositionOffset[1]++;
+                    }
+                }
+                isAnimating = false;
+                moveGyForward = false;
+            }
+        }
+        if (keyGyDown || moveGyBackward) {
+            isAnimating = true;
+            moveGyBackward = true;
+            gyOffsetY -= delta * moveSpeed;
+            if (Math.abs(gyOffsetY - (gyPositionOffset[1] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                gyOffsetY = gyPositionOffset[1] * baseTileSize;
+                if (keyGyDown) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    if (nextGyY - 1 >= 0 && map[nextGyX + (nextGyY - 1) * numCols] == 1) {
+                        gyPositionOffset[1]--;
+                    }
+                }
+                isAnimating = false;
+                moveGyBackward = false;
+            }
+        }
+        if (keyGyRight || moveGyRight) {
+            isAnimating = true;
+            moveGyRight = true;
+            gyOffsetX += delta * moveSpeed;
+            if (Math.abs(gyOffsetX - (gyPositionOffset[0] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                gyOffsetX = gyPositionOffset[0] * baseTileSize;
+                if (keyGyRight) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    if (nextGyX + 1 < numCols && map[(nextGyX + 1) + nextGyY * numCols] == 1) {
+                        gyPositionOffset[0]++;
+                    }
+                }
+                isAnimating = false;
+                moveGyRight = false;
+            }
+        }
+        if (keyGyLeft || moveGyLeft) {
+            isAnimating = true;
+            moveGyLeft = true;
+            gyOffsetX -= delta * moveSpeed;
+            if (Math.abs(gyOffsetX - (gyPositionOffset[0] * baseTileSize)) < 5f * (moveShifted ? 3f : 1f)) {
+                gyOffsetX = gyPositionOffset[0] * baseTileSize;
+                if (keyGyLeft) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0];
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1];
+                    if (nextGyX - 1 >= 0 && map[(nextGyX - 1) + nextGyY * numCols] == 1) {
+                        gyPositionOffset[0]--;
+                    }
+                }
+                isAnimating = false;
+                moveGyLeft = false;
+            }
+        }
 
         // Update offsets for diagonal translation animation (45-degree movement)
         // offsetX += delta * 20; // Move 20 pixels per second horizontally
-        offsetY += delta * 50; // Move 50 pixels per second vertically
+        // offsetY += delta * 50; // Move 50 pixels per second vertically
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -123,14 +498,11 @@ public class KlotzkiBoard extends DynamicBoard {
                 * (1 - 0.2f * (float) veryComplexFunction((frameCount + frameCountOffset) / 5000f));
         float centerZ = (screenHeight + offsetZ) / 3.75f
                 * (1 - 0.5f * (float) veryComplexFunction((frameCount + frameCountOffset) / 5000f)); // Center Y
-                                                                                                     // position for
-                                                                                                     // perspective
-                                                                                                     // projection
         float appliedRotationAngle = rotationAngle
-                + 2.0f * ((0.5f - (float) simpleComplexFunction((frameCount + frameCountOffset) / 50f)));
+                + 0.5f * ((0.5f - (float) simpleComplexFunction((frameCount + frameCountOffset) / 50f)));
 
         if (frameCount % (60 * 20) == 0 && !triggerYRotationAnimation) {
-            triggerFlip();
+            // triggerFlip();
         }
         if (triggerYRotationAnimation) {
             if (frameCount % (10 * 1) == 0) {
@@ -155,7 +527,8 @@ public class KlotzkiBoard extends DynamicBoard {
             }
         }
 
-        for (float y = -offsetY - 2f * baseTileSize; y < -0.01 + screenHeight + 20f * baseTileSize; y += baseTileSize) {
+
+        for (float y = -offsetY - 2f * baseTileSize -0.01f; y < -0.01 + screenHeight + 20f * baseTileSize; y += baseTileSize) {
             for (float x = -offsetX - 10f * baseTileSize + screenWidth / 2f; x < -0.01+ -offsetX +
                     + 10f * baseTileSize + screenWidth / 2f; x += baseTileSize) {
                 if (x < 0f - 50f * baseTileSize 
@@ -241,8 +614,7 @@ public class KlotzkiBoard extends DynamicBoard {
                         appliedRotationAngle);
                 Vector2 rotatedPositionBR = applyRotation(yRotatedX + yRotatedTileSize,
                         zPositionChangedY + baseTileSize, centerX,
-                        centerZ,
-                        appliedRotationAngle);
+                        centerZ, appliedRotationAngle);
 
                 // Calculate the projected positions for the four corners of the tile
                 Vector2 tl = projectPerspective(rotatedPosition.x, rotatedPosition.y + (float) zPositionChange,
@@ -259,7 +631,7 @@ public class KlotzkiBoard extends DynamicBoard {
                 float cursorY = screenHeight - Gdx.input.getY();
                 Vector2 cursor = new Vector2(cursorX, cursorY);
 
-                if (isPointInQuadrilateral(cursor, tl, tr, bl, br)) {
+                if (false && isPointInQuadrilateral(cursor, tl, tr, bl, br)) {
                     zPositionChange = 10.0;
 
                     // Add zPositionChange
@@ -280,22 +652,38 @@ public class KlotzkiBoard extends DynamicBoard {
 
                 drawTopRectangle(tl, tr, bl, br, y, tileColor, (float) yRotationAngle);
                 
-                // Add Cao cao block
-                tl = projectPerspective(ccPosition[0] * baseTileSize, ccPosition[1] * baseTileSize, focalLength,
-                        centerX, centerZ);
-                tr = projectPerspective(ccPosition[0] * baseTileSize + 2 * baseTileSize, ccPosition[1] * baseTileSize, focalLength,
-                        centerX, centerZ);
-                bl = projectPerspective(ccPosition[0] * baseTileSize, ccPosition[1] * baseTileSize + 2 * baseTileSize,
-                        focalLength, centerX, centerZ);
-                br = projectPerspective(ccPosition[0] * baseTileSize + 2 * baseTileSize, ccPosition[1] * baseTileSize + 2 * baseTileSize, focalLength,
-                        centerX, centerZ);
-
-                topRectangleVectors.add(new Vector2[] { tl, tr, bl, br});
-                topRectangleColors.add(tileColor);
-                topRectangleYs.add(y); // original y position
-                topRectangleYRotationAngles.add(0.0f);
             }
         }
+        
+        // Add Cao cao block
+        Vector2 ccRotatedPosition = applyRotation((ccPosition[0] + 0.0f) * baseTileSize + screenWidth / 2f, ccPosition[1] * baseTileSize,
+                centerX, centerZ, appliedRotationAngle);
+        Vector2 ccRotatedPositionBR = applyRotation((ccPosition[0] + 1.0f) * baseTileSize + screenWidth / 2f,
+                (ccPosition[1] + 1) * baseTileSize, centerX, centerZ, appliedRotationAngle);
+        Vector2 cctl = projectPerspective(ccRotatedPosition.x, ccRotatedPosition.y, focalLength,
+                centerX, centerZ);
+        Vector2 cctr = projectPerspective(ccRotatedPositionBR.x, ccRotatedPosition.y,
+                focalLength, centerX, centerZ);
+        Vector2 ccbl = projectPerspective(ccRotatedPosition.x, ccRotatedPositionBR.y,
+                focalLength, centerX, centerZ);
+        Vector2 ccbr = projectPerspective(ccRotatedPositionBR.x, ccRotatedPositionBR.y,
+                focalLength, centerX, centerZ);
+        drawTopRectangle(cctl, cctr, ccbl, ccbr, 100f, new Color(0.8f, 0f, 0f, 1f), 0.0f);
+
+        // Add Guan yu block
+        Vector2 gyRotatedPosition = applyRotation((gyPosition[0] + 0.0f) * baseTileSize + screenWidth / 2f - offsetX + gyOffsetX, gyPosition[1] * baseTileSize - offsetY + gyOffsetY,
+                centerX, centerZ, appliedRotationAngle);
+        Vector2 gyRotatedPositionBR = applyRotation((gyPosition[0] + 1.0f) * baseTileSize + screenWidth / 2f - offsetX + gyOffsetX,
+                (gyPosition[1] + 1) * baseTileSize - offsetY + gyOffsetY, centerX, centerZ, appliedRotationAngle);
+        Vector2 gytl = projectPerspective(gyRotatedPosition.x, gyRotatedPosition.y, focalLength,
+                centerX, centerZ);
+        Vector2 gytr = projectPerspective(gyRotatedPositionBR.x, gyRotatedPosition.y,
+                focalLength, centerX, centerZ);
+        Vector2 gybl = projectPerspective(gyRotatedPosition.x, gyRotatedPositionBR.y,
+                focalLength, centerX, centerZ);
+        Vector2 gybr = projectPerspective(gyRotatedPositionBR.x, gyRotatedPositionBR.y,
+                focalLength, centerX, centerZ);
+        drawTopRectangle(gytl, gytr, gybl, gybr, 100f, new Color(0f, 0f, 0.8f, 1f), 0.0f);
 
         // Draw top layer
         for (int i = 0; i < topRectangleVectors.size(); i ++) {
@@ -313,6 +701,8 @@ public class KlotzkiBoard extends DynamicBoard {
 
     @Override
     public void loadColors() {
+        this.map = new int[40000];
+        
         // Predefined list of colors
         colorCache.clear();
 
@@ -330,7 +720,6 @@ public class KlotzkiBoard extends DynamicBoard {
             levelColorCache.add(chosenColor.cpy());
         }
 
-        int[] map = new int[40000];
         int pos = 9;
         for (int row = 0; row < 40000 / 20; row += 2) {
             if (row * 20 + 20 + 1 + 20 > 40000) {
@@ -363,20 +752,20 @@ public class KlotzkiBoard extends DynamicBoard {
             map[pos + 2 + row * 20] = 1;
             map[pos + 2 + (row + 1) * 20] = 1;
         }
-
+        map = MazeGenerator.generateMaze(40000, 20, 114514L);
         int numCols = 20;
-        int numRows = levelColorCache.size() / numCols;
+        int numRows = map.length / numCols;
+
         for (int col = 0; col < numCols; col++) {
             for (int row = 0; row < numRows; row ++) {
-                if (row > 0 && map[col + (row-1) * 20] == 1) {
+                if (map[col + (row) * 20] == 1) {
                     int idx = row * numCols + col;
                     if (idx < levelColorCache.size()) {
                         Color c = levelColorCache.get(idx);
                         float gray = (c.r + c.g + c.b) / 3f;
-                        //c.r = c.r * 0.25f + gray * 0.75f;
-                        //c.g = c.g * 0.25f + gray * 0.75f;
-                        //c.b = c.b * 0.25f + gray * 0.75f;
-                        c.r = c.g = c.b = 0.9f;
+                        c.r = c.r * 0.25f + 1 * 0.75f;
+                        c.g = c.g * 0.25f + 1 * 0.75f;
+                        c.b = c.b * 0.25f + 1 * 0.75f;
                     }
                 }
             }
@@ -395,5 +784,13 @@ public class KlotzkiBoard extends DynamicBoard {
                 }
             }
         }
+    }
+
+    public int[] getCcPosition() {
+        return new int[] {ccPosition[0] + ccPositionOffset[0] + 10, ccPosition[1] + ccPositionOffset[1] + 1};
+    }
+
+    public int[] getGyPosition() {
+        return new int[] {gyPosition[0] + gyPositionOffset[0] + 10, gyPosition[1] + gyPositionOffset[1] + 1};
     }
 }
