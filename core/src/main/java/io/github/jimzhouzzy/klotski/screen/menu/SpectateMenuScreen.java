@@ -24,12 +24,13 @@
  * Players can click on a user to start spectating their game.
  *
  * @author JimZhouZZY
- * @version 1.26
+ * @version 1.27
  * @since 2025-5-25
  * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  *
  * Change log:
+ * 2025-05-27: Refactor UI in SpectateScreen
  * 2025-05-27: modify font
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
@@ -164,7 +165,7 @@ public class SpectateMenuScreen extends MenuScreen {
         titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
-            if (user == klotski.getLoggedInUser()) {
+            if (user.equals(klotski.getLoggedInUser())) {
                 // Skip yourself
                 continue;
             }

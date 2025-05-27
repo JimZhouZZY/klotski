@@ -25,12 +25,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.20
+ * @version 1.21
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: Refactor UI in SpectateScreen
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -56,16 +57,19 @@
 package io.github.jimzhouzzy.klotski.screen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -75,6 +79,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.logic.EnhancedKlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
@@ -119,19 +124,33 @@ public class SpectateScreen extends GameScreen {
     @Override
     public void create() {
         stage = new Stage(new ScreenViewport());
+        Gdx.app.postRunnable(() -> {
+            Music bgm = klotski.getBackgroundMusic();
+            if (bgm != null) {
+                bgm.setVolume(0.3f); // Reduce volume to 30%
+            }
+        });
         Gdx.input.setInputProcessor(stage);
-        klotski.dynamicBoard.setStage(stage);
 
         skin = new Skin(Gdx.files.internal("skins/comic/skin/comic-ui.json"));
         shapeRenderer = new ShapeRenderer();
 
         blocks = new ArrayList<>(); // Initialize the list of blocks
 
+        // Load the rectangular block click sound
+        clickRectangularSound = Gdx.audio.newSound(Gdx.files.internal("assets/sound_fx/clickRectangular.mp3"));
+        // Load the win sound effect
+        winSound = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/win.mp3"));
+        loseSound = Gdx.audio.newMusic(Gdx.files.internal("assets/sound_fx/lose.mp3"));
+
         // Calculate cellSize dynamically based on the screen size
         cellSize = Math.min(Gdx.graphics.getWidth() / (float) cols, Gdx.graphics.getHeight() / (float) rows);
 
         // Initialize the game logic
-        game = new KlotskiGame();
+        if (blockedId == -1)
+            game = new KlotskiGame();
+        else
+            game = new EnhancedKlotskiGame(blockedId);
 
         // Create a root table for layout
         Table rootTable = new Table();
@@ -143,61 +162,75 @@ public class SpectateScreen extends GameScreen {
         gridTable.setFillParent(false);
 
         // Right side: Button column
+        // Create a table for buttons, arrange in two columns
         Table buttonTable = new Table();
+
+        // Set default button size (1.5x original)
+        float buttonWidth = 150;
+        float buttonHeight = 45;
+
         String[] buttonNames = { "Restart", "Hint", "Auto", "Undo", "Redo", "Save", "Load", "Exit" };
 
-        // Add buttons with listeners
-        for (String name : buttonNames) {
+        // Add buttons in two columns
+        for (int i = 0; i < buttonNames.length; i++) {
+            String name = buttonNames[i];
             TextButton button = new TextButton(name, skin);
-            button.getLabel().setFontScale(0.5f);
-            buttonTable.add(button).height(30).width(100).pad(10);
-            buttonTable.row();
+            button.getLabel().setFontScale(0.75f); // 1.5x original font scale
+            buttonTable.add(button).height(buttonHeight).width(buttonWidth).pad(10);
+
+            if (i % 2 == 1) buttonTable.row(); // New row after every two buttons
 
             if (name.equals("Auto")) {
                 autoButton = button;
             }
 
-            // Add functionality to each button
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    klotski.playClickSound();;
-                    switch (name) {
-                        case "Restart":
-                            handleRestart(game);
-                            break;
-                        case "Hint":
-                            handleHint(game);
-                            break;
-                        case "Auto":
-                            handleAutoSolve(game, button);
-                            break;
-                        case "Undo":
-                            handleUndo();
-                            break;
-                        case "Redo":
-                            handleRedo();
-                            break;
-                        case "Save":
-                            if (!klotski.isOfflineMode())
-                                handleSave(false);
-                            else
-                                handleLocalSave(false);
-                            break;
-                        case "Load":
-                            if (!klotski.isOfflineMode())
-                                handleLoad();
-                            else
-                                handleLocalLoad();
-                            break;
+            if (name.equals("Exit")) {
+                button.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        klotski.playClickSound();
+                        switch (name) {
                         case "Exit":
                             handleExit();
                             break;
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
+        if (klotski.isArrowControlsEnabled()) {
+            // Add arrow control buttons
+            Label controlLabel = new Label("Move", skin);
+            controlLabel.setFontScale(1.5f);
+            buttonTable.add(controlLabel).padTop(20).row();
+            Map<String, TextButton> directionButtons = new HashMap<>();
+            buttonNames = new String[]{"Up", "Down", "Left", "Right"};
+            for (String name : buttonNames) {
+
+                final String buttonName = name;
+                TextButton button = new TextButton(buttonName, skin);
+                directionButtons.put(buttonName, button);
+                button.getLabel().setFontScale(0.5f);
+                //buttonTable.add(button).height(30).width(100).pad(10);
+                //buttonTable.row();
+            }
+
+            Table arrowTable = new Table();
+            arrowTable.add().width(30);
+            arrowTable.add(directionButtons.get("Up")).width(50).height(40);
+            arrowTable.add().width(30).row();
+
+            arrowTable.add(directionButtons.get("Left")).width(50).height(40);
+            arrowTable.add().width(10);
+            arrowTable.add(directionButtons.get("Right")).width(50).height(40).row();
+
+            arrowTable.add().width(30);
+            arrowTable.add(directionButtons.get("Down")).width(50).height(40);
+            arrowTable.add().width(30).row();
+
+            buttonTable.add(arrowTable).padTop(20).row();
+        }
         // Add grid and buttons to the root table
         rootTable.add(gridTable).expand().fill().left().padRight(20); // Grid on the left
         rootTable.add(buttonTable).top().right(); // Buttons on the right
@@ -242,9 +275,34 @@ public class SpectateScreen extends GameScreen {
         movesLabel.setAlignment(Align.center);
         buttonTable.add(movesLabel).width(100).pad(10).row();
 
+        badgeGroup = new Group();
+        badgeGroup.setVisible(false);
+
+        Label badgeLabel = new Label("", skin);
+        badgeLabel.setName("badgeLabel");
+        badgeLabel.setFontScale(1.2f);
+        badgeLabel.setAlignment(Align.center);
+
+        Image badgeBg = new Image(skin.newDrawable("white", new Color(1, 1, 1, 0.5f)));
+        badgeBg.setSize(400, 50);
+
+        badgeBg.setPosition(-30, 0);
+
+        badgeLabel.setSize(300, 50);
+        badgeLabel.setPosition(0, 0);
+
+        badgeGroup.addActor(badgeBg);
+        badgeGroup.addActor(badgeLabel);
+
+        badgeGroup.setSize(300, 50);
+        badgeGroup.setPosition(Gdx.graphics.getWidth() - 400, 20);
+
+        stage.addActor(badgeGroup);
+
         // Reset elapsed time
         elapsedTime = 0;
 
+        // broadcastGameState();
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -255,42 +313,7 @@ public class SpectateScreen extends GameScreen {
                 }
                 return false;
             }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-            }
         });
 
-        broadcastGameState();
     }
 }

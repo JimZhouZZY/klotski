@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.56
+ * @version 1.57
  * @since 2025-5-25
  *
  * KNOWN ISSUES:
@@ -33,6 +33,7 @@
  *    reset the game to the shuffeled state.
  *
  * Change log:
+ * 2025-05-27: Refactor UI in SpectateScreen
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
  * 2025-05-27: multiple classical level
@@ -195,7 +196,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public boolean isAttackMode; // Flag to track if the game is in 3min-Attack mode
     public float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     public Label congratsLabel;
-    private Group badgeGroup;
+    protected Group badgeGroup;
     private Timer.Task badgeHideTask;
     private long randomSeed;
 
