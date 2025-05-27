@@ -24,12 +24,13 @@
  * Players can click on a user to start cooperating with other players.
  *
  * @author JimZhouZZY
- * @version 1.26
+ * @version 1.27
  * @since 2025-5-25
  * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  *
  * Change log:
+ * 2025-05-27: use equals() to judge strings
  * 2025-05-27: modify font
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
@@ -112,10 +113,6 @@ public class CooperateMenuScreen extends MenuScreen {
 
         startOnlineUsersAutoRefresh(table);
 
-        // ** TEST **
-        // Manually populate user list for testing
-        // populateUserButtons(table, new String[]{"Alice", "Bob", "Charlie", "Dana","1","2","3","4","5","6","7","8","9"});
-
         // Add a "Back" button at the bottom
         addBackButton(table);
     }
@@ -164,7 +161,7 @@ public class CooperateMenuScreen extends MenuScreen {
         titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
-            if (user == klotski.getLoggedInUser()) {
+            if (user.equals(klotski.getLoggedInUser())) {
                 // Skip yourself
                 continue;
             }
@@ -175,7 +172,7 @@ public class CooperateMenuScreen extends MenuScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     klotski.playClickSound();
-                    sooperateUser(user);
+                    cooperateUser(user);
                 }
             });
             userListTable.add(userButton).width(300).height(50).padBottom(20).row();
@@ -202,8 +199,8 @@ public class CooperateMenuScreen extends MenuScreen {
         table.add(backButton).width(300).height(50).padTop(20).expandY().bottom(); // Ensure it's at the bottom
     }
 
-    private void sooperateUser(String user) {
-        System.out.println("Spectating user: " + user);
+    private void cooperateUser(String user) {
+        System.out.println("Cooperating user: " + user);
         klotski.setScreen(new CooperateScreen(klotski, user, klotski.webSocketClient)); // Navigate to the CooperateScreen
     }
 
