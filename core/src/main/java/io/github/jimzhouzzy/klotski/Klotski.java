@@ -28,11 +28,13 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.44
+ * @version 1.46
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: fix white line
  * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-27: debug auto-login

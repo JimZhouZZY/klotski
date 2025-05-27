@@ -26,11 +26,13 @@
  * ensuring that the files are stored in a user-friendly location.
  * 
  * @author JimZhouZZY
- * @version 1.14
+ * @version 1.16
  * @since 2025-5-25
  * @see {@link SettingsScreen}
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment

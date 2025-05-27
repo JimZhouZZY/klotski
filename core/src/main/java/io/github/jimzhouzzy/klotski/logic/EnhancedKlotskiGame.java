@@ -46,3 +46,4 @@ public class EnhancedKlotskiGame extends KlotskiGame {
 
         moveCount = 0;
     }
+}

@@ -4,10 +4,11 @@
  * This class represents the game mode legacy level menu screen in the Klotski game.
  * 
  * @author JimZhouZZY
- * @version 1.1
+ * @version 1.2
  * @since 2025-05-26
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
  * 2025-05-27: multiple classical level
  */
 

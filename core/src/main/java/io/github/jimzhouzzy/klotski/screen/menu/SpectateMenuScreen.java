@@ -18,18 +18,19 @@
 
 /**
  * SpectateMenuScreen.java
- * 
+ *
  * This class represents the screen where players can choose a user to spectate.
  * It connects to a WebSocket server to retrieve the list of online users.
  * Players can click on a user to start spectating their game.
- * 
+ *
  * @author JimZhouZZY
- * @version 1.25
+ * @version 1.26
  * @since 2025-5-25
  * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
- * 
+ *
  * Change log:
+ * 2025-05-27: modify font
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -103,7 +104,7 @@ public class SpectateMenuScreen extends MenuScreen {
 
         // Add a title label
         Label titleLabel = new Label("Choose a Player to Spectate", skin);
-        titleLabel.setFontScale(2);
+        titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
 
         // Request online users from the server
@@ -160,7 +161,7 @@ public class SpectateMenuScreen extends MenuScreen {
 
         // Add a title label
         Label titleLabel = new Label("Choose a Player to Spectate", skin);
-        titleLabel.setFontScale(2);
+        titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
             if (user == klotski.getLoggedInUser()) {

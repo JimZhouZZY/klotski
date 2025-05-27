@@ -18,15 +18,17 @@
 
 /**
  * HelpScreen.java
- * 
+ *
  * This class represents the help screen in the Klotski game.
  * It provides instructions and tips for players on how to play the game.
- * 
+ *
  * @author Tommy-SUStech
- * @version 1.19
+ * @version 1.21
  * @since 2025-5-25
- * 
+ *
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: Rename HelpScreen to AboutScreen
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -71,9 +73,13 @@ public class AboutScreen extends ProtoScreen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label.LabelStyle labelStyle = skin.get(Label.LabelStyle.class);
+        // Add a title label
+        Label titleLabel = new Label("Welcome to our game!", skin, "title");
+        titleLabel.setFontScale(1.5f);
+        table.add(titleLabel).padBottom(50).row();
 
-        Label textLabel = new Label("Welcome to our game!\n\n"+
+        Label.LabelStyle labelStyle = skin.get(Label.LabelStyle.class);
+        Label textLabel = new Label(
             "Here are some tips for you!\n\n" +
             "You can click the 'Play' and choose the level to start the game!\n\n" +
             "There are also some shortcut keys for you to play games:\n\n" +
@@ -86,7 +92,7 @@ public class AboutScreen extends ProtoScreen {
             "You can click the background and you can see the ripples!\n\n" +
             "You can move the background with direction keys to seek your favorite color!\n\n" +
             "You can change the angle of your background: 'Space' for clockwise and 'control' for counterclockwise\n\n\n\n", labelStyle);
-        textLabel.setFontScale(2.0f);
+        textLabel.setFontScale(1.0f);
 
         textLabel.setWrap(true);
         textLabel.setAlignment(Align.center); // center text

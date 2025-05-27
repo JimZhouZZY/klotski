@@ -18,16 +18,17 @@
 
 /**
  * GameModeLegacyMenuScreen.java
- * 
+ *
  * This class represents the legacy game mode menu screen in the Klotski game.
  * It allows players to choose between different legacy game modes such as Classical, Shuffled, and 3min-Attack.
  *
  * @author JimZhouZZY
- * @version 1.7
+ * @version 1.8
  * @since 2025-5-25
- * 
+ *
  * Change log:
  * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: multiple classical level
  * 2025-05-27: make GameScreen seperate
  * 2025-05-26: Update changelog
@@ -65,7 +66,7 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
 
         // Add a title label
         Label titleLabel = new Label("Legacy Game Modes", skin);
-        titleLabel.setFontScale(2);
+        titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
 
         // Add "Classical" button

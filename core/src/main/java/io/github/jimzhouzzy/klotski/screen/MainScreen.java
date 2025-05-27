@@ -18,14 +18,16 @@
 
 /**
  * MainScreen.java
- * 
+ *
  * This class represents the main menu screen of the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.38
+ * @version 1.40
  * @since 2025-5-25
- * 
+ *
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: fix white line
  * 2025-05-27: make GameScreen seperate
  * 2025-05-26: Update changelog
@@ -139,7 +141,7 @@ public class MainScreen extends ProtoScreen {
         // Add a greeting label
         Label.LabelStyle narrationStyle = skin.get("narration", Label.LabelStyle.class);
         greetingLabel = new Label(getGreetingText(), narrationStyle);
-        greetingLabel.setFontScale(2.0f);
+        greetingLabel.setFontScale(1f);
         greetingLabel.setColor(Color.WHITE);
         table.add(greetingLabel).padBottom(30).row();
 

@@ -18,24 +18,23 @@
 
 /**
  * GameScreen.java
- * 
+ *
  * This class represents the main game screen of the Klotski game.
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
- * 
+ *
  * @author JimZhouZZY
- * @version 1.55
+ * @version 1.56
  * @since 2025-5-25
- * 
+ *
  * KNOWN ISSUES:
  * 1. The move count is incorrect when the user dragged a piece
  *    across multiple grid.
  * 2. Restart in an leveled (seedly random shuffeled) game won't
  *    reset the game to the shuffeled state.
- * 3. In blocked mode, when there's not enough pieces, the touch moving 
- *    logic will be a little broken
- * 
+ *
  * Change log:
  * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: multiple classical level
  * 2025-05-27: fix white line
  * 2025-05-27: show total moves at the end of the game
@@ -347,7 +346,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         if (klotski.isArrowControlsEnabled()) {
             // Add arrow control buttons
             Label controlLabel = new Label("Move", skin);
-            controlLabel.setFontScale(2f);
+            controlLabel.setFontScale(1.5f);
             buttonTable.add(controlLabel).padTop(20).row();
             Map<String, TextButton> directionButtons = new HashMap<>();
             buttonNames = new String[]{"Up", "Down", "Left", "Right"};
@@ -471,6 +470,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         Image badgeBg = new Image(skin.newDrawable("white", new Color(1, 1, 1, 0.5f)));
         badgeBg.setSize(400, 50);
+
         badgeBg.setPosition(-30, 0);
 
         badgeLabel.setSize(300, 50);
@@ -1151,7 +1151,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Label timerLabelCongrats = new Label("Time: 00:00", altStyle); // Placeholder for time usage
         movesLabelCongrats.setFontScale(1.5f);
         timerLabelCongrats.setFontScale(1.5f);
-        
+
         timeMovesTable.add(timerLabelCongrats).padRight(30);
         timeMovesTable.add(movesLabelCongrats);
 
@@ -1211,8 +1211,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabelCongrats.setText(String.format("Time: %02d:%02d", minutes, seconds));
+        timerLabelCongrats.setFontScale(1.2f);
         movesLabelCongrats.setText("Moves: " + (currentMoveIndex + 1));
+        movesLabelCongrats.setFontScale(1.2f);
         congratsLabel.setText("Congratulations! You Win!");
+        congratsLabel.setFontScale(1.2f);
 
         // Update the moves label with the total moves
         // plus one because index starts from 0
@@ -1231,8 +1234,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabelCongrats.setText(String.format("Time: %02d:%02d", minutes, seconds));
+        timerLabelCongrats.setFontScale(1.2f);
         congratsLabel.setText("Game Over! You Lose!");
-
+        congratsLabel.setFontScale(1.2f);
         // Update the moves label with the total moves
         movesLabel.setText("Moves: " + (currentMoveIndex + 1));
 
@@ -1309,13 +1313,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void handleSave(boolean autoSave) {
-        if (klotski.getLoggedInUser() == null 
+        if (klotski.getLoggedInUser() == null
                 || klotski.getLoggedInUser().isEmpty()
                 || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Save Error", "You must be logged in to save the game.");
             return;
         }
-        
+
         String saveFileName = getSaveFileName();
         File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -1401,7 +1405,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleLoad() {
         String username = klotski.getLoggedInUser();
-        if (klotski.getLoggedInUser() == null 
+        if (klotski.getLoggedInUser() == null
                 || klotski.getLoggedInUser().isEmpty()
                 || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Load Error", "You must be logged in to load the game.");
@@ -1499,7 +1503,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
-        if (klotski.getLoggedInUser() == null 
+        if (klotski.getLoggedInUser() == null
                 || klotski.getLoggedInUser().isEmpty()
                 || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Save Error", "You must be logged in to save the game.");
@@ -1527,7 +1531,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void handleLocalLoad() {
-        if (klotski.getLoggedInUser() == null 
+        if (klotski.getLoggedInUser() == null
                 || klotski.getLoggedInUser().isEmpty()
                 || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Load Error", "You must be logged in to load the game.");
@@ -1586,7 +1590,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         if (bgm != null) {
             bgm.setVolume(1.0f);
         }
-        
+
         klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
     }
 
@@ -1649,7 +1653,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         badgeGroup.setVisible(true);
         badgeGroup.toFront();
 
-        badgeGroup.setPosition(Gdx.graphics.getWidth() - 320, 20);
+        badgeGroup.setPosition(
+            (Gdx.graphics.getWidth() - badgeGroup.getWidth()) / 2f,
+            Gdx.graphics.getHeight() * 0.5f
+        );
 
         badgeHideTask = Timer.schedule(new Timer.Task() {
             @Override

@@ -18,14 +18,16 @@
 
 /**
  * GameModeMenuScreen.java
- * 
+ *
  * This class represents the game mode selection screen in the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.30
+ * @version 1.32
  * @since 2025-5-25
- * 
+ *
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: make GameScreen seperate
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -87,7 +89,7 @@ public class GameModeMenuScreen extends MenuScreen {
 
         // Add a title label
         Label titleLabel = new Label("Choose Game Mode", skin);
-        titleLabel.setFontScale(2);
+        titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
 
         // Add "Legacy" button
@@ -123,7 +125,7 @@ public class GameModeMenuScreen extends MenuScreen {
             }
         });
         table.add(spectateButton).width(300).height(50).padBottom(20).row();
-        
+
         // Add "Cooperate" button
         TextButton cooperateButton = new TextButton("Cooperate", skin);
         cooperateButton.addListener(new ClickListener() {
@@ -160,7 +162,7 @@ public class GameModeMenuScreen extends MenuScreen {
         klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
         Gdx.input.setInputProcessor(null);
     }
-    
+
     @Override
     public void show() {
         super.show();
