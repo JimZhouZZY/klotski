@@ -9,7 +9,7 @@ Author: Zhiyu Zhou, Haozhan Tang
 
 ### Checklist to v1.1.1
 - Font size
+- merge and refactor barriered games from branch thz
 - (Opt) Guide guests to register and login
 - (Opt) level design (classics)
-- merge and refactor barriered games from branch thz
-- refactor specaate screen and co-op code (duplicated code)
+- (Opt) refactor specaate screen and co-op code (duplicated code)

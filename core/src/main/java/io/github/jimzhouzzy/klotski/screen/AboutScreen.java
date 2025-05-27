@@ -58,9 +58,9 @@ import com.badlogic.gdx.utils.Align;
 import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
 
-public class HelpScreen extends ProtoScreen {
+public class AboutScreen extends ProtoScreen {
 
-    public HelpScreen(Klotski klotski) {
+    public AboutScreen(Klotski klotski) {
         super(klotski);
     }
 
@@ -106,7 +106,7 @@ public class HelpScreen extends ProtoScreen {
         backButton.addListener(event -> {
             if (event.toString().equals("touchDown")) {
                 klotski.playClickSound();
-                klotski.setScreen(klotski.mainScreen);
+                handleBack();
             }
             return true;
         });
