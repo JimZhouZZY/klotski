@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.66
+ * @version 1.67
  * @since 2025-5-25
  * <p>
  * KNOWN ISSUES:
@@ -33,6 +33,7 @@
  * reset the game to the shuffeled state.
  * <p>
  * Change log:
+ * 2025-05-27: resolve co-op restart not synced
  * 2025-05-27: change restart logic to handle cooperate restart
  * 2025-05-27: Multi-threading to avoid delay
  * 2025-05-27: fix restart

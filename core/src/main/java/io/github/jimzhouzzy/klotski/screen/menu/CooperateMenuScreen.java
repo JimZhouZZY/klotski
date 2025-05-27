@@ -24,12 +24,13 @@
  * Players can click on a user to start cooperating with other players.
  *
  * @author JimZhouZZY
- * @version 1.27
+ * @version 1.28
  * @since 2025-5-25
  * @see {@link MenuScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  *
  * Change log:
+ * 2025-05-27: filter null user
  * 2025-05-27: use equals() to judge strings
  * 2025-05-27: modify font
  * 2025-05-27: Implement Co-op
@@ -161,7 +162,9 @@ public class CooperateMenuScreen extends MenuScreen {
         titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
         for (String user : users) {
-            if (user.equals(klotski.getLoggedInUser())) {
+            if (user.equals(klotski.getLoggedInUser())
+                    || user.equals("null") // Skip "null" user
+                    || user.isEmpty()) { // Skip empty usernames
                 // Skip yourself
                 continue;
             }
