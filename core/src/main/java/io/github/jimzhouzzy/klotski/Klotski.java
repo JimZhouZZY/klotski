@@ -218,14 +218,12 @@ public class Klotski extends Game {
             System.out.println("Offline mode enabled. Skipping WebSocket client initialization.");
         }
 
-        // Load the last logged-in user
-        loadLoginStatus();
-
         // Cresate dynamic board before screens
         this.dynamicBoard = new DynamicBoard(this, null);
 
         // After the user loading, settings screen must come first to load settings
         this.settingsScreen = new SettingsScreen(this);
+        loadLoginStatus(); // Call this before loginScreen and after settingsScreen
         this.loginScreen = new LoginScreen(this);
         this.mainScreen = new MainScreen(this);
         this.setScreen(mainScreen);
@@ -289,6 +287,28 @@ public class Klotski extends Game {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String prevLoggedInUser = reader.readLine(); // Read the logged-in username
             String prevToken = reader.readLine(); // Read the token
+
+            if (prevLoggedInUser == null || prevLoggedInUser.isEmpty()) {
+                prevLoggedInUser = "Guest"; // Default to "Guest" if no user is logged in
+                return;
+            }
+
+            if (this.isOfflineMode) {
+                System.out.println("Offline mode is enabled. Using previous login status.");
+                System.out.println("Offline mode is enabled. Using previous login status.");
+                System.out.println("Offline mode is enabled. Using previous login status.");
+                System.out.println("Offline mode is enabled. Using previous login status.");
+                System.out.println("Offline mode is enabled. Using previous login status.");
+                // If in offline mode, we do not need to load the login status
+                this.setLoggedInUser(prevLoggedInUser);
+                return;
+            }
+
+            if (prevToken == null || prevToken.isEmpty()) {
+                // We prevously logged in at offline mode
+                this.setLoggedInUser("Guest");
+            }
+
             URL url = new URL("http://42.194.132.147:8001/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
