@@ -24,11 +24,12 @@
  * It allows users to configure various settings such as graphics, audio, and gameplay options.
  * 
  * @author JimZhouZZY
- * @version 1.33
+ * @version 1.34
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * 
  * Change log:
+ * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header

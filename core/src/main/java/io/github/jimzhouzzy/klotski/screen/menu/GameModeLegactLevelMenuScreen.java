@@ -4,11 +4,11 @@
  * This class represents the game mode legacy level menu screen in the Klotski game.
  * 
  * @author JimZhouZZY
- * @version 1.0
+ * @version 1.1
  * @since 2025-05-26
  * 
  * Change log:
- * 2025-05-26: Initial creation
+ * 2025-05-27: multiple classical level
  */
 
 package io.github.jimzhouzzy.klotski.screen.menu;

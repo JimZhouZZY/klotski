@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  * 
  * @author JimZhouZZY
- * @version 1.47
+ * @version 1.55
  * @since 2025-5-25
  * 
  * KNOWN ISSUES:
@@ -31,8 +31,18 @@
  *    across multiple grid.
  * 2. Restart in an leveled (seedly random shuffeled) game won't
  *    reset the game to the shuffeled state.
+ * 3. In blocked mode, when there's not enough pieces, the touch moving 
+ *    logic will be a little broken
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: multiple classical level
+ * 2025-05-27: fix white line
+ * 2025-05-27: show total moves at the end of the game
+ * 2025-05-27: Do not allow unauthorized(guest) users to save and load
+ * 2025-05-27: Show error dialog when load-save failed
+ * 2025-05-27: Enhance GameScreen block color
+ * 2025-05-27: make GameScreen seperate
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -132,6 +142,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.google.gson.Gson;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.logic.EnhancedKlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.GameState;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.KlotskiSolver;
@@ -187,9 +198,34 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public Label congratsLabel;
     private Group badgeGroup;
     private Timer.Task badgeHideTask;
+    private long randomSeed;
 
-    public int blockedId = 10; // no piece is blocked at first
+    public int blockedId = -1; // no piece is blocked at first
 
+    public GameScreen(final Klotski klotski, long seed) {
+        this.klotski = klotski;
+        create();
+        this.randomSeed = seed;
+        randomShuffle(seed);
+    }
+    
+    public GameScreen(final Klotski klotski, long seed, boolean isAttackMode) {
+        this.klotski = klotski;
+        create();
+        this.randomSeed = seed;
+        this.isAttackMode = isAttackMode;
+        randomShuffle(seed);
+    }
+
+    public GameScreen(final Klotski klotski, int blockedId) {
+        this.klotski = klotski;
+        this.blockedId = blockedId;
+        System.out.println("GameScreen created with blockedId: " + blockedId);
+        // print hash of game
+        System.out.println("GameScreen hash: " + this.hashCode());
+        create();
+    }
+    
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
         create();
@@ -230,7 +266,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         cellSize = Math.min(Gdx.graphics.getWidth() / (float) cols, Gdx.graphics.getHeight() / (float) rows);
 
         // Initialize the game logic
-        game = new KlotskiGame();
+        if (blockedId == -1)
+            game = new KlotskiGame();
+        else
+            game = new EnhancedKlotskiGame(blockedId);
 
         // Create a root table for layout
         Table rootTable = new Table();
@@ -646,6 +685,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleAutoArrowKeys(int[] direction) {
+        if (selectedBlock.pieceId == blockedId) return;
         List<int[][]> legalMoves = game.getLegalMovesByDirection(direction);
         if (legalMoves.isEmpty()) {
             return;
@@ -678,6 +718,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleArrowKeys(int[] direction) {
+        if (selectedBlock.pieceId == blockedId) return;
         if (selectedBlock == null || selectedBlock.pieceId == blockedId) {
             handleAutoArrowKeys(direction);
             return;
@@ -991,7 +1032,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleHint(KlotskiGame game) {
         // Get the solution from the solver
-        List<String> solution = KlotskiSolver.solve(game);
+        List<String> solution = KlotskiSolver.solve(game, blockedId);
 
         if (solution != null && !solution.isEmpty()) {
             // Parse the first move from the solution
@@ -1041,7 +1082,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } else {
             solution = null; // Clear the previous solution
             solutionIndex = 0; // Reset the solution index
-            List<String> newSolution = KlotskiSolver.solve(game); // Get the new solution
+            List<String> newSolution = KlotskiSolver.solve(game, blockedId); // Get the new solution
 
             if (newSolution != null && !newSolution.isEmpty()) {
                 solution = newSolution; // Store the solution

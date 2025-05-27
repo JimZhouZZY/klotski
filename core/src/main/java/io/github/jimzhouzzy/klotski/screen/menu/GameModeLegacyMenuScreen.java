@@ -23,10 +23,13 @@
  * It allows players to choose between different legacy game modes such as Classical, Shuffled, and 3min-Attack.
  *
  * @author JimZhouZZY
- * @version 1.4
+ * @version 1.7
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: multiple classical level
+ * 2025-05-27: make GameScreen seperate
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -82,9 +85,7 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                GameScreen gameScreen = new GameScreen(klotski);
-                gameScreen.setGameMode(false); // Set to Free Game mode
-                gameScreen.randomShuffle((long) klotski.randomHelper.nextInt(10000)); // Shuffle with seed for Level 1
+                GameScreen gameScreen = new GameScreen(klotski, (long) klotski.randomHelper.nextInt(114514), false);
                 klotski.setGameScreen(gameScreen); // Set the game screen
                 klotski.setScreen(gameScreen); // Navigate to the game screen
             }
@@ -97,9 +98,7 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                GameScreen gameScreen = new GameScreen(klotski);
-                gameScreen.setGameMode(true); // Set to 3min-Attack mode
-                gameScreen.randomShuffle((long) klotski.randomHelper.nextInt(10000)); // Shuffle with seed for Level 1
+                GameScreen gameScreen = new GameScreen(klotski, (long) klotski.randomHelper.nextInt(114514), true);
                 klotski.setGameScreen(gameScreen); // Set the game screen
                 klotski.setScreen(gameScreen); // Navigate to the game screen
             }
@@ -112,10 +111,10 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                // klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
-                // klotski.gameScreen.setGameMode(false); // Set to Free Game mode
-                // klotski.gameScreen.setBlocked(true); // Set to Blocked mode
-                // klotski reset
+                GameScreen gameScreen = new GameScreen(klotski, 2);
+                gameScreen.setGameMode(false); // Set to 3min-Attack mode
+                klotski.setGameScreen(gameScreen); // Set the game screen
+                klotski.setScreen(gameScreen); // Navigate to the game screen
             }
         });
         table.add(blockedButton).width(300).height(50).padBottom(20).row();

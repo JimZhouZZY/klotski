@@ -26,11 +26,12 @@
  * game mechanics.
  * 
  * @author JimZhouZZY
- * @version 1.31
+ * @version 1.32
  * @since 2025-5-25
  * @see {@link DynamicBoard}
  * 
  * Change log:
+ * 2025-05-27: Enhance GameScreen block color
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header

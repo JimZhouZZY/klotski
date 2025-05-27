@@ -25,11 +25,12 @@
  * the search process, including the number of states examined and the time taken to find a solution.
  * 
  * @author JimZhouZZY
- * @version 1.16
+ * @version 1.17
  * @since 2025-5-25
  * @see {@link KlotskiGame}
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -111,6 +112,10 @@ public class KlotskiSolver {
     }
 
     public static List<String> solve(KlotskiGame initialGame) {
+        return solve(initialGame, -1); // Default to no blocked piece
+    }
+
+    public static List<String> solve(KlotskiGame initialGame, int blockedId) {
         long startTime = System.currentTimeMillis();
         int statesExamined = 0;
         int solutionsFound = 0;
@@ -142,7 +147,7 @@ public class KlotskiSolver {
             }
 
             // Generate all possible next moves
-            for (BoardState nextState : generateNextStates(current)) {
+            for (BoardState nextState : generateNextStates(current, blockedId)) {
                 if (!visited.contains(nextState.state)) {
                     visited.add(nextState.state);
                     //System.out.println(visited.size());
@@ -174,7 +179,7 @@ public class KlotskiSolver {
         return false;
     }
 
-    private static List<BoardState> generateNextStates(BoardState state) {
+    private static List<BoardState> generateNextStates(BoardState state, int blockedId) {
         List<BoardState> nextStates = new ArrayList<>();
 
         // Create a temporary game to check moves
@@ -184,9 +189,14 @@ public class KlotskiSolver {
         // Try moving each piece in all possible directions
         //System.out.println(tempGame);
         for (KlotskiGame.KlotskiPiece piece : state.pieces) {
-            //System.out.print(piece);
+            if (piece.id == blockedId) continue; // skip blocked piece
             int[] position = {piece.position[0], piece.position[1]};
             List<int[]> legalMoves = tempGame.getLegalMovesForPiece(position);
+            // skip if no legal moves
+            if (legalMoves == null || legalMoves.isEmpty()) {
+                //System.out.printf("No legal moves for piece %s at (%d,%d)\n", piece.name, position[0], position[1]);
+                continue;
+            }
             for (int i=0; i < legalMoves.size(); i ++) {
                 //System.out.print(" ");
                 for (int j = 0; j < legalMoves.get(i).length; j ++){
@@ -219,6 +229,10 @@ public class KlotskiSolver {
                 // Place pieces on the board
                 for (KlotskiGame.KlotskiPiece newPiece : newPieces) {
                     int[] pos = newPiece.getPosition();
+                    // check if the piece is within bounds
+                    if (pos[0] < 0 || pos[1] < 0 || pos[0] >= KlotskiGame.BOARD_HEIGHT || pos[1] >= KlotskiGame.BOARD_WIDTH) {
+                        continue; // Skip pieces that are out of bounds
+                    }
                     for (int i = 0; i < newPiece.height; i++) {
                         for (int j = 0; j < newPiece.width; j++) {
                             if (pos[0] + i < KlotskiGame.BOARD_HEIGHT && pos[1] + j < KlotskiGame.BOARD_WIDTH) {
