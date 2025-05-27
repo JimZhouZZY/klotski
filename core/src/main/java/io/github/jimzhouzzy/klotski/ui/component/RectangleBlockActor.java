@@ -324,6 +324,9 @@ public class RectangleBlockActor extends Actor {
 
         // Optional dynamic color for the rectangle
         float time = (System.currentTimeMillis() % 10000) / 10000f; // 0 to 1 looping value
+        if (pieceId == game.blockedId) {
+            color = new Color(Color.valueOf("#808080"));
+        }
         Color dynamicColor = new Color(
             color.r * (0.9f + 0.1f * (float) Math.sin(2 * Math.PI * time)), // Dynamic red component
             color.g * (0.9f + 0.1f * (float) Math.sin(2 * Math.PI * time + Math.PI / 3)), // Dynamic green component

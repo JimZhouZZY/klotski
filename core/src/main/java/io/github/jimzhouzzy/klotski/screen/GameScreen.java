@@ -720,7 +720,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleArrowKeys(int[] direction) {
-        if (selectedBlock.pieceId == blockedId) return;
         if (selectedBlock == null || selectedBlock.pieceId == blockedId) {
             handleAutoArrowKeys(direction);
             return;
