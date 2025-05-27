@@ -25,12 +25,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.12
+ * @version 1.13
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-27: change restart logic to handle cooperate restart
  * 2025-05-27: add try .. catch ... to avoid crashing
  * 2025-05-27: Implement Co-op
@@ -65,34 +66,42 @@ public class CooperateScreen extends GameScreen {
     }
 
 
+    /**
+     * Connects the WebSocket client and sets up a message listener to handle incoming board state updates.
+     * This method verifies the WebSocket client's connection status before proceeding. If connected, it
+     * configures a listener to process messages starting with "Board state updated:" and containing either
+     * the current user's username or the cooperating user's username. The parsed board state is used to
+     * update the game instance and refresh the UI blocks. Exceptions during state parsing or UI updates
+     * are caught and logged to standard error.
+     */
     private void connectWebSocket() {
-        System.out.println("CooperateScreen is trying to connect the websocket");
-        if (webSocketClient == null || !webSocketClient.isConnected()) {
-            System.err.println("WebSocket client is not connected.");
-            return;
-        }
-
-        webSocketClient.setOnMessageListener(message -> {
-            System.out.println("Spec Message from server: " + message);
-            if (message.startsWith("Board state updated:") 
-                    && (message.contains(username + ":")) 
-                        || message.contains(webSocketClient.cooperateUsername + ":")
-                ) {
-                String state = message
-                        .replace("Board state updated:", "")
-                        .replace(username + ":", "")
-                        .trim();
-
-                // Parse the board state
-                System.out.println("Received and trimmed board state: " + state);
-                try {
-                    game.fromString(state);
-                    updateBlocksFromGame(game);
-                } catch (Exception e) {
-                    System.err.println("Failed to update board state: " + e.getMessage());
-                    e.printStackTrace();
-                }
+            System.out.println("CooperateScreen is trying to connect the websocket");
+            if (webSocketClient == null || !webSocketClient.isConnected()) {
+                System.err.println("WebSocket client is not connected.");
+                return;
             }
-        });
-    }
+    
+            webSocketClient.setOnMessageListener(message -> {
+                System.out.println("Spec Message from server: " + message);
+                if (message.startsWith("Board state updated:") 
+                        && (message.contains(username + ":")) 
+                            || message.contains(webSocketClient.cooperateUsername + ":")
+                    ) {
+                    String state = message
+                            .replace("Board state updated:", "")
+                            .replace(username + ":", "")
+                            .trim();
+    
+                    // Parse the board state
+                    System.out.println("Received and trimmed board state: " + state);
+                    try {
+                        game.fromString(state);
+                        updateBlocksFromGame(game);
+                    } catch (Exception e) {
+                        System.err.println("Failed to update board state: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
 }

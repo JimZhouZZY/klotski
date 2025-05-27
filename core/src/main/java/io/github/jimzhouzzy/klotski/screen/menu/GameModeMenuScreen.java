@@ -22,10 +22,11 @@
  * This class represents the game mode selection screen in the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.32
+ * @version 1.33
  * @since 2025-5-25
  *
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
  * 2025-05-27: make GameScreen seperate
@@ -80,92 +81,130 @@ public class GameModeMenuScreen extends MenuScreen {
         super(klotski, lastScreen);
     }
 
+    /**
+     * Creates and initializes the game mode selection screen UI. This method sets up a table layout
+     * as the root container, adds a title label, and configures interactive buttons for different
+     * game modes and navigation options. Each button triggers a click sound and navigates to a
+     * corresponding screen when pressed:
+     * <ul>
+     * <li>"Legacy" â Opens the legacy game mode menu via {@link GameModeLegacyMenuScreen}</li>
+     * <li>"Klotzki" â Directly launches the Klotzki game via {@link KlotzkiGameScreen}</li>
+     * <li>"Spectate" â Navigates to the spectate menu via {@link SpectateMenuScreen}</li>
+     * <li>"Cooperate" â Navigates to the cooperation menu via {@link CooperateMenuScreen}</li>
+     * <li>"Back" â Triggers {@link #handleBack()} to return to the previous screen</li>
+     * </ul>
+     * All buttons are styled with a consistent width, height, and padding. The table layout centers
+     * elements vertically and horizontally, with the title scaled to1.5x the default font size.
+     */
     @Override
-    protected void create() {
-        // Create a table for layout
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        protected void create() {
+            // Create a table for layout
+            Table table = new Table();
+            table.setFillParent(true);
+            stage.addActor(table);
+    
+            // Add a title label
+            Label titleLabel = new Label("Choose Game Mode", skin);
+            titleLabel.setFontScale(1.5f);
+            table.add(titleLabel).padBottom(50).row();
+    
+            // Add "Legacy" button
+            TextButton legacyButton = new TextButton("Legacy", skin);
+            legacyButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    klotski.setScreen(new GameModeLegacyMenuScreen(klotski, GameModeMenuScreen.this));
+                }
+            });
+            table.add(legacyButton).width(300).height(50).padBottom(20).row();
+    
+            // Add "Klotzki" button
+            TextButton klotzkiButton = new TextButton("Klotzki", skin);
+            klotzkiButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    klotski.setScreen(new KlotzkiGameScreen(klotski)); // Navigate to the game screen
+                }
+            });
+            table.add(klotzkiButton).width(300).height(50).padBottom(20).row();
+    
+            // Add "Spectate" button
+            TextButton spectateButton = new TextButton("Spectate", skin);
+            spectateButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    ;
+                    klotski.setScreen(new SpectateMenuScreen(klotski, klotski.webSocketClient, GameModeMenuScreen.this));
+                }
+            });
+            table.add(spectateButton).width(300).height(50).padBottom(20).row();
+    
+            // Add "Cooperate" button
+            TextButton cooperateButton = new TextButton("Cooperate", skin);
+            cooperateButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    ;
+                    klotski.setScreen(new CooperateMenuScreen(klotski, klotski.webSocketClient, GameModeMenuScreen.this));
+                }
+            });
+            table.add(cooperateButton).width(300).height(50).padBottom(20).row();
+    
+            // Add "Back" button
+            TextButton backButton = new TextButton("Back", skin);
+            backButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    handleBack();
+                }
+            });
+            table.add(backButton).width(300).height(50);
+        }
 
-        // Add a title label
-        Label titleLabel = new Label("Choose Game Mode", skin);
-        titleLabel.setFontScale(1.5f);
-        table.add(titleLabel).padBottom(50).row();
-
-        // Add "Legacy" button
-        TextButton legacyButton = new TextButton("Legacy", skin);
-        legacyButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-                klotski.setScreen(new GameModeLegacyMenuScreen(klotski, GameModeMenuScreen.this));
-            }
-        });
-        table.add(legacyButton).width(300).height(50).padBottom(20).row();
-
-        // Add "Klotzki" button
-        TextButton klotzkiButton = new TextButton("Klotzki", skin);
-        klotzkiButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-                klotski.setScreen(new KlotzkiGameScreen(klotski)); // Navigate to the game screen
-            }
-        });
-        table.add(klotzkiButton).width(300).height(50).padBottom(20).row();
-
-        // Add "Spectate" button
-        TextButton spectateButton = new TextButton("Spectate", skin);
-        spectateButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-                ;
-                klotski.setScreen(new SpectateMenuScreen(klotski, klotski.webSocketClient, GameModeMenuScreen.this));
-            }
-        });
-        table.add(spectateButton).width(300).height(50).padBottom(20).row();
-
-        // Add "Cooperate" button
-        TextButton cooperateButton = new TextButton("Cooperate", skin);
-        cooperateButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-                ;
-                klotski.setScreen(new CooperateMenuScreen(klotski, klotski.webSocketClient, GameModeMenuScreen.this));
-            }
-        });
-        table.add(cooperateButton).width(300).height(50).padBottom(20).row();
-
-        // Add "Back" button
-        TextButton backButton = new TextButton("Back", skin);
-        backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-                handleBack();
-            }
-        });
-        table.add(backButton).width(300).height(50);
-    }
-
+    /**
+     * Disposes of all resources associated with this object. This method triggers the reversion
+     * of any active focal length animations on the dynamic board, releases the stage and its
+     * associated resources, and cleans up the skin's UI assets. It ensures proper cleanup of
+     * graphical components, windowing resources, and skin textures to prevent memory leaks
+     * and resource retention after the object is no longer in use.
+     */
     @Override
-    public void dispose() {
-        klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
-        stage.dispose();
-        skin.dispose();
-    }
+        public void dispose() {
+            klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
+            stage.dispose();
+            skin.dispose();
+        }
 
+    /**
+     * Hides the view by triggering the focal length reversion animation and disabling input processing.
+     * This method first initiates a dynamic animation to revert the focal length of the Klotski game board
+     * to its original state, providing a visual transition effect. It then disables all input handling
+     * by setting the {@link com.badlogic.gdx.InputProcessor} to {@code null}, ensuring no further user
+     * interactions are processed until another input processor is set.
+     */
     @Override
-    public void hide() {
-        klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
-        Gdx.input.setInputProcessor(null);
-    }
+        public void hide() {
+            klotski.dynamicBoard.triggerAnimateFocalLengthRevert();
+            Gdx.input.setInputProcessor(null);
+        }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation extends the superclass {@code show()} method by triggering an animation
+     * on the dynamic board's focal length. The animation transitions the focal length from its
+     * current value to {@code10000.0f} over a duration of {@code1.0f} seconds. This effect can be
+     * used to emphasize or de-emphasize visual depth in the Klotski game board dynamically.
+     * </p>
+     */
     @Override
-    public void show() {
-        super.show();
-        klotski.dynamicBoard.triggerAnimateFocalLength(10000.0f, 1.0f);
-    }
+        public void show() {
+            super.show();
+            klotski.dynamicBoard.triggerAnimateFocalLength(10000.0f, 1.0f);
+        }
 }

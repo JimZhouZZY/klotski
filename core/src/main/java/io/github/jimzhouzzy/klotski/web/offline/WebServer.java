@@ -25,11 +25,12 @@
  * It should only be initialized in {@link Klotski} class.
  * 
  * @author JimZhouZZY
- * @version 1.11
+ * @version 1.12
  * @since 2025-5-25
  * @see {@link Klotski}
  * 
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -90,7 +91,14 @@ public class WebServer {
         System.out.println("HTTP server started on http://127.0.0.1:" + port);
     }
 
+    /**
+     * Stops the server immediately, terminating all active connections and releasing associated resources.
+     * This method invokes the server's stop mechanism with no delay, ensuring the server shuts down
+     * without waiting for pending requests or connections to complete. After calling this method, the server
+     * will no longer accept new requests and cannot be restarted. Use this to cleanly halt server operations
+     * during application shutdown or error recovery.
+     */
     public void close() {
-        server.stop(0);
-    }
+            server.stop(0);
+        }
 }

@@ -26,13 +26,14 @@
  * It should be enherited by other menu screens except {@link MainScreen}.
  *
  * @author JimZhouZZY
- * @version 1.4
+ * @version 1.5
  * @since 2025-5-25
  * @see {@link ProtoScreen}
  * @see {@link GameModeMenuScreen}
  * @see {@link MainScreen}
  * 
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -60,13 +61,30 @@ public class MenuScreen extends ProtoScreen {
             this.lastScreen = lastScreen;
     }
 
+    /**
+     * Overrides the parent class method to initialize and configure the graphical user interface
+     * components specific to the menu screen. This includes setting up layout managers,
+     * instantiating UI elements (e.g., buttons, labels, background), attaching event listeners
+     * for user interactions, and initializing visual properties such as colors, fonts, and animations.
+     * The method is automatically invoked when the menu screen is first created to ensure proper
+     * rendering and functionality of the menu interface.
+     */
     @Override
-    protected void create() {
-        // Override the create method to set up the GUI of menu screen
-    }
+        protected void create() {
+            // Override the create method to set up the GUI of menu screen
+        }
 
+    /**
+     * Handles the back navigation action by setting the Klotski application's current screen to the
+     * previously stored {@code lastScreen}. This method is triggered when a back navigation event
+     * occurs, such as pressing a back button, and updates the display to show the last active screen
+     * within the application.
+     *
+     * @see Klotski#setScreen(Screen)
+     * @see #lastScreen
+     */
     @Override
-    protected void handleBack() {
-        klotski.setScreen(lastScreen); // Navigate back to the last screen
-    }
+        protected void handleBack() {
+            klotski.setScreen(lastScreen); // Navigate back to the last screen
+        }
 }

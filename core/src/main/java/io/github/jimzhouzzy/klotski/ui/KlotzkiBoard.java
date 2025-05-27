@@ -26,11 +26,12 @@
  * game mechanics.
  * 
  * @author JimZhouZZY
- * @version 1.34
+ * @version 1.35
  * @since 2025-5-25
  * @see {@link DynamicBoard}
  * 
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
  * 2025-05-27: Enhance GameScreen block color
@@ -112,221 +113,237 @@ public class KlotzkiBoard extends DynamicBoard {
         super(klotski, stage);
     }
 
+    /**
+     * Initializes the component by resetting the horizontal offset and registering an input listener
+     * to handle keyboard and touch events. The listener manages:
+     * <ul>
+     * <li>Movement controls using WASD/arrow keys (for primary entity) and IJKL keys (for secondary entity),
+     * including collision checks against a grid-based map and position updates</li>
+     * <li>Rotation controls (Q/E keys) and flip trigger (F key)</li>
+     * <li>Vertical movement controls (SPACE/CTRL keys)</li>
+     * <li>Touch interactions that modify cursor graphics and trigger quadrant-based flips when clicking
+     * within defined quadrilateral regions</li>
+     * <li>State flag management for movement directions and key states</li>
+     * </ul>
+     * Handles smooth transition between pressed/released states for controls and maintains cursor customization
+     * during click interactions. Collision logic permits movement if target grid cells are empty (0) for primary
+     * entity or filled (1) for secondary entity, or when overlapping with the other entity's position.
+     */
     @Override
-    public void create() {
-        offsetX = 0f;
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                int numCols = 20;
-                int numRows = map.length / numCols;
-                int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
-                int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
-                int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
-                int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
-                switch (keycode) {
-                    case Input.Keys.W:
-                    case Input.Keys.UP:
-                        if (keyDownW || keyDownS || moveBackward) break;
-                        if (nextY + 1 < numRows && map[nextX + (nextY + 1) * numCols] == 0
-                                || nextX == nextGyX && nextY + 1 == nextGyY) {
-                            keyDownW = true;
-                            moveForward = true;
-                            ccPositionOffset[1] += 1;
-                        }
-                        break;
-                    case Input.Keys.S:
-                    case Input.Keys.DOWN:
-                        if (keyDownS || keyDownW || moveForward) break;
-                        if (nextY - 1 >= 0 && map[nextX + (nextY - 1) * numCols] == 0
-                                || nextX == nextGyX && nextY - 1 == nextGyY) {
-                            keyDownS = true;
-                            moveBackward = true;
-                            ccPositionOffset[1] -= 1;
-                        }
-                        break;
-                    case Input.Keys.A:
-                    case Input.Keys.LEFT:
-                        if (keyDownA || keyDownD || moveRight) break;
-                        if (nextX - 1 >= 0 && map[(nextX - 1) + nextY * numCols] == 0
-                                || nextX - 1 == nextGyX && nextY == nextGyY) {
-                            keyDownA = true;
-                            moveLeft = true;
-                            ccPositionOffset[0] -= 1;
-                        }
-                        break;
-                    case Input.Keys.D:
-                    case Input.Keys.RIGHT:
-                        if (keyDownD || keyDownA || moveLeft) break;
-                        if (nextX + 1 < numCols && map[(nextX + 1) + nextY * numCols] == 0
-                                || nextX + 1 == nextGyX && nextY == nextGyY) {
-                            keyDownD = true;
-                            moveRight = true;
-                            ccPositionOffset[0] += 1;
-                        }
-                        break;
-                    case Input.Keys.SHIFT_LEFT:
-                    case Input.Keys.SHIFT_RIGHT:
-                        // moveShifted = true;
-                        break;
-                    case Input.Keys.CONTROL_LEFT:
-                        moveDownward = true;
-                        break;
-                    case Input.Keys.SPACE:
-                        moveUpward = true;
-                        break;
-                    case Input.Keys.Q:
-                        rotateCounterClockwise = true;
-                        break;
-                    case Input.Keys.E:
-                        rotateClockwise = true;
-                        break;
-                    case Input.Keys.F:
-                        triggerFlip();
-                        break;
-                }
-                
-                switch (keycode) {
-                    case Input.Keys.I:
-                        if (keyGyUp || keyGyDown || moveGyBackward) break;
-                        if (nextGyY + 1 < numRows && map[nextGyX + (nextGyY + 1) * numCols] == 1) {
-                            keyGyUp = true;
-                            moveGyForward = true;
-                            gyPositionOffset[1] += 1;
-                        }
-                        break;
-                    case Input.Keys.K:
-                        if (keyGyDown || keyGyUp || moveGyForward) break;
-                        if (nextGyY - 1 >= 0 && map[nextGyX + (nextGyY - 1) * numCols] == 1) {
-                            keyGyDown = true;
-                            moveGyBackward = true;
-                            gyPositionOffset[1] -= 1;
-                        }
-                        break;
-                    case Input.Keys.J:
-                        if (keyGyLeft || keyGyRight || moveGyRight) break;
-                        if (nextGyX - 1 >= 0 && map[(nextGyX - 1) + nextGyY * numCols] == 1) {
-                            keyGyLeft = true;
-                            moveGyLeft = true;
-                            gyPositionOffset[0] -= 1;
-                        }
-                        break;
-                    case Input.Keys.L:
-                        if (keyGyRight || keyGyLeft || moveGyLeft) break;
-                        if (nextGyX + 1 < numCols && map[(nextGyX + 1) + nextGyY * numCols] == 1) {
-                            keyGyRight = true;
-                            moveGyRight = true;
-                            gyPositionOffset[0] += 1;
-                        }
-                        break;
-                }
-                return true;
-            }
-
-            @Override
-            public boolean keyUp(InputEvent event, int keycode) {
-                switch (keycode) {
-                    case Input.Keys.W:
-                    case Input.Keys.UP:
-                        keyDownW = false;
-                        break;
-                    case Input.Keys.S:
-                    case Input.Keys.DOWN:
-                        keyDownS = false;
-                        break;
-                    case Input.Keys.A:
-                    case Input.Keys.LEFT:
-                        keyDownA = false;
-                        break;
-                    case Input.Keys.D:
-                    case Input.Keys.RIGHT:
-                        keyDownD = false;
-                        break;
-                    case Input.Keys.SHIFT_LEFT:
-                    case Input.Keys.SHIFT_RIGHT:
-                        moveShifted = false;
-                        break;
-                    case Input.Keys.CONTROL_LEFT:
-                        moveDownward = false;
-                        break;
-                    case Input.Keys.SPACE:
-                        moveUpward = false;
-                        break;
-                    case Input.Keys.Q:
-                        rotateCounterClockwise = false;
-                        break;
-                    case Input.Keys.E:
-                        rotateClockwise = false;
-                        break;
-                    case Input.Keys.I:
-                        keyGyUp = false;
-                        break;
-                    case Input.Keys.K:
-                        keyGyDown = false;
-                        break;
-                    case Input.Keys.J:
-                        keyGyLeft = false;
-                        break;
-                    case Input.Keys.L:
-                        keyGyRight = false;
-                        break;
-                }
-                return true;
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // Update cursor
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight()
-                );
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-
-                // If the cursor is clicked inside a quadrant, trigger the flip
-                for (int i = 0; i < topRectangleVectors.size(); i++) {
-                    Vector2[] vector  = topRectangleVectors.get(i);
-                    float rectY = topRectangleYs.get(i);
-                    float screenHeight = Gdx.graphics.getHeight();
-                    float cursorX = Gdx.input.getX();
-                    float cursorY = screenHeight - Gdx.input.getY();
-                    if (isPointInQuadrilateral(new Vector2(cursorX, cursorY), vector[0], vector[1], vector[2], vector[3])) {
-                        //triggerFlip((int) ((rectY + offsetY) / baseTileSize));
-                        break;
+        public void create() {
+            offsetX = 0f;
+            stage.addListener(new InputListener() {
+                @Override
+                public boolean keyDown(InputEvent event, int keycode) {
+                    int numCols = 20;
+                    int numRows = map.length / numCols;
+                    int nextX = ccPosition[0] + ccPositionOffset[0] + 10;
+                    int nextY = ccPosition[1] + ccPositionOffset[1] + 1;
+                    int nextGyX = gyPosition[0] + gyPositionOffset[0] + 10;
+                    int nextGyY = gyPosition[1] + gyPositionOffset[1] + 1;
+                    switch (keycode) {
+                        case Input.Keys.W:
+                        case Input.Keys.UP:
+                            if (keyDownW || keyDownS || moveBackward) break;
+                            if (nextY + 1 < numRows && map[nextX + (nextY + 1) * numCols] == 0
+                                    || nextX == nextGyX && nextY + 1 == nextGyY) {
+                                keyDownW = true;
+                                moveForward = true;
+                                ccPositionOffset[1] += 1;
+                            }
+                            break;
+                        case Input.Keys.S:
+                        case Input.Keys.DOWN:
+                            if (keyDownS || keyDownW || moveForward) break;
+                            if (nextY - 1 >= 0 && map[nextX + (nextY - 1) * numCols] == 0
+                                    || nextX == nextGyX && nextY - 1 == nextGyY) {
+                                keyDownS = true;
+                                moveBackward = true;
+                                ccPositionOffset[1] -= 1;
+                            }
+                            break;
+                        case Input.Keys.A:
+                        case Input.Keys.LEFT:
+                            if (keyDownA || keyDownD || moveRight) break;
+                            if (nextX - 1 >= 0 && map[(nextX - 1) + nextY * numCols] == 0
+                                    || nextX - 1 == nextGyX && nextY == nextGyY) {
+                                keyDownA = true;
+                                moveLeft = true;
+                                ccPositionOffset[0] -= 1;
+                            }
+                            break;
+                        case Input.Keys.D:
+                        case Input.Keys.RIGHT:
+                            if (keyDownD || keyDownA || moveLeft) break;
+                            if (nextX + 1 < numCols && map[(nextX + 1) + nextY * numCols] == 0
+                                    || nextX + 1 == nextGyX && nextY == nextGyY) {
+                                keyDownD = true;
+                                moveRight = true;
+                                ccPositionOffset[0] += 1;
+                            }
+                            break;
+                        case Input.Keys.SHIFT_LEFT:
+                        case Input.Keys.SHIFT_RIGHT:
+                            // moveShifted = true;
+                            break;
+                        case Input.Keys.CONTROL_LEFT:
+                            moveDownward = true;
+                            break;
+                        case Input.Keys.SPACE:
+                            moveUpward = true;
+                            break;
+                        case Input.Keys.Q:
+                            rotateCounterClockwise = true;
+                            break;
+                        case Input.Keys.E:
+                            rotateClockwise = true;
+                            break;
+                        case Input.Keys.F:
+                            triggerFlip();
+                            break;
                     }
+                    
+                    switch (keycode) {
+                        case Input.Keys.I:
+                            if (keyGyUp || keyGyDown || moveGyBackward) break;
+                            if (nextGyY + 1 < numRows && map[nextGyX + (nextGyY + 1) * numCols] == 1) {
+                                keyGyUp = true;
+                                moveGyForward = true;
+                                gyPositionOffset[1] += 1;
+                            }
+                            break;
+                        case Input.Keys.K:
+                            if (keyGyDown || keyGyUp || moveGyForward) break;
+                            if (nextGyY - 1 >= 0 && map[nextGyX + (nextGyY - 1) * numCols] == 1) {
+                                keyGyDown = true;
+                                moveGyBackward = true;
+                                gyPositionOffset[1] -= 1;
+                            }
+                            break;
+                        case Input.Keys.J:
+                            if (keyGyLeft || keyGyRight || moveGyRight) break;
+                            if (nextGyX - 1 >= 0 && map[(nextGyX - 1) + nextGyY * numCols] == 1) {
+                                keyGyLeft = true;
+                                moveGyLeft = true;
+                                gyPositionOffset[0] -= 1;
+                            }
+                            break;
+                        case Input.Keys.L:
+                            if (keyGyRight || keyGyLeft || moveGyLeft) break;
+                            if (nextGyX + 1 < numCols && map[(nextGyX + 1) + nextGyY * numCols] == 1) {
+                                keyGyRight = true;
+                                moveGyRight = true;
+                                gyPositionOffset[0] += 1;
+                            }
+                            break;
+                    }
+                    return true;
                 }
-
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
-
-                Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
-                resizedClickedPixmap.drawPixmap(clickedPixmap,
-                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight()
-                );
-
-                int xHotspot = 7, yHotspot = 1;
-                Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
-                resizedClickedPixmap.dispose();
-                clickedPixmap.dispose();
-                Gdx.graphics.setCursor(clickedCursor);
-            }
-        });
-
-        
-    }
+    
+                @Override
+                public boolean keyUp(InputEvent event, int keycode) {
+                    switch (keycode) {
+                        case Input.Keys.W:
+                        case Input.Keys.UP:
+                            keyDownW = false;
+                            break;
+                        case Input.Keys.S:
+                        case Input.Keys.DOWN:
+                            keyDownS = false;
+                            break;
+                        case Input.Keys.A:
+                        case Input.Keys.LEFT:
+                            keyDownA = false;
+                            break;
+                        case Input.Keys.D:
+                        case Input.Keys.RIGHT:
+                            keyDownD = false;
+                            break;
+                        case Input.Keys.SHIFT_LEFT:
+                        case Input.Keys.SHIFT_RIGHT:
+                            moveShifted = false;
+                            break;
+                        case Input.Keys.CONTROL_LEFT:
+                            moveDownward = false;
+                            break;
+                        case Input.Keys.SPACE:
+                            moveUpward = false;
+                            break;
+                        case Input.Keys.Q:
+                            rotateCounterClockwise = false;
+                            break;
+                        case Input.Keys.E:
+                            rotateClockwise = false;
+                            break;
+                        case Input.Keys.I:
+                            keyGyUp = false;
+                            break;
+                        case Input.Keys.K:
+                            keyGyDown = false;
+                            break;
+                        case Input.Keys.J:
+                            keyGyLeft = false;
+                            break;
+                        case Input.Keys.L:
+                            keyGyRight = false;
+                            break;
+                    }
+                    return true;
+                }
+    
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    // Update cursor
+                    Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/clicked.png"));
+    
+                    Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                    resizedClickedPixmap.drawPixmap(clickedPixmap,
+                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight()
+                    );
+    
+                    int xHotspot = 7, yHotspot = 1;
+                    Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                    resizedClickedPixmap.dispose();
+                    clickedPixmap.dispose();
+                    Gdx.graphics.setCursor(clickedCursor);
+    
+                    // If the cursor is clicked inside a quadrant, trigger the flip
+                    for (int i = 0; i < topRectangleVectors.size(); i++) {
+                        Vector2[] vector  = topRectangleVectors.get(i);
+                        float rectY = topRectangleYs.get(i);
+                        float screenHeight = Gdx.graphics.getHeight();
+                        float cursorX = Gdx.input.getX();
+                        float cursorY = screenHeight - Gdx.input.getY();
+                        if (isPointInQuadrilateral(new Vector2(cursorX, cursorY), vector[0], vector[1], vector[2], vector[3])) {
+                            //triggerFlip((int) ((rectY + offsetY) / baseTileSize));
+                            break;
+                        }
+                    }
+    
+                    return true;
+                }
+    
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    Pixmap clickedPixmap = new Pixmap(Gdx.files.internal("assets/image/cursor.png"));
+    
+                    Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
+                    resizedClickedPixmap.drawPixmap(clickedPixmap,
+                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight()
+                    );
+    
+                    int xHotspot = 7, yHotspot = 1;
+                    Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
+                    resizedClickedPixmap.dispose();
+                    clickedPixmap.dispose();
+                    Gdx.graphics.setCursor(clickedCursor);
+                }
+            });
+    
+            
+        }
 
     @Override
     public void render(float delta) {
@@ -724,99 +741,127 @@ public class KlotzkiBoard extends DynamicBoard {
         }
     }
 
+    /**
+     * Initializes and loads color data for rendering, including generating a maze structure and assigning colors
+     * to specific coordinates. This method precomputes a cache of smoothly varying colors, generates a maze using
+     * a fixed seed, adjusts colors for maze walls by lightening them, and populates a color lookup table for
+     * predefined coordinate ranges. The color cache prioritizes generated level colors but falls back to default
+     * light colors when exhausted. Maze generation uses a20-column grid layout, and wall detection modifies RGB
+     * values to create a consistent visual style. Coordinates in the range [-500,500] x [-50,-5] are pre-mapped
+     * to color values for efficient rendering lookups.
+     */
     @Override
-    public void loadColors() {
-        colorChangeSpeed  = 0.01f;
-        this.map = new int[40000];
-        
-        // Predefined list of colors
-        colorCache.clear();
-
-        // Curently just get Light color, and dark is adopted when rendering
-        colorList = klotski.getMainScreenLightColorList();
-
-        levelColorCache.clear();
-        levelColorCacheIndex = 0;
-        int totalColors = 40000;
-        for (int i = 0; i < totalColors; i++) {
-            Color chosenColor = ColorHelper.generateSimilarColor(klotski, generateSmoothChangingColor(0.1f), 
-                    0.1f, 
-                    0.0f, 
-                    1.0f);
-            levelColorCache.add(chosenColor.cpy());
-        }
-
-        int pos = 9;
-        for (int row = 0; row < 40000 / 20; row += 2) {
-            if (row * 20 + 20 + 1 + 20 > 40000) {
-                break;
+        public void loadColors() {
+            colorChangeSpeed  = 0.01f;
+            this.map = new int[40000];
+            
+            // Predefined list of colors
+            colorCache.clear();
+    
+            // Curently just get Light color, and dark is adopted when rendering
+            colorList = klotski.getMainScreenLightColorList();
+    
+            levelColorCache.clear();
+            levelColorCacheIndex = 0;
+            int totalColors = 40000;
+            for (int i = 0; i < totalColors; i++) {
+                Color chosenColor = ColorHelper.generateSimilarColor(klotski, generateSmoothChangingColor(0.1f), 
+                        0.1f, 
+                        0.0f, 
+                        1.0f);
+                levelColorCache.add(chosenColor.cpy());
             }
-            for (int col = 0; col < 20; col ++) {
-                map[col + row * 20] = 0;
-                map[col + (row + 1) * 20] = 0;
-            }
-            int changeBound = klotski.randomHelper.nextInt(3);
-            if (changeBound == 0) {
-                // Do not change
-            } else if (changeBound == 1) {
-                if (pos == 18) {
+    
+            int pos = 9;
+            for (int row = 0; row < 40000 / 20; row += 2) {
+                if (row * 20 + 20 + 1 + 20 > 40000) {
+                    break;
+                }
+                for (int col = 0; col < 20; col ++) {
+                    map[col + row * 20] = 0;
+                    map[col + (row + 1) * 20] = 0;
+                }
+                int changeBound = klotski.randomHelper.nextInt(3);
+                if (changeBound == 0) {
+                    // Do not change
+                } else if (changeBound == 1) {
+                    if (pos == 18) {
+                        pos --;
+                    }
+                    // Change to right
+                    pos ++;
+                } else if (changeBound == 2) {
+                    if (pos == 0) {
+                        pos ++;
+                    }
+                    // Change to left
                     pos --;
                 }
-                // Change to right
-                pos ++;
-            } else if (changeBound == 2) {
-                if (pos == 0) {
-                    pos ++;
-                }
-                // Change to left
-                pos --;
+                map[pos + row * 20] = 1;
+                map[pos + (row + 1) * 20] = 1;
+                map[pos + 1 + row * 20] = 1;
+                map[pos + 1 + (row + 1) * 20] = 1;
+                map[pos + 2 + row * 20] = 1;
+                map[pos + 2 + (row + 1) * 20] = 1;
             }
-            map[pos + row * 20] = 1;
-            map[pos + (row + 1) * 20] = 1;
-            map[pos + 1 + row * 20] = 1;
-            map[pos + 1 + (row + 1) * 20] = 1;
-            map[pos + 2 + row * 20] = 1;
-            map[pos + 2 + (row + 1) * 20] = 1;
-        }
-        map = MazeGenerator.generateMaze(40000, 20, 114514L);
-        int numCols = 20;
-        int numRows = map.length / numCols;
-
-        for (int col = 0; col < numCols; col++) {
-            for (int row = 0; row < numRows; row ++) {
-                if (map[col + (row) * 20] == 1) {
-                    int idx = row * numCols + col;
-                    if (idx < levelColorCache.size()) {
-                        Color c = levelColorCache.get(idx);
-                        float gray = (c.r + c.g + c.b) / 3f;
-                        c.r = c.r * 0.5f + 1 * 0.5f;
-                        c.g = c.g * 0.5f + 1 * 0.5f;
-                        c.b = c.b * 0.5f + 1 * 0.5f;
+            map = MazeGenerator.generateMaze(40000, 20, 114514L);
+            int numCols = 20;
+            int numRows = map.length / numCols;
+    
+            for (int col = 0; col < numCols; col++) {
+                for (int row = 0; row < numRows; row ++) {
+                    if (map[col + (row) * 20] == 1) {
+                        int idx = row * numCols + col;
+                        if (idx < levelColorCache.size()) {
+                            Color c = levelColorCache.get(idx);
+                            float gray = (c.r + c.g + c.b) / 3f;
+                            c.r = c.r * 0.5f + 1 * 0.5f;
+                            c.g = c.g * 0.5f + 1 * 0.5f;
+                            c.b = c.b * 0.5f + 1 * 0.5f;
+                        }
+                    }
+                }
+            }
+    
+            int idx = 0;
+            for (int i = -500; i <= 500; i++) {
+                for (int j = -50; j <= -5; j++) {
+                    String key = i + "," + j;
+                    if (!colorCache.containsKey(key)) {
+                        if (idx < levelColorCache.size()) {
+                            colorCache.put(key, levelColorCache.get(idx++));
+                        } else {
+                            colorCache.put(key, colorList[0].cpy()); // Default color if out of range
+                        }
                     }
                 }
             }
         }
 
-        int idx = 0;
-        for (int i = -500; i <= 500; i++) {
-            for (int j = -50; j <= -5; j++) {
-                String key = i + "," + j;
-                if (!colorCache.containsKey(key)) {
-                    if (idx < levelColorCache.size()) {
-                        colorCache.put(key, levelColorCache.get(idx++));
-                    } else {
-                        colorCache.put(key, colorList[0].cpy()); // Default color if out of range
-                    }
-                }
-            }
-        }
-    }
-
+    /**
+     * Calculates and returns the adjusted position coordinates by combining the base CC position,
+     * the configured offset values, and fixed adjustments. The adjusted X-coordinate is computed
+     * as the base CC position's X component plus its offset and an additional fixed value of10.
+     * The adjusted Y-coordinate is computed as the base CC position's Y component plus its offset
+     * and an additional fixed value of1.
+     *
+     * @return An int array of length2 containing the adjusted coordinates, where index0
+     * represents the X-coordinate and index1 represents the Y-coordinate.
+     */
     public int[] getCcPosition() {
-        return new int[] {ccPosition[0] + ccPositionOffset[0] + 10, ccPosition[1] + ccPositionOffset[1] + 1};
-    }
+            return new int[] {ccPosition[0] + ccPositionOffset[0] + 10, ccPosition[1] + ccPositionOffset[1] + 1};
+        }
 
+    /**
+     * Calculates and returns the adjusted gyroscope position by combining the base position,
+     * the configured offset values, and fixed adjustment constants. The resulting position
+     * is computed as the sum of the base gyPosition component, its corresponding offset from
+     * gyPositionOffset, and a fixed integer adjustment (10 for the x-coordinate,1 for the y-coordinate).
+     *
+     * @return A new integer array containing the adjusted x and y coordinates of the gyroscope position,
+     * where index0 represents the x-coordinate and index1 represents the y-coordinate.
+     */
     public int[] getGyPosition() {
-        return new int[] {gyPosition[0] + gyPositionOffset[0] + 10, gyPosition[1] + gyPositionOffset[1] + 1};
-    }
+            return new int[] {gyPosition[0] + gyPositionOffset[0] + 10, gyPosition[1] + gyPositionOffset[1] + 1};
+        }
 }

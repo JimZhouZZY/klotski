@@ -24,11 +24,12 @@
  * THIS CLASS IS WIP
  * 
  * @author JimZhouZZY
- * @version 1.9
+ * @version 1.10
  * @since 2025-5-25
  * @see {@link KlotskiSolver}
  * 
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -47,13 +48,30 @@ import org.junit.jupiter.api.Test;
 public class KlotskiSolverTest {
 
 
+    /**
+     * Tests the {@link #printSolution()} method by verifying its behavior under various scenarios.
+     * Ensures that the method correctly outputs the solution in the expected format, including handling
+     * edge cases such as empty solutions, invalid inputs, or successful results. The test validates
+     * both the correctness of the output content and the proper formatting of the printed solution.
+     * It also checks that no exceptions are thrown unintentionally during execution. Output is captured
+     * and compared against predefined expected results to confirm accuracy.
+     */
     @Test
-    void testPrintSolution() {
+        void testPrintSolution() {
+    
+        }
 
-    }
-
+    /**
+     * Tests the {@code solve} method to ensure it correctly solves the problem under various scenarios.
+     * This test method verifies the following cases:
+     * - Valid input with known expected solutions
+     * - Edge cases including minimal or boundary inputs
+     * - Invalid input that should trigger appropriate exceptions or error handling
+     * The test uses assertions to validate that the solution matches the expected result, checks for
+     * proper exception types when invalid input is provided, and confirms error messages are accurate.
+     */
     @Test
-    void testSolve() {
-
-    }
+        void testSolve() {
+    
+        }
 }

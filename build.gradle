@@ -47,6 +47,11 @@ configure(subprojects) {
 }
 
 subprojects {
+  tasks.withType(Javadoc) {
+      failOnError = false
+      options.addStringOption('Xdoclint:none', '-quiet')
+  }
+  
   version = "$projectVersion"
   ext.appName = 'Klotski'
   repositories {
@@ -69,6 +74,11 @@ subprojects {
     implementation 'com.google.code.gson:gson:2.8.9'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
   }
+}
+
+tasks.withType(Javadoc) {
+    failOnError = false
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 eclipse.project.name = 'Klotski' + '-parent'

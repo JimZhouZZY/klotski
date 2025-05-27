@@ -23,11 +23,12 @@
  * This class is serializable to allow saving and loading game states.
  * 
  * @author JimZhouZZY
- * @version 1.11
+ * @version 1.12
  * @since 2025-5-25
  * @see {@link GameScreen#handleSave()}
  * 
  * Change log:
+ * 2025-05-27: Generated comment
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -56,19 +57,49 @@ public class GameState implements Serializable {
         this.elapsedTime = elapsedTime;
     }
 
+    /**
+     * Retrieves the current move index, which represents the position in the sequence of moves
+     * tracked by this object. The index corresponds to the most recently executed move, starting
+     * from0 for the initial state. This value can be used to determine progress through the move
+     * sequence or to reset to a specific point in the history.
+     *
+     * @return the zero-based index of the current move in the move sequence.
+     */
     public int getCurrentMoveIndex() {
-        return currentMoveIndex;
-    }
+            return currentMoveIndex;
+        }
 
+    /**
+     * Sets the current move index to the specified value. This method updates the internal state
+     * to reflect the new index, which determines the position in the sequence of moves that is
+     * currently active or being tracked. The provided index should be valid within the bounds of
+     * the move sequence to ensure correct behavior in dependent operations.
+     *
+     * @param currentMoveIndex The index to set as the current position in the move sequence.
+     */
     public void setCurrentMoveIndex(int currentMoveIndex) {
-        this.currentMoveIndex = currentMoveIndex;
-    }
+            this.currentMoveIndex = currentMoveIndex;
+        }
 
+    /**
+     * Retrieves the elapsed time recorded by this instance. The returned value represents
+     * the duration that has passed since the start of the timing operation. The elapsed time
+     * is expressed as a floating-point number, allowing for fractional precision in the
+     * measurement. This method provides access to the current elapsed time value for monitoring
+     * or analytical purposes.
+     */
     public float getElapsedTime() {
-        return elapsedTime;
-    }
+            return elapsedTime;
+        }
 
+    /**
+     * Sets the elapsed time value for this instance. This method updates the internal state
+     * to reflect the specified elapsed time, measured in seconds. The provided value should
+     * represent a non-negative duration, typically used for tracking time-based operations.
+     *
+     * @param elapsedTime The new elapsed time value to set, in seconds. Must be a non-negative float value.
+     */
     public void setElapsedTime(float elapsedTime) {
-        this.elapsedTime = elapsedTime;
-    }
+            this.elapsedTime = elapsedTime;
+        }
 }
