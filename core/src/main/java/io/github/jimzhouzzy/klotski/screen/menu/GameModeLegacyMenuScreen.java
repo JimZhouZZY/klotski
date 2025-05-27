@@ -71,11 +71,7 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                GameScreen gameScreen = new GameScreen(klotski);
-                gameScreen.setGameMode(false); // Set to Classical mode
-                // gameScreen.setLevel(1); // Set to Level 1
-                klotski.setGameScreen(gameScreen); // Set the game screen
-                klotski.setScreen(gameScreen);
+                klotski.setScreen(new GameModeLegactLevelMenuScreen(klotski, GameModeLegacyMenuScreen.this));
             }
         });
         table.add(classicalButton).width(300).height(50).padBottom(20).row();

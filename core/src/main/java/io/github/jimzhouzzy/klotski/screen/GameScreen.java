@@ -1617,4 +1617,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
         }, 3);
     }
+
+    public void setLevel(int level) {
+        // get the level data file from the resources
+        String levelDataFile = "levels/level" + level + ".dat";
+        // read the whole file as a string
+        String levelData = Gdx.files.internal(levelDataFile).readString();
+        // parse the level data
+        game.fromString(levelData);
+        // update the blocks from the game state
+        updateBlocksFromGame(game);
+        broadcastGameState();
+    }
 }
