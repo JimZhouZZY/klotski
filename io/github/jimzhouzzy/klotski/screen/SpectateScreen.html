@@ -125,7 +125,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes and configures the game screen components including the stage, UI elements, game logic,
+ audio assets, and input handling.</div>
+</div>
 </div>
 </div>
 </div>
@@ -169,6 +172,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Initializes and configures the game screen components including the stage, UI elements, game logic,
+ audio assets, and input handling. Sets up the visual layout with a dynamic grid-based game area and
+ control buttons arranged in a sidebar. Configures background music volume, sound effects, and touch
+ interactions. Creates block actors based on game pieces, handles theme-specific styling, and prepares
+ move history tracking. Implements both touch and keyboard controls (including ESC for exit), and initializes
+ progress tracking elements like timers and move counters. The layout automatically adapts to screen dimensions
+ using calculated cell sizes, and supports both classic and enhanced game modes based on initialization parameters.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>create</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.ApplicationListener</code></dd>

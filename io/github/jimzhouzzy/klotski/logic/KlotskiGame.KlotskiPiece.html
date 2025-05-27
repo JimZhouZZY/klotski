@@ -158,25 +158,40 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCol()" class="member-name-link">getCol</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the column index of the current position in a grid or2D coordinate system.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPosition()" class="member-name-link">getPosition</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a copy of the position array representing the current coordinates.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRow()" class="member-name-link">getRow</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the current row index from the internal position data.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getShape()" class="member-name-link">getShape</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the shape dimensions of this object as an integer array.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSize()" class="member-name-link">getSize</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">and each line should have * followed by the text.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPosition(int%5B%5D)" class="member-name-link">setPosition</a><wbr>(int[]&nbsp;position)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the position of this object using a cloned copy of the provided integer array.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns a string representation of the object, formatted to include descriptive
+ and identifying attributes.</div>
+</div>
 </div>
 </div>
 </div>
@@ -261,45 +276,103 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getPosition()">
 <h3>getPosition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">getPosition</span>()</div>
+<div class="block">Retrieves a copy of the position array representing the current coordinates.
+ The returned array is a clone of the internal position state, ensuring that
+ modifications to the returned array do not affect the original position data.
+ The array contains two elements: the x-coordinate at index0 and the y-coordinate at index1.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a new integer array containing a copy of the current position coordinates.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getRow()">
 <h3>getRow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getRow</span>()</div>
+<div class="block">Returns the current row index from the internal position data. This value represents the vertical
+ position in a grid or coordinate system, corresponding to the first element of the stored position array.
+ The row index is typically zero-based, indicating its position relative to the topmost row (0) of the
+ applicable context, such as a grid, matrix, or table structure.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the zero-based integer value representing the current row index.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getCol()">
 <h3>getCol</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getCol</span>()</div>
+<div class="block">Returns the column index of the current position in a grid or2D coordinate system.
+ This value corresponds to the second element (index1) of the position array, which
+ represents the column component. The column index is zero-based.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the zero-based column index of the current position.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setPosition(int[])">
 <h3>setPosition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPosition</span><wbr><span class="parameters">(int[]&nbsp;position)</span></div>
+<div class="block">Sets the position of this object using a cloned copy of the provided integer array.
+ This ensures that modifications to the original array after calling this method will not
+ affect the internally stored position. The position array typically represents coordinates
+ in a multidimensional space (e.g., [x, y] for2D or [x, y, z] for3D contexts).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>position</code> - the array containing the position coordinates to set. The array must not
+ be null, and its structure should match the dimensional requirements of
+ the context in which it is used.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getShape()">
 <h3>getShape</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">getShape</span>()</div>
+<div class="block">Retrieves the shape dimensions of this object as an integer array. The array contains
+ two elements where the first element represents the width and the second element
+ represents the height. This method returns a new array instance to prevent modification
+ of the internal state of the object.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>an integer array of length2 containing the width and height of the shape,
+ in that order.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSize()">
 <h3>getSize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getSize</span>()</div>
+<div class="block">and each line should have * followed by the text. Use proper grammar and third-person verbs. Avoid any markdown. Let me structure it step by step: first explain what it does, then mention the multiplication, and perhaps note that it's computed as width times height.[newline]> Wait, maybe also specify that it's the computed value, not a stored field. But the method name is getSize, which might imply it's a getter, but the comment should clarify it's calculated. So include that it computes and returns. That's important because sometimes getters just return a field, but here it's a calculated value.[newline]> So putting it all together, the doc comment should explain that the method computes and returns the size by multiplying width and height. Use complete sentences and follow JavaDoc conventions./**
+ Calculates and returns the size based on the product of the width and height.
+ The result represents the computed value derived from multiplying the current
+ width and height dimensions stored in the object.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">Returns a string representation of the object, formatted to include descriptive
+ and identifying attributes. The string follows the pattern:
+ "{name} (ID: {id}, Position: [{x},{y}], Size: {width}x{height})", where:
+ <ul>
+ <li><code>name</code> is the object's assigned name</li>
+ <li><code>id</code> is the object's unique numeric identifier</li>
+ <li><code>x</code> and {@@code y} are the coordinates from the position array</li>
+ <li><code>width</code> and <code>height</code> represent the object's dimensions</li>
+ </ul></div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Returns:</dt>
+<dd>a formatted string summarizing the object's key properties, including
+ name, ID, positional coordinates, and dimensional size</dd>
 </dl>
 </section>
 </li>

@@ -127,16 +127,25 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Creates and initializes the game mode selection screen UI.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dispose()" class="member-name-link">dispose</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Disposes of all resources associated with this object.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hide()" class="member-name-link">hide</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Hides the view by triggering the focal length reversion animation and disabling input processing.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#show()" class="member-name-link">show</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the input processor to the provided stage and initializes the dynamic board component
+ with the same stage.</div>
+</div>
 </div>
 </div>
 </div>
@@ -179,6 +188,19 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Creates and initializes the game mode selection screen UI. This method sets up a table layout
+ as the root container, adds a title label, and configures interactive buttons for different
+ game modes and navigation options. Each button triggers a click sound and navigates to a
+ corresponding screen when pressed:
+ <ul>
+ <li>"Legacy" â Opens the legacy game mode menu via <a href="GameModeLegacyMenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.menu"><code>GameModeLegacyMenuScreen</code></a></li>
+ <li>"Klotzki" â Directly launches the Klotzki game via <a href="../KlotzkiGameScreen.html" title="class in io.github.jimzhouzzy.klotski.screen"><code>KlotzkiGameScreen</code></a></li>
+ <li>"Spectate" â Navigates to the spectate menu via <a href="SpectateMenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.menu"><code>SpectateMenuScreen</code></a></li>
+ <li>"Cooperate" â Navigates to the cooperation menu via <a href="CooperateMenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.menu"><code>CooperateMenuScreen</code></a></li>
+ <li>"Back" â Triggers <a href="../core/MenuScreen.html#handleBack()"><code>MenuScreen.handleBack()</code></a> to return to the previous screen</li>
+ </ul>
+ All buttons are styled with a consistent width, height, and padding. The table layout centers
+ elements vertically and horizontally, with the title scaled to1.5x the default font size.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../core/MenuScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../core/MenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">MenuScreen</a></code></dd>
@@ -189,6 +211,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="dispose()">
 <h3>dispose</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">dispose</span>()</div>
+<div class="block">Disposes of all resources associated with this object. This method triggers the reversion
+ of any active focal length animations on the dynamic board, releases the stage and its
+ associated resources, and cleans up the skin's UI assets. It ensures proper cleanup of
+ graphical components, windowing resources, and skin textures to prevent memory leaks
+ and resource retention after the object is no longer in use.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>dispose</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.utils.Disposable</code></dd>
@@ -203,6 +230,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hide()">
 <h3>hide</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hide</span>()</div>
+<div class="block">Hides the view by triggering the focal length reversion animation and disabling input processing.
+ This method first initiates a dynamic animation to revert the focal length of the Klotski game board
+ to its original state, providing a visual transition effect. It then disables all input handling
+ by setting the <code>InputProcessor</code> to <code>null</code>, ensuring no further user
+ interactions are processed until another input processor is set.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>hide</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
@@ -215,6 +247,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="show()">
 <h3>show</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">show</span>()</div>
+<div class="block">Sets the input processor to the provided stage and initializes the dynamic board component
+ with the same stage. This method prepares the UI components to receive input events (e.g., touch,
+ keyboard) and ensures the game board's interactive elements are linked to the current stage.
+ Overrides the parent class's implementation to configure input handling and board state updates
+ specific to the Klotski game's UI requirements.
+ <p>
+ This implementation extends the superclass <code>show()</code> method by triggering an animation
+ on the dynamic board's focal length. The animation transitions the focal length from its
+ current value to  over a duration of  seconds. This effect can be
+ used to emphasize or de-emphasize visual depth in the Klotski game board dynamically.
+ </p></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>show</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>

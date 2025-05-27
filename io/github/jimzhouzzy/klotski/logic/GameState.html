@@ -120,16 +120,25 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentMoveIndex()" class="member-name-link">getCurrentMoveIndex</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the current move index, which represents the position in the sequence of moves
+ tracked by this object.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>float</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElapsedTime()" class="member-name-link">getElapsedTime</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the elapsed time recorded by this instance.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCurrentMoveIndex(int)" class="member-name-link">setCurrentMoveIndex</a><wbr>(int&nbsp;currentMoveIndex)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the current move index to the specified value.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElapsedTime(float)" class="member-name-link">setElapsedTime</a><wbr>(float&nbsp;elapsedTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the elapsed time value for this instance.</div>
+</div>
 </div>
 </div>
 </div>
@@ -166,24 +175,52 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getCurrentMoveIndex()">
 <h3>getCurrentMoveIndex</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getCurrentMoveIndex</span>()</div>
+<div class="block">Retrieves the current move index, which represents the position in the sequence of moves
+ tracked by this object. The index corresponds to the most recently executed move, starting
+ from0 for the initial state. This value can be used to determine progress through the move
+ sequence or to reset to a specific point in the history.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the zero-based index of the current move in the move sequence.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setCurrentMoveIndex(int)">
 <h3>setCurrentMoveIndex</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCurrentMoveIndex</span><wbr><span class="parameters">(int&nbsp;currentMoveIndex)</span></div>
+<div class="block">Sets the current move index to the specified value. This method updates the internal state
+ to reflect the new index, which determines the position in the sequence of moves that is
+ currently active or being tracked. The provided index should be valid within the bounds of
+ the move sequence to ensure correct behavior in dependent operations.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>currentMoveIndex</code> - The index to set as the current position in the move sequence.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getElapsedTime()">
 <h3>getElapsedTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="element-name">getElapsedTime</span>()</div>
+<div class="block">Retrieves the elapsed time recorded by this instance. The returned value represents
+ the duration that has passed since the start of the timing operation. The elapsed time
+ is expressed as a floating-point number, allowing for fractional precision in the
+ measurement. This method provides access to the current elapsed time value for monitoring
+ or analytical purposes.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setElapsedTime(float)">
 <h3>setElapsedTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElapsedTime</span><wbr><span class="parameters">(float&nbsp;elapsedTime)</span></div>
+<div class="block">Sets the elapsed time value for this instance. This method updates the internal state
+ to reflect the specified elapsed time, measured in seconds. The provided value should
+ represent a non-negative duration, typically used for tracking time-based operations.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elapsedTime</code> - The new elapsed time value to set, in seconds. Must be a non-negative float value.</dd>
+</dl>
 </section>
 </li>
 </ul>

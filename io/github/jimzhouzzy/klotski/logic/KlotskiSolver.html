@@ -106,17 +106,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#main(java.lang.String%5B%5D)" class="member-name-link">main</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The main entry point for the Klotski game solver application.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#printSolution(java.util.List)" class="member-name-link">printSolution</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solution)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Prints the provided solution steps in a formatted manner or indicates that no solution was found.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#solve(io.github.jimzhouzzy.klotski.logic.KlotskiGame)" class="member-name-link">solve</a><wbr>(<a href="KlotskiGame.html" title="class in io.github.jimzhouzzy.klotski.logic">KlotskiGame</a>&nbsp;initialGame)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Solves the Klotski puzzle starting from the specified initial game configuration and returns
+ a sequence of moves leading to a solution.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#solve(io.github.jimzhouzzy.klotski.logic.KlotskiGame,int)" class="member-name-link">solve</a><wbr>(<a href="KlotskiGame.html" title="class in io.github.jimzhouzzy.klotski.logic">KlotskiGame</a>&nbsp;initialGame,
  int&nbsp;blockedId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Solves the Klotski puzzle using a breadth-first search (BFS) algorithm to find the shortest solution.</div>
+</div>
 </div>
 </div>
 </div>
@@ -152,6 +161,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="solve(io.github.jimzhouzzy.klotski.logic.KlotskiGame)">
 <h3>solve</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">solve</span><wbr><span class="parameters">(<a href="KlotskiGame.html" title="class in io.github.jimzhouzzy.klotski.logic">KlotskiGame</a>&nbsp;initialGame)</span></div>
+<div class="block">Solves the Klotski puzzle starting from the specified initial game configuration and returns
+ a sequence of moves leading to a solution. This method delegates to an overloaded solve method
+ while specifying that no piece is blocked from movement by default. A blocked piece (if specified)
+ would remain stationary during the solving process, but this implementation allows all pieces
+ to be moved freely.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>initialGame</code> - The starting configuration of the Klotski puzzle, including board state
+ and piece positions.</dd>
+<dt>Returns:</dt>
+<dd>A list of strings representing the moves required to solve the puzzle, where each string
+ corresponds to a piece identifier followed by a direction (e.g., "A UP"). Returns an
+ empty list if no solution exists or if the initial configuration is invalid.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -159,18 +182,52 @@ loadScripts(document, 'script');</script>
 <h3>solve</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">solve</span><wbr><span class="parameters">(<a href="KlotskiGame.html" title="class in io.github.jimzhouzzy.klotski.logic">KlotskiGame</a>&nbsp;initialGame,
  int&nbsp;blockedId)</span></div>
+<div class="block">Solves the Klotski puzzle using a breadth-first search (BFS) algorithm to find the shortest solution.
+ This method explores all possible moves from the initial game state, excluding moves involving the piece
+ specified by <code>blockedId</code>. It tracks visited board states to avoid cycles and evaluates each valid
+ configuration until a solution is found. Statistics about the search process, including execution time,
+ number of solutions, and states examined, are printed to the console.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>initialGame</code> - The initial configuration of the Klotski game to solve.</dd>
+<dd><code>blockedId</code> - The identifier of the puzzle piece that should not be moved during the solution process.</dd>
+<dt>Returns:</dt>
+<dd>A list of strings representing the sequence of moves in the shortest solution,
+ or <code>null</code> if no solution exists. Each string corresponds to a move direction
+ (e.g., "UP", "DOWN") for a specific piece. The solution is reconstructed from the
+ terminal state back to the initial state using parent-child relationships tracked during BFS.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="printSolution(java.util.List)">
 <h3>printSolution</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">printSolution</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;solution)</span></div>
+<div class="block">Prints the provided solution steps in a formatted manner or indicates that no solution was found.
+ If the input list is <code>null</code>, a message indicating no solution is printed. Otherwise, the method
+ displays the total number of moves followed by each step of the solution, numbered sequentially starting
+ from1. Each step is aligned with its corresponding number in a right-justified three-digit format.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>solution</code> - The list of strings representing the solution steps, which may be <code>null</code>.
+ If non-null, each element in the list corresponds to a single step in the solution.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="main(java.lang.String[])">
 <h3>main</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">main</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</span></div>
+<div class="block">The main entry point for the Klotski game solver application. This method initializes a Klotski game,
+ prints the initial board state, attempts to find a solution path using the <code>solve</code> method, and
+ prints the solution steps. Optionally, it replays the solution step-by-step, applying each move from
+ the solution list to the game board, displaying the updated state after each move with a1-second delay
+ between steps. Moves are parsed from strings in the format "Move [pieceName] from (row,col) to (row,col)",
+ extracting the piece name and coordinates to execute the corresponding game actions.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>args</code> - Command-line arguments (not used in this implementation).</dd>
+</dl>
 </section>
 </li>
 </ul>

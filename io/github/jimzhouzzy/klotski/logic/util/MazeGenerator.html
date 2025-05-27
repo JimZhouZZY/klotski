@@ -107,20 +107,28 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateMaze(int,int)" class="member-name-link">generateMaze</a><wbr>(int&nbsp;rows,
  int&nbsp;cols)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Generates a randomized maze of the specified dimensions using a maze-generation algorithm.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateMaze(int,int,long)" class="member-name-link">generateMaze</a><wbr>(int&nbsp;rows,
  int&nbsp;cols,
  long&nbsp;seed)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Generates a perfect maze of specified dimensions using a randomized depth-first search algorithm.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#main(java.lang.String%5B%5D)" class="member-name-link">main</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">, then each line starts with *.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#printMaze(int%5B%5D,int,int)" class="member-name-link">printMaze</a><wbr>(int[]&nbsp;map,
  int&nbsp;rows,
  int&nbsp;cols)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Prints a2D maze representation based on a1D integer array.</div>
+</div>
 </div>
 </div>
 </div>
@@ -157,6 +165,19 @@ loadScripts(document, 'script');</script>
 <h3>generateMaze</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">generateMaze</span><wbr><span class="parameters">(int&nbsp;rows,
  int&nbsp;cols)</span></div>
+<div class="block">Generates a randomized maze of the specified dimensions using a maze-generation algorithm.
+ The maze is represented as a2D array encoded in a flattened1D integer array, where each
+ cell contains bitmask values indicating the presence of walls (e.g., NORTH_WALL, EAST_WALL, etc.).
+ The maze is guaranteed to have a valid path between all reachable cells and is randomized using
+ the current system time as the seed for variation across calls.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rows</code> - The number of rows in the maze. Must be a positive integer.</dd>
+<dd><code>cols</code> - The number of columns in the maze. Must be a positive integer.</dd>
+<dt>Returns:</dt>
+<dd>A flattened integer array representing the maze grid, where each element corresponds
+ to a cell's wall configuration. The array length is <code>rows * cols</code>.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -165,6 +186,21 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">generateMaze</span><wbr><span class="parameters">(int&nbsp;rows,
  int&nbsp;cols,
  long&nbsp;seed)</span></div>
+<div class="block">Generates a perfect maze of specified dimensions using a randomized depth-first search algorithm.
+ The maze is represented as a1D array where0 indicates walls and1 indicates traversable paths.
+ The maze guarantees a single unique path between any two cells and includes an entrance in the
+ first row and an exit in the last row, both placed randomly on odd-indexed columns where possible.
+ The algorithm uses a provided seed for deterministic maze generation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rows</code> - The number of rows in the maze grid (must be a positive integer).</dd>
+<dd><code>cols</code> - The number of columns in the maze grid (must be a positive integer).</dd>
+<dd><code>seed</code> - The seed value used to initialize the random number generator for reproducible mazes.</dd>
+<dt>Returns:</dt>
+<dd>A1D array of size <code>rows * cols</code> containing0s (walls) and1s (paths),
+ with the entrance at index <code>startRow * cols + startCol</code> and the exit
+ at index <code>(rows -1) * cols + exitCol</code>.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -173,12 +209,40 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">printMaze</span><wbr><span class="parameters">(int[]&nbsp;map,
  int&nbsp;rows,
  int&nbsp;cols)</span></div>
+<div class="block">Prints a2D maze representation based on a1D integer array. The maze is formatted such that
+ each cell is represented by two characters: "##" for walls (array value not equal to1) and
+ two spaces for open paths (array value equal to1). The maze is printed row by row, with each
+ row starting on a new line.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>map</code> - The1D array representing the maze, where each element corresponds to a cell in
+ row-major order (row-by-row). A value of1 indicates an open path; any other value
+ indicates a wall.</dd>
+<dd><code>rows</code> - The number of rows in the maze grid.</dd>
+<dd><code>cols</code> - The number of columns in the maze grid.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="main(java.lang.String[])">
 <h3>main</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">main</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</span></div>
+<div class="block">, then each line starts with *. Mention entry point, generating and printing maze. Note rows and cols are set to21, should be odd. Explain steps, unused args, and references to other methods./**
+ Entry point for generating and printing a maze. This method initializes the dimensions
+ of the maze (rows and columns) with default values, ensuring they are odd numbers to
+ facilitate proper wall placement. It generates the maze structure using the <code>generateMaze</code>
+ method and prints the resulting maze to the console via the <code>printMaze</code> method.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>args</code> - Command-line arguments (not used in this implementation).</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list-long">
+<li><a href="#generateMaze(int,int)"><code>generateMaze(int, int)</code></a></li>
+<li><a href="#printMaze(int%5B%5D,int,int)"><code>printMaze(int[], int, int)</code></a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </li>
 </ul>

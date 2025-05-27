@@ -128,10 +128,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Overrides the parent method to create the UI layout for the spectate player selection screen.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hide()" class="member-name-link">hide</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the <code>InputProcessor</code> to <code>null</code>, disabling all input event handling for this context.</div>
+</div>
 </div>
 </div>
 </div>
@@ -175,6 +179,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Overrides the parent method to create the UI layout for the spectate player selection screen.
+ Initializes a table that fills the parent container and adds top/bottom padding equal to10% of the screen height.
+ Adds a scaled title label "Choose a Player to Spectate" with bottom spacing, followed by an automatically refreshed
+ list of online users (via <code>startOnlineUsersAutoRefresh()</code>). Includes a "Back" button at the bottom of the table.
+ The table structure organizes UI elements vertically and manages spacing between components.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../core/MenuScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../core/MenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">MenuScreen</a></code></dd>
@@ -185,6 +194,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hide()">
 <h3>hide</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hide</span>()</div>
+<div class="block">Sets the <code>InputProcessor</code> to <code>null</code>, disabling all input event handling for this context.
+ This ensures that no further touch, keyboard, mouse, or other input events will be processed by the
+ application until a new input processor is explicitly set. Typically called when the associated
+ component or screen is hidden or deactivated to prevent unintended interaction.
+ <p>
+ This method extends the superclass <code>hide()</code> method to additionally manage the cancellation
+ of the <code>refreshOnlineUsersTask</code>. If the task is currently active, it will be canceled
+ and the reference to the task will be set to <code>null</code> to prevent further execution
+ after the component is hidden. This ensures that background tasks are properly cleaned up
+ when the component is no longer visible or active.
+ </p></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>hide</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>

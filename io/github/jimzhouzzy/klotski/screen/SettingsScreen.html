@@ -121,29 +121,45 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes and configures the settings screen UI, including various user-configurable options.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dispose()" class="member-name-link">dispose</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Disposes of resources associated with this object to free up memory and prevent memory leaks.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hide()" class="member-name-link">hide</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Disables input processing by setting the global input processor to <code>null</code>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pause()" class="member-name-link">pause</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pauses the current process or operation associated with this instance.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#render(float)" class="member-name-link">render</a><wbr>(float&nbsp;delta)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Renders the game elements and updates the UI stage each frame.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resize(int,int)" class="member-name-link">resize</a><wbr>(int&nbsp;width,
  int&nbsp;height)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Resizes the stage's viewport to the specified dimensions and centers the camera.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resume()" class="member-name-link">resume</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Resumes the execution of the current instance, typically after a prior <a href="#pause()"><code>pause()</code></a> or equivalent operation.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#show()" class="member-name-link">show</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the stage as the primary input processor for handling user input events.</div>
+</div>
 </div>
 </div>
 </div>
@@ -182,6 +198,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Initializes and configures the settings screen UI, including various user-configurable options.
+ Creates a table-based layout with a title label and checkboxes for different settings:
+ - Toggle between light/dark mode (affects theme and background music)
+ - Enable/disable antialiasing for graphics quality
+ - Enable/disable vertical sync for rendering synchronization
+ - Enable/disable background music
+ - Show/hide arrow key controls for gameplay
+ - Enable/disable offline mode for network functionality
+ Includes a back button that saves current settings and returns to the main screen.
+ All setting changes trigger immediate application updates, play feedback sounds, log state changes,
+ and persist settings through the save mechanism. Maintains references to the main game instance (klotski)
+ for state management and theme configuration.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="core/ProtoScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="core/ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>
@@ -192,11 +220,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="render(float)">
 <h3>render</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">render</span><wbr><span class="parameters">(float&nbsp;delta)</span></div>
+<div class="block">Renders the game elements and updates the UI stage each frame. This method is part of the game loop
+ and is called continuously to refresh the display. It first clears the screen using the background
+ color configured in the Klotski instance. The dynamic components of the game board (e.g., moving blocks,
+ sprites, or interactive elements) are rendered next. Finally, the UI stage is updated to handle input
+ events and animations, and then drawn to display UI components like buttons, labels, or overlays.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>render</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="core/ProtoScreen.html#render(float)">render</a></code>&nbsp;in class&nbsp;<code><a href="core/ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>delta</code> - The time in seconds since the last render call, used for frame-rate-independent updates.</dd>
 </dl>
 </section>
 </li>
@@ -205,11 +240,18 @@ loadScripts(document, 'script');</script>
 <h3>resize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">resize</span><wbr><span class="parameters">(int&nbsp;width,
  int&nbsp;height)</span></div>
+<div class="block">Resizes the stage's viewport to the specified dimensions and centers the camera.
+ This method updates the viewport's width and height, applies the changes, and
+ repositions the camera to the center of the new viewport configuration. It is
+ typically called when the application window or screen resolution changes.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>resize</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="core/ProtoScreen.html#resize(int,int)">resize</a></code>&nbsp;in class&nbsp;<code><a href="core/ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>width</code> - the new width of the viewport in pixels</dd>
+<dd><code>height</code> - the new height of the viewport in pixels</dd>
 </dl>
 </section>
 </li>
@@ -217,6 +259,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="dispose()">
 <h3>dispose</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">dispose</span>()</div>
+<div class="block">Disposes of resources associated with this object to free up memory and prevent memory leaks.
+ This method is called when this object is no longer needed and ensures proper cleanup by:
+ <ul>
+ <li>Disposing the <code>Stage</code> instance, closing the window and releasing its native resources.</li>
+ <li>Disposing the <code>Skin</code> instance, releasing any graphical assets or textures it manages.</li>
+ </ul>
+ After calling this method, the disposed objects should no longer be used. This override ensures
+ compliance with the framework's resource management lifecycle.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>dispose</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.utils.Disposable</code></dd>
@@ -231,6 +281,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hide()">
 <h3>hide</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hide</span>()</div>
+<div class="block">Disables input processing by setting the global input processor to <code>null</code>. This method
+ effectively removes any active input handlers, preventing touch, keyboard, or other input events
+ from being processed by the application until another input processor is explicitly set.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>hide</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
@@ -243,6 +296,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="show()">
 <h3>show</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">show</span>()</div>
+<div class="block">Sets the stage as the primary input processor for handling user input events. This method is called
+ when the screen becomes visible, ensuring that all touch, keyboard, and other input events are
+ routed to the stage. By delegating input processing to the stage, UI components (such as buttons,
+ labels, and other actors within the stage) can respond appropriately to user interactions.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>show</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
@@ -255,11 +312,24 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="pause()">
 <h3>pause</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">pause</span>()</div>
+<div class="block">Pauses the current process or operation associated with this instance. When invoked, this method
+ temporarily halts ongoing activities or state changes, allowing them to be resumed later via a
+ corresponding <a href="#resume()"><code>resume()</code></a> method. If the process is already paused, invoking this method
+ has no effect. Implementations should ensure that internal state is preserved during the pause,
+ and any necessary resources remain allocated to permit seamless resumption. This method is
+ typically used to manage lifecycle states, such as pausing a thread, media playback, or timed
+ events.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>pause</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="core/ProtoScreen.html#pause()">pause</a></code>&nbsp;in class&nbsp;<code><a href="core/ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="core/ProtoScreen.html#resume()"><code>ProtoScreen.resume()</code></a></li>
+</ul>
+</dd>
 </dl>
 </section>
 </li>
@@ -267,6 +337,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="resume()">
 <h3>resume</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">resume</span>()</div>
+<div class="block">Resumes the execution of the current instance, typically after a prior <a href="#pause()"><code>pause()</code></a> or equivalent operation.
+ This method transitions the state of the object from a paused or suspended state back to an active state, allowing
+ previously halted operations to continue. If the instance was not in a paused state, calling this method has no effect.
+ Implementations should ensure thread safety and handle any required resource reinitialization or state synchronization
+ to guarantee consistent behavior upon resumption. Overrides must adhere to the concurrency and lifecycle contracts
+ defined by the parent class or interface.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>resume</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>

@@ -127,7 +127,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Creates and initializes the UI components for the level selection screen.</div>
+</div>
 </div>
 </div>
 </div>
@@ -170,6 +172,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Creates and initializes the UI components for the level selection screen. This method sets up
+ a table-based layout with a title label, five level selection buttons (Level1 to Level5), and
+ a back button. Each level button, when clicked, triggers the creation of a <a href="../GameScreen.html" title="class in io.github.jimzhouzzy.klotski.screen"><code>GameScreen</code></a>
+ configured for the selected level file (e.g., level1.dat to level5.dat) in "3min-Attack" mode
+ (non-blocked gameplay), switches the active screen to the new game screen, and plays a click sound.
+ The back button navigates to the previous screen and also plays a click sound. All UI elements
+ are styled using the provided skin and include padding, sizing, and font scaling for consistent
+ visual presentation.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../core/MenuScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../core/MenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">MenuScreen</a></code></dd>

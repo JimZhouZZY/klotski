@@ -106,7 +106,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Stops the server immediately, terminating all active connections and releasing associated resources.</div>
+</div>
 </div>
 </div>
 </div>
@@ -147,6 +149,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="close()">
 <h3>close</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">close</span>()</div>
+<div class="block">Stops the server immediately, terminating all active connections and releasing associated resources.
+ This method invokes the server's stop mechanism with no delay, ensuring the server shuts down
+ without waiting for pending requests or connections to complete. After calling this method, the server
+ will no longer accept new requests and cannot be restarted. Use this to cleanly halt server operations
+ during application shutdown or error recovery.</div>
 </section>
 </li>
 </ul>

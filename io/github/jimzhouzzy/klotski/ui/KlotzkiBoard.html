@@ -118,16 +118,28 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes the component by resetting the horizontal offset and registering an input listener
+ to handle keyboard and touch events.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCcPosition()" class="member-name-link">getCcPosition</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Calculates and returns the adjusted position coordinates by combining the base CC position,
+ the configured offset values, and fixed adjustments.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGyPosition()" class="member-name-link">getGyPosition</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Calculates and returns the adjusted gyroscope position by combining the base position,
+ the configured offset values, and fixed adjustment constants.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#loadColors()" class="member-name-link">loadColors</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes and loads color data for rendering, including generating a maze structure and assigning colors
+ to specific coordinates.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#render(float)" class="member-name-link">render</a><wbr>(float&nbsp;delta)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -170,6 +182,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Initializes the component by resetting the horizontal offset and registering an input listener
+ to handle keyboard and touch events. The listener manages:
+ <ul>
+ <li>Movement controls using WASD/arrow keys (for primary entity) and IJKL keys (for secondary entity),
+ including collision checks against a grid-based map and position updates</li>
+ <li>Rotation controls (Q/E keys) and flip trigger (F key)</li>
+ <li>Vertical movement controls (SPACE/CTRL keys)</li>
+ <li>Touch interactions that modify cursor graphics and trigger quadrant-based flips when clicking
+ within defined quadrilateral regions</li>
+ <li>State flag management for movement directions and key states</li>
+ </ul>
+ Handles smooth transition between pressed/released states for controls and maintains cursor customization
+ during click interactions. Collision logic permits movement if target grid cells are empty (0) for primary
+ entity or filled (1) for secondary entity, or when overlapping with the other entity's position.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="DynamicBoard.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="DynamicBoard.html" title="class in io.github.jimzhouzzy.klotski.ui">DynamicBoard</a></code></dd>
@@ -190,6 +216,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="loadColors()">
 <h3>loadColors</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">loadColors</span>()</div>
+<div class="block">Initializes and loads color data for rendering, including generating a maze structure and assigning colors
+ to specific coordinates. This method precomputes a cache of smoothly varying colors, generates a maze using
+ a fixed seed, adjusts colors for maze walls by lightening them, and populates a color lookup table for
+ predefined coordinate ranges. The color cache prioritizes generated level colors but falls back to default
+ light colors when exhausted. Maze generation uses a20-column grid layout, and wall detection modifies RGB
+ values to create a consistent visual style. Coordinates in the range [-500,500] x [-50,-5] are pre-mapped
+ to color values for efficient rendering lookups.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="DynamicBoard.html#loadColors()">loadColors</a></code>&nbsp;in class&nbsp;<code><a href="DynamicBoard.html" title="class in io.github.jimzhouzzy.klotski.ui">DynamicBoard</a></code></dd>
@@ -200,12 +233,31 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getCcPosition()">
 <h3>getCcPosition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">getCcPosition</span>()</div>
+<div class="block">Calculates and returns the adjusted position coordinates by combining the base CC position,
+ the configured offset values, and fixed adjustments. The adjusted X-coordinate is computed
+ as the base CC position's X component plus its offset and an additional fixed value of10.
+ The adjusted Y-coordinate is computed as the base CC position's Y component plus its offset
+ and an additional fixed value of1.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>An int array of length2 containing the adjusted coordinates, where index0
+ represents the X-coordinate and index1 represents the Y-coordinate.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getGyPosition()">
 <h3>getGyPosition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">getGyPosition</span>()</div>
+<div class="block">Calculates and returns the adjusted gyroscope position by combining the base position,
+ the configured offset values, and fixed adjustment constants. The resulting position
+ is computed as the sum of the base gyPosition component, its corresponding offset from
+ gyPositionOffset, and a fixed integer adjustment (10 for the x-coordinate,1 for the y-coordinate).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A new integer array containing the adjusted x and y coordinates of the gyroscope position,
+ where index0 represents the x-coordinate and index1 represents the y-coordinate.</dd>
+</dl>
 </section>
 </li>
 </ul>

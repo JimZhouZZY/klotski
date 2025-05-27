@@ -121,7 +121,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes and configures the UI elements for the login/registration screen.</div>
+</div>
 </div>
 </div>
 </div>
@@ -160,6 +162,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Initializes and configures the UI elements for the login/registration screen. This method sets up
+ input listeners for keyboard events (ESCAPE to return to main screen, ENTER to trigger login),
+ loads existing user data from persistent storage, and constructs a layout using a <code>Table</code>
+ to organize components. UI elements include username/password text fields (with password masking),
+ a login button (triggers <code>loginRouter()</code>), a register button (handles both online and offline
+ registration with error dialogs), and a back button to return to the main screen. All buttons include
+ click sound effects via <a href="../Klotski.html#playClickSound()"><code>Klotski.playClickSound()</code></a>. The layout is added to the <code>Stage</code>
+ for rendering and input handling.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="core/ProtoScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="core/ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>

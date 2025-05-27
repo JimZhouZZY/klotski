@@ -134,32 +134,59 @@ implements com.badlogic.gdx.Screen</span></div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Overrides the <code>create()</code> method to set up the stage and UI elements, including keyboard and touch input handling.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dispose()" class="member-name-link">dispose</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Disposes of all resources associated with this object, including the <code>Stage</code>, <code>Skin</code>,
+ and <a href="../ui/KlotzkiBoard.html" title="class in io.github.jimzhouzzy.klotski.ui"><code>KlotzkiBoard</code></a> instances, and resets the input processor to <code>null</code>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleBack()" class="member-name-link">handleBack</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles the action triggered by pressing the ESC key by default, navigating back to the main screen
+ of the Klotski application.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hide()" class="member-name-link">hide</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Hides this component and disables input processing by setting the input processor to <code>null</code>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pause()" class="member-name-link">pause</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pauses the current operation or process managed by this instance.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#render(float)" class="member-name-link">render</a><wbr>(float&nbsp;delta)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Renders the game elements by performing the following steps each frame:
+ 
+ Clears the screen using the background color defined in the <code>klotski</code> instance.
+ Renders the dynamic Klotzki game board, updating its state based on the elapsed time.
+ Updates and draws the UI stage, handling actor logic and rendering UI components.
+ 
+ This method is called every frame as part of the game loop to ensure continuous visual updates.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resize(int,int)" class="member-name-link">resize</a><wbr>(int&nbsp;width,
  int&nbsp;height)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Updates the viewport dimensions of the associated stage and centers the camera.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resume()" class="member-name-link">resume</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Resumes the operation or activity that was previously paused.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#show()" class="member-name-link">show</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the stage as the input processor for handling user input events (e.g., touch, keyboard)
+ and initializes the <code>klotzkiBoard</code> component with the provided stage.</div>
+</div>
 </div>
 </div>
 </div>
@@ -224,6 +251,27 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Overrides the <code>create()</code> method to set up the stage and UI elements, including keyboard and touch input handling.
+ Registers an <code>InputListener</code> to the stage to manage the following interactions:
+ <ul>
+ <li>Keyboard events:
+ <ul>
+ <li><code>Input.Keys.ESCAPE</code>: Triggers <a href="#handleBack()"><code>handleBack()</code></a> to handle navigation or exit.</li>
+ <li><code>Input.Keys.R</code>, <code>Input.Keys.I</code>, <code>Input.Keys.U</code>, <code>Input.Keys.Y</code>, <code>Input.Keys.A</code>:
+ Placeholders for restart, hint, undo, redo, and auto-solve actions (commented out).</li>
+ <li><code>Input.Keys.SPACE</code> and <code>Input.Keys.ENTER</code>: Placeholders for toggling auto-solving (commented out).</li>
+ <li>Arrow keys (<code>Input.Keys.LEFT</code>, <code>Input.Keys.UP</code>, etc.): Placeholders for directional input handling (commented out).</li>
+ </ul>
+ </li>
+ <li>Touch input events:
+ <ul>
+ <li>Changes the cursor to a custom "clicked" image on <code>#touchDown(InputEvent, float, float, int, int)</code>.</li>
+ <li>Reverts the cursor to a default image on <code>#touchUp(InputEvent, float, float, int, int)</code>.</li>
+ <li>Handles Pixmap loading, resizing, hotspot configuration, and resource disposal for cursor changes.</li>
+ </ul>
+ </li>
+ </ul>
+ This method initializes the core interaction layer for the application's UI.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>create</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.ApplicationListener</code></dd>
@@ -236,15 +284,29 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="handleBack()">
 <h3>handleBack</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">handleBack</span>()</div>
+<div class="block">Handles the action triggered by pressing the ESC key by default, navigating back to the main screen
+ of the Klotski application. This method is intended to be overridden by subclasses to provide
+ custom behavior for back navigation, but the default implementation sets the application's
+ screen to the predefined main screen. Override this method to modify the navigation logic or
+ add additional actions when the back event occurs.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="render(float)">
 <h3>render</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">render</span><wbr><span class="parameters">(float&nbsp;delta)</span></div>
+<div class="block">Renders the game elements by performing the following steps each frame:
+ <ol>
+ <li>Clears the screen using the background color defined in the <code>klotski</code> instance.</li>
+ <li>Renders the dynamic Klotzki game board, updating its state based on the elapsed time.</li>
+ <li>Updates and draws the UI stage, handling actor logic and rendering UI components.</li>
+ </ol>
+ This method is called every frame as part of the game loop to ensure continuous visual updates.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>render</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
+<dt>Parameters:</dt>
+<dd><code>delta</code> - The time in seconds since the last render call, used for frame-rate-independent updates.</dd>
 </dl>
 </section>
 </li>
@@ -253,6 +315,12 @@ implements com.badlogic.gdx.Screen</span></div>
 <h3>resize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">resize</span><wbr><span class="parameters">(int&nbsp;width,
  int&nbsp;height)</span></div>
+<div class="block">Updates the viewport dimensions of the associated stage and centers the camera. This method
+ is typically called when the application window is resized, ensuring the viewport adjusts to
+ the new width and height while maintaining proper scaling and aspect ratio. The camera's
+ position is set to the center of the updated viewport, which is critical for rendering
+ content correctly after resizing. This method delegates the update to the stage's viewport
+ and applies the changes immediately.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>resize</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.ApplicationListener</code></dd>
@@ -260,6 +328,9 @@ implements com.badlogic.gdx.Screen</span></div>
 <dd><code>resize</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
 <dt>Overrides:</dt>
 <dd><code>resize</code>&nbsp;in class&nbsp;<code>com.badlogic.gdx.ApplicationAdapter</code></dd>
+<dt>Parameters:</dt>
+<dd><code>width</code> - The new width of the viewport in pixels.</dd>
+<dd><code>height</code> - The new height of the viewport in pixels.</dd>
 </dl>
 </section>
 </li>
@@ -267,6 +338,10 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="dispose()">
 <h3>dispose</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">dispose</span>()</div>
+<div class="block">Disposes of all resources associated with this object, including the <code>Stage</code>, <code>Skin</code>,
+ and <a href="../ui/KlotzkiBoard.html" title="class in io.github.jimzhouzzy.klotski.ui"><code>KlotzkiBoard</code></a> instances, and resets the input processor to <code>null</code>. This method
+ ensures proper cleanup of LibGDX-specific resources to prevent memory leaks. It should be called
+ when this object is no longer needed to release internal resources and unregister input handling.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>dispose</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.ApplicationListener</code></dd>
@@ -283,6 +358,10 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="hide()">
 <h3>hide</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hide</span>()</div>
+<div class="block">Hides this component and disables input processing by setting the input processor to <code>null</code>.
+ This ensures that no further input events (e.g., touch, keyboard, or mouse events) will be handled
+ by this component or any underlying components until another input processor is explicitly set.
+ Overrides the parent method to provide specific handling for input termination during component teardown.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>hide</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>
@@ -293,6 +372,12 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="resume()">
 <h3>resume</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">resume</span>()</div>
+<div class="block">Resumes the operation or activity that was previously paused. This method restores the state
+ or resources required for normal execution, allowing the process to continue from the point
+ it was suspended. Implementations should ensure thread safety and handle any necessary
+ synchronization or reinitialization of internal components. If the operation is already
+ running or cannot be resumed, this method may have no effect. Overrides should document
+ any additional preconditions, postconditions, or exceptions specific to their context.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>resume</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.ApplicationListener</code></dd>
@@ -307,6 +392,10 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="pause()">
 <h3>pause</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">pause</span>()</div>
+<div class="block">Pauses the current operation or process managed by this instance. When invoked, this method
+ temporarily halts execution or processing, allowing it to be resumed later from the same state.
+ Implementations should ensure that internal state and resources are preserved during the pause.
+ If the operation is already paused or not active, calling this method may have no effect.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>pause</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.ApplicationListener</code></dd>
@@ -321,6 +410,11 @@ implements com.badlogic.gdx.Screen</span></div>
 <section class="detail" id="show()">
 <h3>show</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">show</span>()</div>
+<div class="block">Sets the stage as the input processor for handling user input events (e.g., touch, keyboard)
+ and initializes the <code>klotzkiBoard</code> component with the provided stage. This method ensures
+ that UI elements within the stage can respond to user interactions and that the game board
+ is properly linked to the stage for rendering and input processing. Overrides the parent class
+ implementation to configure the stage and board during the display lifecycle.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>show</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>

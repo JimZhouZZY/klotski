@@ -127,7 +127,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Creates and configures the UI elements for the classical level selection screen.</div>
+</div>
 </div>
 </div>
 </div>
@@ -170,6 +172,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Creates and configures the UI elements for the classical level selection screen. This method
+ sets up a table-based layout with a title label, dynamically generates five level selection
+ buttons (Level1 to Level5), and adds a back button. Each level button, when clicked, initializes
+ a <a href="../GameScreen.html" title="class in io.github.jimzhouzzy.klotski.screen"><code>GameScreen</code></a> in classical mode with the corresponding level data file (level1.dat to level5.dat),
+ switches to the new game screen, and plays a click sound. The back button triggers navigation
+ to the previous screen and plays a click sound. All UI elements use the application's skin
+ and include consistent sizing and padding.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../core/MenuScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../core/MenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">MenuScreen</a></code></dd>

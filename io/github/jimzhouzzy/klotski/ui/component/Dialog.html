@@ -110,13 +110,18 @@ loadScripts(document, 'script');</script>
  com.badlogic.gdx.scenes.scene2d.Stage&nbsp;stage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Displays a modal dialog box on the specified stage with a semi-transparent background, a title, a message,
+ and an "OK" button.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#showErrorDialog(io.github.jimzhouzzy.klotski.Klotski,com.badlogic.gdx.scenes.scene2d.ui.Skin,com.badlogic.gdx.scenes.scene2d.Stage,java.lang.String)" class="member-name-link">showErrorDialog</a><wbr>(<a href="../../Klotski.html" title="class in io.github.jimzhouzzy.klotski">Klotski</a>&nbsp;klotski,
  com.badlogic.gdx.scenes.scene2d.ui.Skin&nbsp;skin,
  com.badlogic.gdx.scenes.scene2d.Stage&nbsp;stage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Displays an error dialog with a specified message within the Klotski application.</div>
+</div>
 </div>
 </div>
 </div>
@@ -155,6 +160,18 @@ loadScripts(document, 'script');</script>
  com.badlogic.gdx.scenes.scene2d.ui.Skin&nbsp;skin,
  com.badlogic.gdx.scenes.scene2d.Stage&nbsp;stage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+<div class="block">Displays an error dialog with a specified message within the Klotski application. This dialog
+ uses the provided UI skin and is attached to the given stage, ensuring it remains modal and
+ centered. The dialog title is set to "Error", and the content is populated with the provided
+ message. This method delegates to the general-purpose <code>showDialog</code> method, passing
+ the appropriate error-specific parameters.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>klotski</code> - the main Klotski application instance to which the dialog belongs</dd>
+<dd><code>skin</code> - the UI skin used to style the dialog and its components</dd>
+<dd><code>stage</code> - the parent stage for the dialog, ensuring proper modality and positioning</dd>
+<dd><code>message</code> - the error message to display in the dialog body</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -165,6 +182,21 @@ loadScripts(document, 'script');</script>
  com.badlogic.gdx.scenes.scene2d.Stage&nbsp;stage,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+<div class="block">Displays a modal dialog box on the specified stage with a semi-transparent background, a title, a message,
+ and an "OK" button. The dialog is centered within the stage and styled using the provided skin. When invoked,
+ the dialog plays an alert sound from the <a href="../../Klotski.html" title="class in io.github.jimzhouzzy.klotski"><code>Klotski</code></a> instance. The dialog includes a title label aligned at the top,
+ a message label with text wrapping positioned below the title, and a centered "OK" button that removes the dialog
+ and plays a click sound when clicked. The dialog's background and components are added to a group that is overlaid
+ on the stage. The dialog's dimensions, positioning, and visual elements (e.g., colors, fonts) are derived from the
+ skin and stage parameters.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>klotski</code> - the <a href="../../Klotski.html" title="class in io.github.jimzhouzzy.klotski"><code>Klotski</code></a> game instance used to trigger alert and click sounds</dd>
+<dd><code>skin</code> - the <code>Skin</code> providing UI styling and resources for dialog components</dd>
+<dd><code>stage</code> - the <code>Stage</code> on which the dialog will be displayed</dd>
+<dd><code>title</code> - the text to display as the dialog's title</dd>
+<dd><code>message</code> - the message content to display within the dialog, wrapped as needed</dd>
+</dl>
 </section>
 </li>
 </ul>

@@ -121,7 +121,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes and configures the UI components for a help or tips screen.</div>
+</div>
 </div>
 </div>
 </div>
@@ -160,6 +162,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Initializes and configures the UI components for a help or tips screen. Creates a root table
+ that fills the stage and contains a title label, a scrollable text area with game instructions,
+ and a navigation button. The text area displays gameplay tips including control shortcuts
+ (ESCAPE, R, I, U, Y, A, SPACE/ENTER, H/J/K/L), navigation features (Login, Settings, Exit),
+ and hidden background interaction surprises. Configures scroll pane behavior to allow vertical
+ scrolling with adjusted sensitivity and visible scrollbars. Adds a 'Back' button that triggers
+ navigation return logic through <a href="core/ProtoScreen.html#handleBack()"><code>ProtoScreen.handleBack()</code></a> and plays an interface sound on interaction.
+ Uses the application skin for consistent styling of all UI elements.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="core/ProtoScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="core/ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>

@@ -137,10 +137,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getBlockedIdForLevel(int)" class="member-name-link">getBlockedIdForLevel</a><wbr>(int&nbsp;level)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieves the blocked identifier associated with a specified game level.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize()" class="member-name-link">initialize</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initializes the game board for Klotski Level1 by creating and positioning all playable pieces.</div>
+</div>
 </div>
 </div>
 </div>
@@ -199,12 +203,38 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getBlockedIdForLevel(int)">
 <h3>getBlockedIdForLevel</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getBlockedIdForLevel</span><wbr><span class="parameters">(int&nbsp;level)</span></div>
+<div class="block">Retrieves the blocked identifier associated with a specified game level. The mapping between levels
+ and blocked IDs is predefined as follows:
+ <ul>
+ <li>Level1: Blocked ID2</li>
+ <li>Level2: Blocked ID9</li>
+ <li>Level3: Blocked ID1</li>
+ <li>Level4: Blocked ID3</li>
+ <li>Level5: Blocked ID4</li>
+ </ul>
+ If the provided level does not match any of the predefined cases (1-5), the method returns -1
+ to indicate an invalid or unrecognized level.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>level</code> - The game level for which to retrieve the blocked identifier. Valid values are1 through5.</dd>
+<dt>Returns:</dt>
+<dd>The blocked ID corresponding to the specified level, or -1 if the level is invalid.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="initialize()">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span>()</div>
+<div class="block">Initializes the game board for Klotski Level1 by creating and positioning all playable pieces.
+ Sets up a10-piece configuration consisting of:
+ -1x2x2 piece (Cao Cao with ID0, positioned at row0, column1)
+ -1x2x1 vertical piece (Guan Yu at row3, column1)
+ -4x1x2 horizontal pieces (Generals1-4: two at top corners, one at row2 column0, and one inactive at invalid coordinates)
+ -4x1x1 soldier pieces positioned in the bottom row and at row3 column3
+ Resets the move counter to0. All piece positions are specified as [row, column] coordinates
+ following game board conventions. This configuration represents the classic starting layout
+ for the first difficulty level of Klotski puzzles.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="KlotskiGame.html#initialize()">initialize</a></code>&nbsp;in class&nbsp;<code><a href="KlotskiGame.html" title="class in io.github.jimzhouzzy.klotski.logic">KlotskiGame</a></code></dd>

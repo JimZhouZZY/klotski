@@ -127,13 +127,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Creates and configures the UI elements for the Legacy Game Modes menu screen.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dispose()" class="member-name-link">dispose</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Disposes of resources associated with this object to facilitate garbage collection and prevent memory leaks.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hide()" class="member-name-link">hide</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Hides the view and performs necessary cleanup operations.</div>
+</div>
 </div>
 </div>
 </div>
@@ -176,6 +182,19 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Creates and configures the UI elements for the Legacy Game Modes menu screen. This method sets up
+ a title label and multiple buttons for navigating between different legacy game modes.
+ <p>
+ The UI includes:
+ - A "Classical" button that navigates to a level selection screen for classic game modes.
+ - A "Shuffled" button that starts a randomly generated game session using a random seed.
+ - A "Shuffle-Attack" button that initiates a time-limited shuffled game session.
+ - A "Blocked" button that navigates to a specialized level selection screen for blocked puzzles.
+ - A "Back" button to return to the previous screen.
+ <p>
+ Each button triggers a click sound effect upon interaction. The layout uses a <code>Table</code>
+ for organization, with consistent styling, padding, and dimensions for all elements. The method
+ overrides the parent class's <code>create()</code> method to define screen-specific UI logic.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../core/MenuScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../core/MenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">MenuScreen</a></code></dd>
@@ -186,6 +205,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="dispose()">
 <h3>dispose</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">dispose</span>()</div>
+<div class="block">Disposes of resources associated with this object to facilitate garbage collection and prevent memory leaks.
+ This method overrides the default dispose behavior to perform the following actions in sequence:
+1. Triggers an animation revert for the focal length on the dynamic board, resetting any active visual transformations.
+2. Releases system resources tied to the primary display stage, including its rendering context and input handlers.
+3. Disposes of the skin resources, freeing textures, fonts, and other UI-related assets from memory.
+ This ensures orderly cleanup when the object is no longer in use or the application is terminated.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>dispose</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.utils.Disposable</code></dd>
@@ -200,6 +225,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hide()">
 <h3>hide</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hide</span>()</div>
+<div class="block">Hides the view and performs necessary cleanup operations. This method triggers an animation to revert
+ the focal length of the dynamic board component, restoring it to its default state. It also disables
+ further input processing by setting the input processor to <code>null</code>, ensuring no interactions
+ occur while the component is hidden. Overrides the parent implementation to handle view-specific teardown.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>hide</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>

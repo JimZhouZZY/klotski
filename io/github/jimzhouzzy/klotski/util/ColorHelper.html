@@ -106,29 +106,39 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static float</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#calculateLuminance(com.badlogic.gdx.graphics.Color)" class="member-name-link">calculateLuminance</a><wbr>(com.badlogic.gdx.graphics.Color&nbsp;color)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Calculates the relative luminance of a given color using the standard sRGB luminance formula.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static com.badlogic.gdx.graphics.Color</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateSimilarColor(io.github.jimzhouzzy.klotski.Klotski,com.badlogic.gdx.graphics.Color,float,float,float)" class="member-name-link">generateSimilarColor</a><wbr>(<a href="../Klotski.html" title="class in io.github.jimzhouzzy.klotski">Klotski</a>&nbsp;klotski,
  com.badlogic.gdx.graphics.Color&nbsp;baseColor,
  float&nbsp;variability,
  float&nbsp;offset,
  float&nbsp;limit)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Generates a new color similar to the specified base color, adjusted according to the provided parameters and theme constraints.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static float[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#hslToRgb(float,float,float)" class="member-name-link">hslToRgb</a><wbr>(float&nbsp;h,
  float&nbsp;s,
  float&nbsp;l)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Converts an HSL color value to RGB.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static float</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#hueToRgb(float,float,float)" class="member-name-link">hueToRgb</a><wbr>(float&nbsp;p,
  float&nbsp;q,
  float&nbsp;t)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Converts a hue value to the corresponding RGB component using the specified parameters.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static float[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#rgbToHsl(float,float,float)" class="member-name-link">rgbToHsl</a><wbr>(float&nbsp;r,
  float&nbsp;g,
  float&nbsp;b)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Converts RGB color values to HSL color values.</div>
+</div>
 </div>
 </div>
 </div>
@@ -168,12 +178,44 @@ loadScripts(document, 'script');</script>
  float&nbsp;variability,
  float&nbsp;offset,
  float&nbsp;limit)</span></div>
+<div class="block">Generates a new color similar to the specified base color, adjusted according to the provided parameters and theme constraints.
+ The new color is created by applying random offsets to the RGB components of the base color, scaled by the variability parameter,
+ and adding a fixed offset. The green component is intentionally reduced to minimize its presence. The resulting color's luminance
+ is checked to ensure it adheres to the current theme's requirements (e.g., minimum brightness for light themes or maximum brightness
+ for dark themes). If the luminance is outside the acceptable range, the method recursively adjusts the color with reduced variability
+ until the limit threshold is reached or the luminance criteria are satisfied. The alpha value of the base color is preserved.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>klotski</code> - The context providing theme configuration and randomness utilities.</dd>
+<dd><code>baseColor</code> - The starting color from which variations are generated.</dd>
+<dd><code>variability</code> - The maximum range for random RGB offsets, controlling how much the new color can differ from the base.</dd>
+<dd><code>offset</code> - A fixed value added to each RGB component after applying the random offset.</dd>
+<dd><code>limit</code> - The threshold to halt recursive adjustments when variability is reduced below a certain level.</dd>
+<dt>Returns:</dt>
+<dd>A new color derived from the base color, adjusted for theme-compliant luminance and reduced green intensity.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="calculateLuminance(com.badlogic.gdx.graphics.Color)">
 <h3>calculateLuminance</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="element-name">calculateLuminance</span><wbr><span class="parameters">(com.badlogic.gdx.graphics.Color&nbsp;color)</span></div>
+<div class="block">Calculates the relative luminance of a given color using the standard sRGB luminance formula.
+ Relative luminance represents the brightness of a color normalized to a reference white,
+ following the ITU-R Recommendation BT.709. This is commonly used for accessibility standards
+ to determine contrast ratios between colors.
+
+ The formula applied is:
+ <code>luminance =0.2126 * red +0.7152 * green +0.0722 * blue</code>,
+ where red, green, and blue are the color components normalized to the range [0.0,1.0].</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>color</code> - The <code>Color</code> object from which to derive luminance. Assumes RGB components
+ are in a linearized (non-gamma-corrected) format and within the [0.0,1.0] range.</dd>
+<dt>Returns:</dt>
+<dd>A float value between0.0 (absolute black) and1.0 (absolute white) representing
+ the relative luminance of the color.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -182,6 +224,22 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">float[]</span>&nbsp;<span class="element-name">rgbToHsl</span><wbr><span class="parameters">(float&nbsp;r,
  float&nbsp;g,
  float&nbsp;b)</span></div>
+<div class="block">Converts RGB color values to HSL color values.
+ <p>
+ This method takes normalized RGB values (clamped to the range [0,1]) and returns an array of HSL values
+ where hue is represented as a fractional value in [0,1) (corresponding to0-360 degrees), saturation
+ as a percentage in [0,1], and lightness as a percentage in [0,1]. The conversion follows the HSL color
+ space calculation, accounting for achromatic colors (where saturation is0) by setting hue to0 in such cases.
+ </p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>r</code> - The red component of the color (clamped to0-1 if outside the range).</dd>
+<dd><code>g</code> - The green component of the color (clamped to0-1 if outside the range).</dd>
+<dd><code>b</code> - The blue component of the color (clamped to0-1 if outside the range).</dd>
+<dt>Returns:</dt>
+<dd>A float array of length3 containing HSL values in the order:
+ <code>[hue (0-1), saturation (0-1), lightness (0-1)]</code>.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -190,6 +248,19 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">float[]</span>&nbsp;<span class="element-name">hslToRgb</span><wbr><span class="parameters">(float&nbsp;h,
  float&nbsp;s,
  float&nbsp;l)</span></div>
+<div class="block">Converts an HSL color value to RGB. The conversion follows the HSL to RGB color space transformation,
+ where hue (h) is a normalized value on the color wheel (0.0 to1.0), saturation (s) is a percentage (0.0 to1.0),
+ and lightness (l) is a percentage (0.0 to1.0). When saturation is0, the result is an achromatic color with
+ red, green, and blue components all equal to the lightness value. The resulting RGB values are returned as
+ an array of floats in the range [0.0,1.0].</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>h</code> - The hue component (0.0 to1.0).</dd>
+<dd><code>s</code> - The saturation component (0.0 to1.0).</dd>
+<dd><code>l</code> - The lightness component (0.0 to1.0).</dd>
+<dt>Returns:</dt>
+<dd>An array containing the red, green, and blue components, in that order, each in the range [0.0,1.0].</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -198,6 +269,21 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="element-name">hueToRgb</span><wbr><span class="parameters">(float&nbsp;p,
  float&nbsp;q,
  float&nbsp;t)</span></div>
+<div class="block">Converts a hue value to the corresponding RGB component using the specified parameters.
+ This method is typically used in color space conversions (e.g., HSL to RGB) to calculate
+ the red, green, or blue component based on the normalized hue value. The parameters <code>p</code>
+ and <code>q</code> are derived from lightness and saturation values, while <code>t</code> represents
+ the adjusted hue value normalized between0 and1. The method applies piecewise linear
+ interpolation based on the hue's position within the color wheel segments (0-1/6,1/6-1/2,
+1/2-2/3, and2/3-1) to compute the correct RGB component.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>p</code> - A component value derived from lightness and saturation (e.g., q = lightness * (1 + saturation)).</dd>
+<dd><code>q</code> - A component value derived from lightness and saturation (e.g., p = lightness * (1 - saturation)).</dd>
+<dd><code>t</code> - The normalized hue value, adjusted to wrap around if outside the [0,1] range.</dd>
+<dt>Returns:</dt>
+<dd>The calculated RGB component value (red, green, or blue) corresponding to the hue.</dd>
+</dl>
 </section>
 </li>
 </ul>

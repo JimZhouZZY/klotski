@@ -133,21 +133,31 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dispose()" class="member-name-link">dispose</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Releases system resources associated with this object's graphical assets.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#draw(com.badlogic.gdx.graphics.g2d.Batch,float)" class="member-name-link">draw</a><wbr>(com.badlogic.gdx.graphics.g2d.Batch&nbsp;batch,
  float&nbsp;parentAlpha)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Renders the game piece with various visual effects.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.math.Rectangle</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRectangle()" class="member-name-link">getRectangle</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the <code>Rectangle</code> instance representing the current bounds of this object.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSelected(boolean)" class="member-name-link">setSelected</a><wbr>(boolean&nbsp;selected)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">, then the brief description, followed by the @param explanation.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(float,float)" class="member-name-link">setSize</a><wbr>(float&nbsp;width,
  float&nbsp;height)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the size of this component and updates the associated rectangle to match the new dimensions.</div>
+</div>
 </div>
 </div>
 </div>
@@ -213,6 +223,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setSelected(boolean)">
 <h3>setSelected</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSelected</span><wbr><span class="parameters">(boolean&nbsp;selected)</span></div>
+<div class="block">, then the brief description, followed by the @param explanation. Each line starts with * and a space. No need for @return since it's void. [newline]> Double-checking: The method sets isSelected, which affects the object's state. The comment accurately reflects that. The parameter explanation covers both possible boolean values. [newline]> I think that's all. Let me format it properly now./**
+ Sets the selected state of this object. Modifies the internal state to reflect
+ whether the object is currently marked as selected or unselected based on the
+ provided parameter.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>selected</code> - <code>true</code> to mark this object as selected, <code>false</code> to
+ mark it as unselected.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -220,9 +239,25 @@ loadScripts(document, 'script');</script>
 <h3>draw</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">draw</span><wbr><span class="parameters">(com.badlogic.gdx.graphics.g2d.Batch&nbsp;batch,
  float&nbsp;parentAlpha)</span></div>
+<div class="block">Renders the game piece with various visual effects. This method overrides the default draw behavior to provide
+ custom rendering logic. It handles both the main shape and additional visual elements:
+ <ul>
+ <li>Draws a selection indicator (black filled circle) if the piece is selected.</li>
+ <li>Applies dynamic color modulation to the piece, including grayscale for blocked pieces and time-based pulsating hues.</li>
+ <li>Renders a gradient-filled rectangle with corner-specific shading variations.</li>
+ <li>Overlays a texture if <code>pieceTexture</code> is provided.</li>
+ <li>Adds shadow and highlight effects using triangles to simulate depth.</li>
+ <li>Draws a darker border outline around the piece.</li>
+ <li>Displays the <code>pieceId</code> in the top-right corner with adjustable font color and scaling.</li>
+ </ul>
+ Temporarily interrupts the provided <code>Batch</code> to use <code>ShapeRenderer</code> for custom shapes and effects,
+ then restores the batch for subsequent rendering.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code>draw</code>&nbsp;in class&nbsp;<code>com.badlogic.gdx.scenes.scene2d.Actor</code></dd>
+<dt>Parameters:</dt>
+<dd><code>batch</code> - The SpriteBatch used for rendering. Temporarily paused for custom shape rendering.</dd>
+<dd><code>parentAlpha</code> - The parent actor's alpha value for transparency inheritance.</dd>
 </dl>
 </section>
 </li>
@@ -231,9 +266,15 @@ loadScripts(document, 'script');</script>
 <h3>setSize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSize</span><wbr><span class="parameters">(float&nbsp;width,
  float&nbsp;height)</span></div>
+<div class="block">Sets the size of this component and updates the associated rectangle to match the new dimensions.
+ This method delegates the size adjustment to the superclass implementation and then synchronizes
+ the dimensions of the internal <code>rectangle</code> with the specified width and height.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code>setSize</code>&nbsp;in class&nbsp;<code>com.badlogic.gdx.scenes.scene2d.Actor</code></dd>
+<dt>Parameters:</dt>
+<dd><code>width</code> - the new width for the component and rectangle, in pixels</dd>
+<dd><code>height</code> - the new height for the component and rectangle, in pixels</dd>
 </dl>
 </section>
 </li>
@@ -241,12 +282,25 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRectangle()">
 <h3>getRectangle</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.badlogic.gdx.math.Rectangle</span>&nbsp;<span class="element-name">getRectangle</span>()</div>
+<div class="block">Returns the <code>Rectangle</code> instance representing the current bounds of this object.
+ The returned rectangle contains the position (x, y) and dimensions (width, height) that
+ define the object's geometric boundaries. Modifications to the returned <code>Rectangle</code>
+ will directly affect the internal state of this object, as it is not a defensive copy.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the <code>Rectangle</code> instance describing this object's bounds; never <code>null</code>.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="dispose()">
 <h3>dispose</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">dispose</span>()</div>
+<div class="block">Releases system resources associated with this object's graphical assets.
+ Specifically, disposes the <code>pieceTexture</code> (if it is not <code>null</code>)
+ and the <code>font</code>. This method should be called when this object is no
+ longer in use to free memory and prevent resource leaks. After calling this
+ method, the assets should not be reused.</div>
 </section>
 </li>
 </ul>

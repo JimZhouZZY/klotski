@@ -137,10 +137,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Overrides the parent class method to initialize and configure the graphical user interface
+ components specific to the menu screen.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleBack()" class="member-name-link">handleBack</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles the back navigation action by setting the Klotski application's current screen to the
+ previously stored <code>lastScreen</code>.</div>
+</div>
 </div>
 </div>
 </div>
@@ -200,6 +206,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Overrides the parent class method to initialize and configure the graphical user interface
+ components specific to the menu screen. This includes setting up layout managers,
+ instantiating UI elements (e.g., buttons, labels, background), attaching event listeners
+ for user interactions, and initializing visual properties such as colors, fonts, and animations.
+ The method is automatically invoked when the menu screen is first created to ensure proper
+ rendering and functionality of the menu interface.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="ProtoScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>
@@ -210,9 +222,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="handleBack()">
 <h3>handleBack</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">handleBack</span>()</div>
+<div class="block">Handles the back navigation action by setting the Klotski application's current screen to the
+ previously stored <code>lastScreen</code>. This method is triggered when a back navigation event
+ occurs, such as pressing a back button, and updates the display to show the last active screen
+ within the application.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="ProtoScreen.html#handleBack()">handleBack</a></code>&nbsp;in class&nbsp;<code><a href="ProtoScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">ProtoScreen</a></code></dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><code>Game.setScreen(Screen)</code></li>
+<li><a href="#lastScreen"><code>lastScreen</code></a></li>
+</ul>
+</dd>
 </dl>
 </section>
 </li>

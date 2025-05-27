@@ -128,10 +128,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#create()" class="member-name-link">create</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Overrides the parent method to set up the UI components for the player cooperation selection screen.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hide()" class="member-name-link">hide</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">and each line with *.</div>
+</div>
 </div>
 </div>
 </div>
@@ -175,6 +179,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="create()">
 <h3>create</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">create</span>()</div>
+<div class="block">Overrides the parent method to set up the UI components for the player cooperation selection screen.
+ Creates a layout table that fills the parent stage and applies10% of the screen height as padding to the top and bottom.
+ Adds a title label with increased font scale and bottom padding to the layout table.
+ Initiates automatic refreshing of the online users list and integrates it into the layout.
+ Adds a "Back" button at the bottom of the table to allow navigation back to the previous screen.
+ All components are added to the stage for rendering and interaction.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../core/MenuScreen.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../core/MenuScreen.html" title="class in io.github.jimzhouzzy.klotski.screen.core">MenuScreen</a></code></dd>
@@ -185,6 +195,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hide()">
 <h3>hide</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hide</span>()</div>
+<div class="block">and each line with *. Avoid any markdown, just the comment. Make sure to include @Override tag since it's overriding. Wait, the user said to describe what the method does, not just the tags. So the comment should explain the two main actions. Also, specify that if the task exists, it's cancelled and nullified. Maybe explain the purpose, like preventing unnecessary updates or resource leaks. Make it concise but detailed. Let me structure it step by step: first overriding, calling super, then canceling the task, setting to null. Ensure clarity and correct terminology./**
+ Sets the <code>InputProcessor</code> to <code>null</code>, disabling all input event handling for this context.
+ This ensures that no further touch, keyboard, mouse, or other input events will be processed by the
+ application until a new input processor is explicitly set. Typically called when the associated
+ component or screen is hidden or deactivated to prevent unintended interaction.
+ <p>
+ This implementation extends the parent class's <code>hide()</code> method by additionally
+ canceling the active <code>refreshOnlineUsersTask</code> if it exists. After cancellation,
+ the task reference is set to <code>null</code> to prevent reuse, ensuring that background
+ processes related to refreshing online users are terminated when this component is hidden.
+ </p></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>hide</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.Screen</code></dd>

@@ -156,30 +156,47 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isConnected()" class="member-name-link">isConnected</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks whether the current connection is active by verifying if it is open.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onClose(int,java.lang.String,boolean)" class="member-name-link">onClose</a><wbr>(int&nbsp;code,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;reason,
  boolean&nbsp;remote)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles the closure of the connection by logging the closure reason and conditionally
+ scheduling a reconnection attempt.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onError(java.lang.Exception)" class="member-name-link">onError</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;ex)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles WebSocket errors by logging the error details and scheduling a reconnection attempt if not already in progress.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onMessage(java.lang.String)" class="member-name-link">onMessage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles incoming messages from the server, processes them, and triggers appropriate actions.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onOpen(org.java_websocket.handshake.ServerHandshake)" class="member-name-link">onOpen</a><wbr>(org.java_websocket.handshake.ServerHandshake&nbsp;handshakedata)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles the event triggered when a WebSocket connection to the server is successfully opened.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#receiveMessage(java.lang.String)" class="member-name-link">receiveMessage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Receives a message and forwards it to the registered <a href="GameWebSocketClient.OnMessageListener.html" title="interface in io.github.jimzhouzzy.klotski.web.online"><code>GameWebSocketClient.OnMessageListener</code></a>, if available.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendBoardState(java.lang.String)" class="member-name-link">sendBoardState</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;boardState)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sends the current board state along with the logged-in user's identifier as a formatted message.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOnMessageListener(io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient.OnMessageListener)" class="member-name-link">setOnMessageListener</a><wbr>(<a href="GameWebSocketClient.OnMessageListener.html" title="interface in io.github.jimzhouzzy.klotski.web.online">GameWebSocketClient.OnMessageListener</a>&nbsp;listener)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the <a href="GameWebSocketClient.OnMessageListener.html" title="interface in io.github.jimzhouzzy.klotski.web.online"><code>GameWebSocketClient.OnMessageListener</code></a> instance that will receive message events.</div>
+</div>
 </div>
 </div>
 </div>
@@ -251,9 +268,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="onOpen(org.java_websocket.handshake.ServerHandshake)">
 <h3>onOpen</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onOpen</span><wbr><span class="parameters">(org.java_websocket.handshake.ServerHandshake&nbsp;handshakedata)</span></div>
+<div class="block">Handles the event triggered when a WebSocket connection to the server is successfully opened.
+ This method is invoked by the WebSocket API immediately after a connection is established,
+ allowing the client to perform initial setup or logging. The provided <code>ServerHandshake</code>
+ parameter contains details about the handshake process, such as HTTP headers or status codes.
+ A typical implementation might log the connection status or initialize resources required
+ for subsequent communication with the server.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>onOpen</code>&nbsp;in class&nbsp;<code>org.java_websocket.client.WebSocketClient</code></dd>
+<dt>Parameters:</dt>
+<dd><code>handshakedata</code> - The handshake data exchanged during the WebSocket connection setup,
+ including server response headers and other protocol-related information.</dd>
 </dl>
 </section>
 </li>
@@ -261,9 +287,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="onMessage(java.lang.String)">
 <h3>onMessage</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onMessage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+<div class="block">Handles incoming messages from the server, processes them, and triggers appropriate actions.
+ This method prints the received message, notifies any registered <code>onMessageListener</code>,
+ and processes messages starting with the "coop:" prefix. For "coop" messages, which follow
+ the format "coop:&lt;source_username&gt;;&lt;target_username&gt;", the method parses the source
+ and target usernames. If the logged-in user matches either the source or target username,
+ the <code>cooperateUsername</code> field is updated to reflect the cooperating peer. This enables
+ tracking collaboration between users. The method also logs cooperation updates to the console.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>onMessage</code>&nbsp;in class&nbsp;<code>org.java_websocket.client.WebSocketClient</code></dd>
+<dt>Parameters:</dt>
+<dd><code>message</code> - The raw message received from the server. Expected to be non-null.</dd>
 </dl>
 </section>
 </li>
@@ -273,9 +308,19 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onClose</span><wbr><span class="parameters">(int&nbsp;code,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;reason,
  boolean&nbsp;remote)</span></div>
+<div class="block">Handles the closure of the connection by logging the closure reason and conditionally
+ scheduling a reconnection attempt. This method is invoked when the WebSocket connection
+ is closed, either by the remote host or locally. If automatic reconnection is enabled
+ (when <code>isReconnecting</code> is <code>false</code>) and the socket is not explicitly marked
+ for closure (<code>closeSocket</code> is <code>false</code>), a reconnection will be scheduled.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>onClose</code>&nbsp;in class&nbsp;<code>org.java_websocket.client.WebSocketClient</code></dd>
+<dt>Parameters:</dt>
+<dd><code>code</code> - The status code indicating the closure reason (see RFC6455).</dd>
+<dd><code>reason</code> - A human-readable string explaining the closure details.</dd>
+<dd><code>remote</code> - <code>true</code> if the closure was initiated by the remote endpoint,
+ <code>false</code> if initiated locally.</dd>
 </dl>
 </section>
 </li>
@@ -283,9 +328,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="onError(java.lang.Exception)">
 <h3>onError</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onError</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;ex)</span></div>
+<div class="block">Handles WebSocket errors by logging the error details and scheduling a reconnection attempt if not already in progress.
+ This method prints the error message to the standard error stream, logs the exception's stack trace for debugging,
+ and initiates a reconnection process via <code>scheduleReconnect()</code> when a reconnection is not already underway.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>onError</code>&nbsp;in class&nbsp;<code>org.java_websocket.client.WebSocketClient</code></dd>
+<dt>Parameters:</dt>
+<dd><code>ex</code> - The exception that triggered the error, providing details about the encountered issue.</dd>
 </dl>
 </section>
 </li>
@@ -293,24 +343,59 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="sendBoardState(java.lang.String)">
 <h3>sendBoardState</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendBoardState</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;boardState)</span></div>
+<div class="block">Sends the current board state along with the logged-in user's identifier as a formatted message.
+ The message is constructed by concatenating the logged-in user's username, a "boardState" label,
+ and the provided boardState string. This combined message is then dispatched using the <code>send</code> method.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>boardState</code> - A string representation of the current board state to be included in the message.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setOnMessageListener(io.github.jimzhouzzy.klotski.web.online.GameWebSocketClient.OnMessageListener)">
 <h3>setOnMessageListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOnMessageListener</span><wbr><span class="parameters">(<a href="GameWebSocketClient.OnMessageListener.html" title="interface in io.github.jimzhouzzy.klotski.web.online">GameWebSocketClient.OnMessageListener</a>&nbsp;listener)</span></div>
+<div class="block">Sets the <a href="GameWebSocketClient.OnMessageListener.html" title="interface in io.github.jimzhouzzy.klotski.web.online"><code>GameWebSocketClient.OnMessageListener</code></a> instance that will receive message events.
+ The provided listener will be notified when a message is received, allowing
+ custom handling or propagation of the event. Passing <code>null</code> removes any
+ previously registered listener. Only one listener can be registered at a time;
+ subsequent calls will overwrite the existing listener.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - The listener implementation to register for message events,
+ or <code>null</code> to unregister the current listener.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="receiveMessage(java.lang.String)">
 <h3>receiveMessage</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">receiveMessage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
+<div class="block">Receives a message and forwards it to the registered <a href="GameWebSocketClient.OnMessageListener.html" title="interface in io.github.jimzhouzzy.klotski.web.online"><code>GameWebSocketClient.OnMessageListener</code></a>, if available.
+ This method acts as a conduit for delivering incoming messages to the listener's callback,
+ enabling asynchronous handling of messages. If no listener is registered (i.e.,
+ <code>onMessageListener</code> is <code>null</code>), the message is silently ignored.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>message</code> - The message to be processed. This value is passed directly to the listener's
+ <a href="GameWebSocketClient.OnMessageListener.html#onMessage(java.lang.String)"><code>GameWebSocketClient.OnMessageListener.onMessage(String)</code></a> method and should not be <code>null</code>
+ if the listener expects valid message content.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="isConnected()">
 <h3>isConnected</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isConnected</span>()</div>
+<div class="block">Checks whether the current connection is active by verifying if it is open.
+ This method returns the status of the connection by delegating to the <code>WebSocketClient.isOpen()</code> method,
+ indicating whether communication or interaction with the connected resource is currently possible.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><code>true</code> if the connection is active and open, <code>false</code> if the connection is closed
+ or no longer available for interaction.</dd>
+</dl>
 </section>
 </li>
 </ul>
