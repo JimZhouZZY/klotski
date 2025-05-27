@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.65
+ * @version 1.66
  * @since 2025-5-25
  * <p>
  * KNOWN ISSUES:
@@ -33,6 +33,7 @@
  * reset the game to the shuffeled state.
  * <p>
  * Change log:
+ * 2025-05-27: change restart logic to handle cooperate restart
  * 2025-05-27: Multi-threading to avoid delay
  * 2025-05-27: fix restart
  * 2025-05-27: Merge branch thz into main
@@ -166,6 +167,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public boolean winMusicPlayed = false;
     public Music loseSound;
     public boolean loseMusicPlayed = false;
+    public boolean isCooperateMode = false;
     public final String SAVE_FILE = ConfigPathHelper.getConfigFilePath("Klotski", "game_save.dat");
 
     public Stage stage;
@@ -1054,7 +1056,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         System.out.println("Game restarted.");
 
-        if (blockedLevel != -1){
+        if (this.isCooperateMode) {
+            
+        } 
+        
+        else if (blockedLevel != -1){
             String levelString = String.valueOf(blockedLevel);
             GameScreen gameScreen = new GameScreen(klotski, levelString);
             gameScreen.setGameMode(false); // Set to 3min-Attack mode

@@ -25,12 +25,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.11
+ * @version 1.12
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: change restart logic to handle cooperate restart
  * 2025-05-27: add try .. catch ... to avoid crashing
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
@@ -57,6 +58,7 @@ public class CooperateScreen extends GameScreen {
     public CooperateScreen(final Klotski klotski, String username, GameWebSocketClient webSocketClient) {
         super(klotski);
         this.username = username;
+        this.isCooperateMode = true; // Set the mode to cooperate
         this.webSocketClient = webSocketClient;
         connectWebSocket();
         webSocketClient.send("coop:" + klotski.getLoggedInUser() + ";" + username);
