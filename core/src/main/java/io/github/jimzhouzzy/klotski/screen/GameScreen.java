@@ -169,7 +169,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public float elapsedTime; // Tracks the elapsed time in seconds
     public Label timerLabel; // Label to display the timer
-    public Label timerLabelCongrats; // Label to display the timer
+    private Label timerLabelCongrats; // Label to display the timer
+    private Label movesLabelCongrats; // Label to display the timer
     public Label movesLabel; // Label to display the total moves
 
     public KlotskiGame game; // Reference to the game logic
@@ -1104,12 +1105,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Add time usage placeholder
         Label.LabelStyle altStyle = skin.get("alt", Label.LabelStyle.class);
+        Table timeMovesTable = new Table();
+        Label movesLabelCongrats = new Label("Moves: 0", altStyle);
         Label timerLabelCongrats = new Label("Time: 00:00", altStyle); // Placeholder for time usage
+        movesLabelCongrats.setFontScale(1.5f);
         timerLabelCongrats.setFontScale(1.5f);
-        congratsTable.add(timerLabelCongrats).padBottom(20).row();
+        
+        timeMovesTable.add(timerLabelCongrats).padRight(30);
+        timeMovesTable.add(movesLabelCongrats);
+
+        congratsTable.add(timeMovesTable).padBottom(20).row();
 
         // Store the timeLabel for later updates
         this.timerLabelCongrats = timerLabelCongrats;
+        this.movesLabelCongrats = movesLabelCongrats;
 
         // Create a horizontal table for the buttons
         Table buttonRow = new Table();
@@ -1161,9 +1170,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabelCongrats.setText(String.format("Time: %02d:%02d", minutes, seconds));
+        movesLabelCongrats.setText("Moves: " + (currentMoveIndex + 1));
         congratsLabel.setText("Congratulations! You Win!");
 
         // Update the moves label with the total moves
+        // plus one because index starts from 0
         movesLabel.setText("Moves: " + (currentMoveIndex + 1));
 
         congratulationsGroup.setVisible(true); // Show the congratulations screen
