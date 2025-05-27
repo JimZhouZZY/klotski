@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.61
+ * @version 1.65
  * @since 2025-5-25
  * <p>
  * KNOWN ISSUES:
@@ -33,9 +33,13 @@
  * reset the game to the shuffeled state.
  * <p>
  * Change log:
+ * 2025-05-27: Multi-threading to avoid delay
+ * 2025-05-27: fix restart
+ * 2025-05-27: Merge branch thz into main
  * 2025-05-27: implement levels for 'enhanced' game
  * 2025-05-27: Multilevel for blocked
  * 2025-05-27: fix: arrow key causes crash when selecting blocked pieces
+ * 2025-05-27: Change the save screen.
  * 2025-05-27: UI improvement
  * 2025-05-27: Refactor UI in SpectateScreen
  * 2025-05-27: implement blocked pieces
@@ -1081,24 +1085,27 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleHint(KlotskiGame game) {
         // Get the solution from the solver
-        List<String> solution = KlotskiSolver.solve(game, blockedId);
+        // Run the solver in a separate thread to avoid blocking the UI
+        new Thread(() -> {
+            List<String> solutionResult = KlotskiSolver.solve(game, blockedId);
+            Gdx.app.postRunnable(() -> {
+            this.solution = solutionResult;
+            if (solution != null && !solution.isEmpty()) {
+                // Parse the first move from the solution
+                String move = solution.get(0);
+                System.out.println("Hint: " + move);
 
-        if (solution != null && !solution.isEmpty()) {
-            // Parse the first move from the solution
-            String move = solution.get(0);
-            System.out.println("Hint: " + move);
+                int fromIndex = move.indexOf(" from ");
+                String fromPart = move.substring(fromIndex + 6, move.indexOf(" to "));
+                String toPart = move.substring(move.indexOf(" to ") + 4);
 
-            int fromIndex = move.indexOf(" from ");
-            String fromPart = move.substring(fromIndex + 6, move.indexOf(" to "));
-            String toPart = move.substring(move.indexOf(" to ") + 4);
+                int fromRow = Integer.parseInt(fromPart.substring(1, fromPart.indexOf(',')));
+                int fromCol = Integer.parseInt(fromPart.substring(fromPart.indexOf(',') + 1, fromPart.length() - 1));
+                int toRow = Integer.parseInt(toPart.substring(1, toPart.indexOf(',')));
+                int toCol = Integer.parseInt(toPart.substring(toPart.indexOf(',') + 1, toPart.length() - 1));
 
-            int fromRow = Integer.parseInt(fromPart.substring(1, fromPart.indexOf(',')));
-            int fromCol = Integer.parseInt(fromPart.substring(fromPart.indexOf(',') + 1, fromPart.length() - 1));
-            int toRow = Integer.parseInt(toPart.substring(1, toPart.indexOf(',')));
-            int toCol = Integer.parseInt(toPart.substring(toPart.indexOf(',') + 1, toPart.length() - 1));
-
-            // Find the block at the starting position
-            for (RectangleBlockActor block : blocks) {
+                // Find the block at the starting position
+                for (RectangleBlockActor block : blocks) {
                 KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
                 System.out.printf("Block ID: %d, Position: (%d, %d)\n", piece.id, piece.position[0], piece.position[1]);
                 if (piece.position[0] == fromRow && piece.position[1] == fromCol) {
@@ -1106,22 +1113,24 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     float targetX = toCol * cellSize;
                     float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
                     block.addAction(Actions.sequence(
-                        Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
-                        Actions.run(() -> {
-                            // Update game logic after animation
-                            game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
-                            piece.setPosition(new int[]{toRow, toCol});
-                            recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
-                            this.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
-                            broadcastGameState();
-                        })));
+                    Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
+                    Actions.run(() -> {
+                        // Update game logic after animation
+                        game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                        piece.setPosition(new int[]{toRow, toCol});
+                        recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                        this.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
+                        broadcastGameState();
+                    })));
                     break;
                 }
+                }
+                System.out.println(game.toString());
+            } else {
+                System.out.println("No solution found or no hint available.");
             }
-            System.out.println(game.toString());
-        } else {
-            System.out.println("No solution found or no hint available.");
-        }
+            });
+        }).start();
     }
 
     public void handleAutoSolve(KlotskiGame game, TextButton autoButton) {
@@ -1132,16 +1141,22 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             solution = null; // Clear the previous solution
             solutionIndex = 0; // Reset the solution index
             System.out.println("Starting auto-solving..." + blockedId);
-            List<String> newSolution = KlotskiSolver.solve(game, blockedId); // Get the new solution
 
-            if (newSolution != null && !newSolution.isEmpty()) {
-                solution = newSolution; // Store the solution
-                isAutoSolving = true; // Enable auto-solving mode
-                autoButton.setText("Stop"); // Change button text to "Stop"
-                System.out.println("Auto-solving started.");
-            } else {
-                System.out.println("No solution found.");
-            }
+            // Run the solver in a separate thread to avoid blocking the UI
+            new Thread(() -> {
+                List<String> newSolution = KlotskiSolver.solve(game, blockedId); // Get the new solution
+
+                Gdx.app.postRunnable(() -> {
+                    if (newSolution != null && !newSolution.isEmpty()) {
+                        solution = newSolution; // Store the solution
+                        isAutoSolving = true; // Enable auto-solving mode
+                        autoButton.setText("Stop"); // Change button text to "Stop"
+                        System.out.println("Auto-solving started.");
+                    } else {
+                        System.out.println("No solution found.");
+                    }
+                });
+            }).start();
         }
     }
 
