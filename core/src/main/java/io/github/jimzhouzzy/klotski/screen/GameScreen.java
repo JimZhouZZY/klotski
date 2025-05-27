@@ -707,21 +707,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public Color getColorForPiece(int id) {
         switch (id) {
             case 0:
-                return new Color(0.95f, 0.25f, 0.25f, 1); // Soft red for Cao Cao
+                return Color.valueOf("#ff3333"); // Soft red for Cao Cao
             case 1:
-                return new Color(0.25f, 0.25f, 0.95f, 1); // Soft blue for Guan Yu
+                return Color.valueOf("#3ba776"); // Soft blue for Guan Yu
             case 2:
             case 3:
             case 4:
             case 5:
-                return new Color(204f / 255f, 51f / 255f, 255f / 255f, 1); // Soft purple for Generals
+                return Color.valueOf("#a442b9"); // Soft purple for Generals
             case 6:
             case 7:
             case 8:
             case 9:
-                return new Color(0.95f, 0.95f, 0.25f, 1); // Soft yellow for Soldiers
+                return Color.valueOf("#fff433"); // Soft yellow for Soldiers
             default:
-                return new Color(0.8f, 0.8f, 0.8f, 1); // Light gray for default
+                return Color.valueOf("#777773"); // Light gray for default
         }
     }
 

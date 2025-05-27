@@ -85,9 +85,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.logic.util.MazeGenerator;
 import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.util.ColorHelper;
-import io.github.jimzhouzzy.klotski.logic.MazeGenerator;
 
 public class KlotzkiBoard extends DynamicBoard {
 

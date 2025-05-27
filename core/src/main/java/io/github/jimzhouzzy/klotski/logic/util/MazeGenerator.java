@@ -33,7 +33,7 @@
  * 2025-05-26: Klotzki game
  */
 
-package io.github.jimzhouzzy.klotski.logic;
+package io.github.jimzhouzzy.klotski.logic.util;
 
 import java.util.Random;
 import java.util.Stack;
