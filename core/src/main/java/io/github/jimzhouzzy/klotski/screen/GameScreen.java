@@ -18,20 +18,20 @@
 
 /**
  * GameScreen.java
- *
+ * <p>
  * This class represents the main game screen of the Klotski game.
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
  * @version 1.61
  * @since 2025-5-25
- *
+ * <p>
  * KNOWN ISSUES:
  * 1. The move count is incorrect when the user dragged a piece
- *    across multiple grid.
+ * across multiple grid.
  * 2. Restart in an leveled (seedly random shuffeled) game won't
- *    reset the game to the shuffeled state.
- *
+ * reset the game to the shuffeled state.
+ * <p>
  * Change log:
  * 2025-05-27: implement levels for 'enhanced' game
  * 2025-05-27: Multilevel for blocked
@@ -300,7 +300,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         float buttonWidth = 150;
         float buttonHeight = 45;
 
-        String[] buttonNames = { "Restart", "Hint", "Auto", "Undo", "Redo", "Save", "Load", "Exit" };
+        String[] buttonNames = {"Restart", "Hint", "Auto", "Undo", "Redo", "Save", "Load", "Exit"};
 
         // Add buttons in two columns
         for (int i = 0; i < buttonNames.length; i++) {
@@ -312,47 +312,47 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             if (i % 2 == 1) buttonTable.row(); // New row after every two buttons
 
             if (name.equals("Auto")) {
-            autoButton = button;
+                autoButton = button;
             }
 
             // Add functionality to each button
             button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();
-                switch (name) {
-                case "Restart":
-                    handleRestart(game);
-                    break;
-                case "Hint":
-                    handleHint(game);
-                    break;
-                case "Auto":
-                    handleAutoSolve(game, button);
-                    break;
-                case "Undo":
-                    handleUndo();
-                    break;
-                case "Redo":
-                    handleRedo();
-                    break;
-                case "Save":
-                    if (!klotski.isOfflineMode())
-                    handleSave(false);
-                    else
-                    handleLocalSave(false);
-                    break;
-                case "Load":
-                    if (!klotski.isOfflineMode())
-                    handleLoad();
-                    else
-                    handleLocalLoad();
-                    break;
-                case "Exit":
-                    handleExit();
-                    break;
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    klotski.playClickSound();
+                    switch (name) {
+                        case "Restart":
+                            handleRestart(game);
+                            break;
+                        case "Hint":
+                            handleHint(game);
+                            break;
+                        case "Auto":
+                            handleAutoSolve(game, button);
+                            break;
+                        case "Undo":
+                            handleUndo();
+                            break;
+                        case "Redo":
+                            handleRedo();
+                            break;
+                        case "Save":
+                            if (!klotski.isOfflineMode())
+                                handleSave(false);
+                            else
+                                handleLocalSave(false);
+                            break;
+                        case "Load":
+                            if (!klotski.isOfflineMode())
+                                handleLoad();
+                            else
+                                handleLocalLoad();
+                            break;
+                        case "Exit":
+                            handleExit();
+                            break;
+                    }
                 }
-            }
             });
         }
 
@@ -378,16 +378,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                         klotski.playClickSound();
                         switch (buttonName) {
                             case "Up":
-                                handleArrowKeys(new int[] { -1, 0 });
+                                handleArrowKeys(new int[]{-1, 0});
                                 break;
                             case "Down":
-                                handleArrowKeys(new int[] { 1, 0 });
+                                handleArrowKeys(new int[]{1, 0});
                                 break;
                             case "Left":
-                                handleArrowKeys(new int[] { 0, -1 });
+                                handleArrowKeys(new int[]{0, -1});
                                 break;
                             case "Right":
-                                handleArrowKeys(new int[] { 0, 1 });
+                                handleArrowKeys(new int[]{0, 1});
                                 break;
                         }
                     }
@@ -482,9 +482,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         badgeLabel.setAlignment(Align.center);
 
         Image badgeBg = new Image(skin.newDrawable("white", new Color(1, 1, 1, 0.5f)));
-        badgeBg.setSize(400, 50);
+        badgeBg.setSize(470, 50);
 
-        badgeBg.setPosition(-30, 0);
+        badgeBg.setPosition(-85, 0);
 
         badgeLabel.setSize(300, 50);
         badgeLabel.setPosition(0, 0);
@@ -618,7 +618,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                                     selectedBlock = block;
                                     selectedBlock.setSelected(true);
                                     if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
-                                }else{
+                                } else {
                                     selectedBlock.setSelected(false);
                                     selectedBlock = null;
                                     if (clickRectangularSound != null) clickRectangularSound.play(1.0f);
@@ -639,8 +639,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
                 Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
                 resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
 
                 int xHotspot = 7, yHotspot = 1;
                 Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
@@ -657,8 +657,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
                 Pixmap resizedClickedPixmap = new Pixmap(32, 32, clickedPixmap.getFormat());
                 resizedClickedPixmap.drawPixmap(clickedPixmap,
-                        0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
-                        0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
+                    0, 0, clickedPixmap.getWidth(), clickedPixmap.getHeight(),
+                    0, 0, resizedClickedPixmap.getWidth(), resizedClickedPixmap.getHeight());
 
                 int xHotspot = 7, yHotspot = 1;
                 Cursor clickedCursor = Gdx.graphics.newCursor(resizedClickedPixmap, xHotspot, yHotspot);
@@ -677,7 +677,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int targetRow = currentPiece.getRow();
         int targetCol = currentPiece.getCol();
         int k = 0;
-        while (targetRow >= 0 && targetCol >= 0 && targetRow<=4 && targetCol<=3) {
+        while (targetRow >= 0 && targetCol >= 0 && targetRow <= 4 && targetCol <= 3) {
             targetRow = currentPiece.getRow() + rowOffset * k;
             targetCol = currentPiece.getCol() + colOffset * k;
             k++;
@@ -716,9 +716,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             if (piece.getRow() == fromRow && piece.getCol() == fromCol) {
                 float targetX = toCol * cellSize;
                 float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
-                game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-                piece.setPosition(new int[] { toRow, toCol });
-                recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+                game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                piece.setPosition(new int[]{toRow, toCol});
+                recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
                 isTerminal = game.isTerminal(); // Check if the game is in a terminal state
                 broadcastGameState();
                 block.addAction(Actions.sequence(
@@ -742,14 +742,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int toRow = fromRow + direction[0];
         int toCol = fromCol + direction[1];
 
-        if (!game.isLegalMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol })) return;
+        if (!game.isLegalMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol})) return;
 
         float targetX = toCol * cellSize;
         float targetY = (rows - toRow - piece.height) * cellSize;
 
-        game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-        piece.setPosition(new int[] { toRow, toCol });
-        recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+        game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+        piece.setPosition(new int[]{toRow, toCol});
+        recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
         isTerminal = game.isTerminal();
         broadcastGameState();
 
@@ -824,7 +824,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
         }
 
-        return new float[] { minX, maxX, minY, maxY };
+        return new float[]{minX, maxX, minY, maxY};
     }
 
     public void updateBlocksFromGame(KlotskiGame game) {
@@ -922,19 +922,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                         // Animate the block's movement to the target position
                         float targetX = toCol * cellSize;
                         float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
-                        game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-                        piece.setPosition(new int[] { toRow, toCol });
-                        recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
+                        game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                        piece.setPosition(new int[]{toRow, toCol});
+                        recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
                         solutionIndex++;
                         this.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
                         broadcastGameState();
                         block.addAction(Actions.sequence(
-                                Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
-                                Actions.run(() -> {
-                                    // Update game logic after animation
-                                    // TODO: find a more robust way, letting applyAction to handle at ease
-                                    // Maybe we shall add another variable to show whether we finished the update
-                                })));
+                            Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
+                            Actions.run(() -> {
+                                // Update game logic after animation
+                                // TODO: find a more robust way, letting applyAction to handle at ease
+                                // Maybe we shall add another variable to show whether we finished the update
+                            })));
                         break;
                     }
                 }
@@ -1069,15 +1069,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     float targetX = toCol * cellSize;
                     float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
                     block.addAction(Actions.sequence(
-                            Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
-                            Actions.run(() -> {
-                                // Update game logic after animation
-                                game.applyAction(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-                                piece.setPosition(new int[] { toRow, toCol });
-                                recordMove(new int[] { fromRow, fromCol }, new int[] { toRow, toCol });
-                                this.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
-                                broadcastGameState();
-                            })));
+                        Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
+                        Actions.run(() -> {
+                            // Update game logic after animation
+                            game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                            piece.setPosition(new int[]{toRow, toCol});
+                            recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                            this.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
+                            broadcastGameState();
+                        })));
                     break;
                 }
             }
@@ -1182,7 +1182,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 handleRestart(game); // Restart the game
                 congratulationsGroup.setVisible(false); // Hide the congratulations screen
             }
@@ -1194,7 +1195,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                klotski.playClickSound();;
+                klotski.playClickSound();
+                ;
                 handleExit(); // Exit the game
             }
         });
@@ -1271,7 +1273,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
 
         // Add the move to the history
-        moveHistory.add(new int[][] { from, to });
+        moveHistory.add(new int[][]{from, to});
         currentMoveIndex++;
 
         movesLabel.setText("Moves: " + (currentMoveIndex + 1));
@@ -1327,8 +1329,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleSave(boolean autoSave) {
         if (klotski.getLoggedInUser() == null
-                || klotski.getLoggedInUser().isEmpty()
-                || klotski.getLoggedInUser().equals("Guest")) {
+            || klotski.getLoggedInUser().isEmpty()
+            || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Save Error", "You must be logged in to save the game.");
             return;
         }
@@ -1380,22 +1382,22 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         String username = klotski.getLoggedInUser();
         String date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date());
         String payload = new Gson().toJson(Map.of(
-                "username", username,
-                "date", date,
-                "hash", hash,
-                "saveData", encodedSaveData,
-                "autoSave", autoSave
+            "username", username,
+            "date", date,
+            "hash", hash,
+            "saveData", encodedSaveData,
+            "autoSave", autoSave
         ));
 
         // Send the HTTP POST request
         HttpRequestBuilder requestBuilder = new HttpRequestBuilder();
         Net.HttpRequest request = requestBuilder
-                .newRequest()
-                .method(Net.HttpMethods.POST)
-                .url("http://42.194.132.147:8001/gameSave/uploadSave")
-                .header("Content-Type", "application/json")
-                .content(payload)
-                .build();
+            .newRequest()
+            .method(Net.HttpMethods.POST)
+            .url("http://42.194.132.147:8001/gameSave/uploadSave")
+            .header("Content-Type", "application/json")
+            .content(payload)
+            .build();
 
         Gdx.net.sendHttpRequest(request, new HttpResponseListener() {
             @Override
@@ -1419,8 +1421,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public void handleLoad() {
         String username = klotski.getLoggedInUser();
         if (klotski.getLoggedInUser() == null
-                || klotski.getLoggedInUser().isEmpty()
-                || klotski.getLoggedInUser().equals("Guest")) {
+            || klotski.getLoggedInUser().isEmpty()
+            || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Load Error", "You must be logged in to load the game.");
             return;
         }
@@ -1470,10 +1472,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         String url = "http://42.194.132.147:8001/gameSave/getSaves?username=" + username;
         HttpRequestBuilder requestBuilder = new HttpRequestBuilder();
         Net.HttpRequest request = requestBuilder
-                .newRequest()
-                .method(Net.HttpMethods.GET)
-                .url(url)
-                .build();
+            .newRequest()
+            .method(Net.HttpMethods.GET)
+            .url(url)
+            .build();
 
         Gdx.net.sendHttpRequest(request, new HttpResponseListener() {
             @Override
@@ -1517,8 +1519,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
         if (klotski.getLoggedInUser() == null
-                || klotski.getLoggedInUser().isEmpty()
-                || klotski.getLoggedInUser().equals("Guest")) {
+            || klotski.getLoggedInUser().isEmpty()
+            || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Save Error", "You must be logged in to save the game.");
             return;
         }
@@ -1545,8 +1547,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleLocalLoad() {
         if (klotski.getLoggedInUser() == null
-                || klotski.getLoggedInUser().isEmpty()
-                || klotski.getLoggedInUser().equals("Guest")) {
+            || klotski.getLoggedInUser().isEmpty()
+            || klotski.getLoggedInUser().equals("Guest")) {
             Dialog.showDialog(klotski, skin, stage, "Load Error", "You must be logged in to load the game.");
             return;
         }
@@ -1648,7 +1650,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         String gameState = game.toString();
         try {
             klotski.getWebSocketServer().broadcastGameState(gameState);
-            if(klotski.getWebSocketClient() != null)
+            if (klotski.getWebSocketClient() != null)
                 klotski.getWebSocketClient().sendBoardState(gameState);
             else
                 System.out.println("WebSocket client is not connected.");
@@ -1663,13 +1665,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
         Label badgeLabel = badgeGroup.findActor("badgeLabel");
         badgeLabel.setText(message);
+        badgeLabel.setFontScale(0.8f);
         badgeGroup.setVisible(true);
         badgeGroup.toFront();
 
-        badgeGroup.setPosition(
-            (Gdx.graphics.getWidth() - badgeGroup.getWidth()) / 2f,
-            Gdx.graphics.getHeight() * 0.5f
-        );
+        badgeGroup.setPosition(Gdx.graphics.getWidth() - 390, 20);
 
         badgeHideTask = Timer.schedule(new Timer.Task() {
             @Override
