@@ -25,12 +25,13 @@
  * It is enherited from the {@link GameScreen} class.
  * 
  * @author JimZhouZZY
- * @version 1.10
+ * @version 1.11
  * @since 2025-5-25
  * @see {@link GameScreen}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  * 
  * Change log:
+ * 2025-05-27: add try .. catch ... to avoid crashing
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -82,8 +83,13 @@ public class CooperateScreen extends GameScreen {
 
                 // Parse the board state
                 System.out.println("Received and trimmed board state: " + state);
-                game.fromString(state);
-                updateBlocksFromGame(game);
+                try {
+                    game.fromString(state);
+                    updateBlocksFromGame(game);
+                } catch (Exception e) {
+                    System.err.println("Failed to update board state: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
     }
