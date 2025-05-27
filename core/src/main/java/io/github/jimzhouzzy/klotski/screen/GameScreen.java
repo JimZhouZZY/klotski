@@ -1178,8 +1178,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         movesLabel.setText("Moves: " + (currentMoveIndex + 1));
 
         congratulationsGroup.setVisible(true); // Show the congratulations screen
-
     }
+
     public void showLosingScreen() {
         // Play lose sound effect
         if (!loseMusicPlayed && loseSound != null) {

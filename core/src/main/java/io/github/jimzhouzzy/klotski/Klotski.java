@@ -108,7 +108,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.jimzhouzzy.klotski.screen.GameScreen;
-import io.github.jimzhouzzy.klotski.screen.HelpScreen;
+import io.github.jimzhouzzy.klotski.screen.AboutScreen;
 import io.github.jimzhouzzy.klotski.screen.LoginScreen;
 import io.github.jimzhouzzy.klotski.screen.MainScreen;
 import io.github.jimzhouzzy.klotski.screen.SettingsScreen;
@@ -136,7 +136,7 @@ public class Klotski extends Game {
     public DynamicBoard dynamicBoard;
     public WebServer webServer;
     public SettingsScreen settingsScreen;
-    public HelpScreen helpScreen;
+    public AboutScreen helpScreen;
     public Music backgroundMusic;
     public Music backgroundMusicLight;
     public Music backgroundMusicDark;

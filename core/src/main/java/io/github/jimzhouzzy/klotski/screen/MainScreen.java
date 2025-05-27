@@ -179,11 +179,10 @@ public class MainScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.setScreen(new HelpScreen(klotski));
+                klotski.setScreen(new AboutScreen(klotski));
             }
         });
         table.add(helpButton).width(200).height(50).padBottom(20).row();
-
 
         // Add an "Exit" button
         TextButton exitButton = new TextButton("Exit", skin);
