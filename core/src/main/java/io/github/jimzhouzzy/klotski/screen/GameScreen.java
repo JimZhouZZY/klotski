@@ -200,6 +200,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     protected Group badgeGroup;
     private Timer.Task badgeHideTask;
     private long randomSeed;
+    private int blockedLevel;
 
     public int blockedId = -1; // no piece is blocked at first
 
@@ -229,6 +230,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
+        create();
+    }
+
+    public GameScreen(final Klotski klotski, String blockedLevel) {
+        this.klotski = klotski;
+        this.blockedLevel = Integer.parseInt(blockedLevel);
+        this.blockedId = EnhancedKlotskiGame.getBlockedIdForLevel(this.blockedLevel);
         create();
     }
 

@@ -76,7 +76,7 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.setScreen(new GameModeLegactLevelMenuScreen(klotski, GameModeLegacyMenuScreen.this));
+                klotski.setScreen(new GameModeLegacyLevelMenuScreen(klotski, GameModeLegacyMenuScreen.this));
             }
         });
         table.add(classicalButton).width(300).height(50).padBottom(20).row();
@@ -113,10 +113,11 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                GameScreen gameScreen = new GameScreen(klotski, 2);
-                gameScreen.setGameMode(false); // Set to 3min-Attack mode
-                klotski.setGameScreen(gameScreen); // Set the game screen
-                klotski.setScreen(gameScreen); // Navigate to the game screen
+                klotski.setScreen(new GameModeBlockedLevelMenuScreen(klotski, GameModeLegacyMenuScreen.this));
+                //GameScreen gameScreen = new GameScreen(klotski, 2);
+                //gameScreen.setGameMode(false); // Set to 3min-Attack mode
+                //klotski.setGameScreen(gameScreen); // Set the game screen
+                //klotski.setScreen(gameScreen); // Navigate to the game screen
             }
         });
         table.add(blockedButton).width(300).height(50).padBottom(20).row();
