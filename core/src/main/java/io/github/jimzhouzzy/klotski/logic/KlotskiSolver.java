@@ -25,11 +25,12 @@
  * the search process, including the number of states examined and the time taken to find a solution.
  * 
  * @author JimZhouZZY
- * @version 1.17
+ * @version 1.18
  * @since 2025-5-25
  * @see {@link KlotskiGame}
  * 
  * Change log:
+ * 2025-05-27: implement levels for 'enhanced' game
  * 2025-05-27: implement blocked pieces
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -180,6 +181,7 @@ public class KlotskiSolver {
     }
 
     private static List<BoardState> generateNextStates(BoardState state, int blockedId) {
+        // System.out.println("Generating next states for blocked:" + blockedId);
         List<BoardState> nextStates = new ArrayList<>();
 
         // Create a temporary game to check moves

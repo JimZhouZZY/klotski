@@ -4,10 +4,12 @@
  * This class represents the game mode blocked level menu screen in the Klotski game.
  * 
  * @author JimZhouZZY
- * @version 1.3
+ * @version 1.5
  * @since 2025-05-26
  * 
  * Change log:
+ * 2025-05-27: implement levels for 'enhanced' game
+ * 2025-05-27: Multilevel for blocked
  * 2025-05-27: UI improvement
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: multiple classical level
@@ -51,7 +53,8 @@ public class GameModeBlockedLevelMenuScreen extends MenuScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     klotski.playClickSound();
-                    GameScreen gameScreen = new GameScreen(klotski, "1");
+                    String levelString = String.valueOf(level);
+                    GameScreen gameScreen = new GameScreen(klotski, levelString);
                     gameScreen.setGameMode(false); // Set to 3min-Attack mode
                     klotski.setGameScreen(gameScreen);
                     klotski.setScreen(gameScreen);

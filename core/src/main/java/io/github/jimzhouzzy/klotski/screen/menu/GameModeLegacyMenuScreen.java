@@ -23,10 +23,12 @@
  * It allows players to choose between different legacy game modes such as Classical, Shuffled, and 3min-Attack.
  *
  * @author JimZhouZZY
- * @version 1.9
+ * @version 1.11
  * @since 2025-5-25
  *
  * Change log:
+ * 2025-05-27: implement levels for 'enhanced' game
+ * 2025-05-27: Multilevel for blocked
  * 2025-05-27: UI improvement
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font

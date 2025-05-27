@@ -24,11 +24,13 @@
  * and hooks to updates the game state accordingly.
  * 
  * @author JimZhouZZY
- * @version 1.23
+ * @version 1.25
  * @since 2025-5-25
  * @see {@link GameScreen}
  * 
  * Change log:
+ * 2025-05-27: implement levels for 'enhanced' game
+ * 2025-05-27: fix: arrow key causes crash when selecting blocked pieces
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog

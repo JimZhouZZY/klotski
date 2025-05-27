@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.58
+ * @version 1.61
  * @since 2025-5-25
  *
  * KNOWN ISSUES:
@@ -33,6 +33,9 @@
  *    reset the game to the shuffeled state.
  *
  * Change log:
+ * 2025-05-27: implement levels for 'enhanced' game
+ * 2025-05-27: Multilevel for blocked
+ * 2025-05-27: fix: arrow key causes crash when selecting blocked pieces
  * 2025-05-27: UI improvement
  * 2025-05-27: Refactor UI in SpectateScreen
  * 2025-05-27: implement blocked pieces
@@ -278,7 +281,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         if (blockedId == -1)
             game = new KlotskiGame();
         else
-            game = new EnhancedKlotskiGame(blockedId);
+            game = new EnhancedKlotskiGame(String.valueOf(blockedLevel));
 
         // Create a root table for layout
         Table rootTable = new Table();
@@ -1091,6 +1094,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } else {
             solution = null; // Clear the previous solution
             solutionIndex = 0; // Reset the solution index
+            System.out.println("Starting auto-solving..." + blockedId);
             List<String> newSolution = KlotskiSolver.solve(game, blockedId); // Get the new solution
 
             if (newSolution != null && !newSolution.isEmpty()) {
