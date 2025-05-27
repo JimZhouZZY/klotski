@@ -1,5 +1,6 @@
 io.github.jimzhouzzy.klotski
 io.github.jimzhouzzy.klotski.logic
+io.github.jimzhouzzy.klotski.logic.util
 io.github.jimzhouzzy.klotski.screen
 io.github.jimzhouzzy.klotski.screen.core
 io.github.jimzhouzzy.klotski.screen.menu
