@@ -1034,15 +1034,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
 
         // Initialize the game logic
-        if (blockedId == -1)
+        if (blockedId == -1 && !this.isCooperateMode)
             game = new KlotskiGame();
-        else
+        else if(!this.isCooperateMode)
             game = new EnhancedKlotskiGame(String.valueOf(blockedLevel));
 
-        if (this.level != -1 ) {
+        if (this.level != -1 || !isCooperateMode) {
             this.setLevel(this.level);
         }
 
+        if (isCooperateMode)
+            game.initialize();
 
         // Update the blocks to match the game state
         updateBlocksFromGame(game);
