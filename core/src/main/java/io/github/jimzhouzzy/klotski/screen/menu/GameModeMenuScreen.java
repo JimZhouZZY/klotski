@@ -106,7 +106,6 @@ public class GameModeMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.gameScreen.setGameMode(true); // Set to 3min-Attack mode
                 klotski.setScreen(new KlotzkiGameScreen(klotski)); // Navigate to the game screen
             }
         });

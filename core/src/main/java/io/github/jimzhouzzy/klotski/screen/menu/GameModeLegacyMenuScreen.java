@@ -43,6 +43,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.screen.GameScreen;
 import io.github.jimzhouzzy.klotski.screen.core.MenuScreen;
 import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
 
@@ -70,7 +71,11 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.setScreen(klotski.gameScreen);
+                GameScreen gameScreen = new GameScreen(klotski);
+                gameScreen.setGameMode(false); // Set to Classical mode
+                // gameScreen.setLevel(1); // Set to Level 1
+                klotski.setGameScreen(gameScreen); // Set the game screen
+                klotski.setScreen(gameScreen);
             }
         });
         table.add(classicalButton).width(300).height(50).padBottom(20).row();
@@ -81,9 +86,11 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.gameScreen.setGameMode(false); // Set to Free Game mode
-                klotski.gameScreen.randomShuffle((long) klotski.randomHelper.nextInt(10000)); // Shuffle with seed for Level 1
-                klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
+                GameScreen gameScreen = new GameScreen(klotski);
+                gameScreen.setGameMode(false); // Set to Free Game mode
+                gameScreen.randomShuffle((long) klotski.randomHelper.nextInt(10000)); // Shuffle with seed for Level 1
+                klotski.setGameScreen(gameScreen); // Set the game screen
+                klotski.setScreen(gameScreen); // Navigate to the game screen
             }
         });
         table.add(freeGameButton).width(300).height(50).padBottom(20).row();
@@ -94,9 +101,11 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.gameScreen.setGameMode(true); // Set to 3min-Attack mode
-                klotski.gameScreen.randomShuffle((long) klotski.randomHelper.nextInt(10000)); // Shuffle with seed for Level 1
-                klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
+                GameScreen gameScreen = new GameScreen(klotski);
+                gameScreen.setGameMode(true); // Set to 3min-Attack mode
+                gameScreen.randomShuffle((long) klotski.randomHelper.nextInt(10000)); // Shuffle with seed for Level 1
+                klotski.setGameScreen(gameScreen); // Set the game screen
+                klotski.setScreen(gameScreen); // Navigate to the game screen
             }
         });
         table.add(attackModeButton).width(300).height(50).padBottom(20).row();
@@ -107,8 +116,8 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
-                klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
-                klotski.gameScreen.setGameMode(false); // Set to Free Game mode
+                // klotski.setScreen(klotski.gameScreen); // Navigate to the game screen
+                // klotski.gameScreen.setGameMode(false); // Set to Free Game mode
                 // klotski.gameScreen.setBlocked(true); // Set to Blocked mode
                 // klotski reset
             }

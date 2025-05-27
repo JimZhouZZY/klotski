@@ -109,6 +109,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.jimzhouzzy.klotski.screen.GameScreen;
 import io.github.jimzhouzzy.klotski.screen.HelpScreen;
+import io.github.jimzhouzzy.klotski.screen.LoginScreen;
 import io.github.jimzhouzzy.klotski.screen.MainScreen;
 import io.github.jimzhouzzy.klotski.screen.SettingsScreen;
 import io.github.jimzhouzzy.klotski.screen.menu.SpectateMenuScreen;
@@ -130,7 +131,7 @@ public class Klotski extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
     public FitViewport viewport;
-    public GameScreen gameScreen;
+    public GameScreen gameScreen; // for ref only, should not be used directly
     public MainScreen mainScreen;
     public SpectateMenuScreen spectateChoiceScreen;
     public DynamicBoard dynamicBoard;
@@ -140,6 +141,7 @@ public class Klotski extends Game {
     public Music backgroundMusic;
     public Music backgroundMusicLight;
     public Music backgroundMusicDark;
+    public LoginScreen loginScreen;
     public RandomHelper randomHelper;
     private boolean arrowControlsEnabled = true;
 
@@ -224,8 +226,8 @@ public class Klotski extends Game {
 
         // After the user loading, settings screen must come first to load settings
         this.settingsScreen = new SettingsScreen(this);
+        this.loginScreen = new LoginScreen(this);
         this.mainScreen = new MainScreen(this);
-        this.gameScreen = new GameScreen(this);
         this.setScreen(mainScreen);
 
         // Start local web socket server
@@ -648,5 +650,9 @@ public class Klotski extends Game {
         if (backgroundMusic != null) {
             backgroundMusic.play();
         }
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
 }

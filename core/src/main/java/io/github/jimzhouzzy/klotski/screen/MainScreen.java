@@ -158,7 +158,7 @@ public class MainScreen extends ProtoScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();;
-                klotski.setScreen(new LoginScreen(klotski)); // Navigate to the LoginScreen
+                klotski.setScreen(klotski.loginScreen); // Navigate to the LoginScreen
             }
         });
         table.add(loginButton).width(200).height(50).padBottom(20).row();

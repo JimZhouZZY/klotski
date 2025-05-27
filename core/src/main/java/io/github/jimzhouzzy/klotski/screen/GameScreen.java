@@ -192,6 +192,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
+        create();
     }
 
     public void setGameMode(boolean isAttackMode) {
@@ -1515,10 +1516,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void show() {
-        create();
         //klotski.dynamicBoard.setStage(stage);
         klotski.dynamicBoard.triggerAnimateFocalLength(10000.0f, 1.0f);
-        handleRestart(game);
         Gdx.input.setInputProcessor(stage);
 
         // Schedule auto-save every 30 seconds

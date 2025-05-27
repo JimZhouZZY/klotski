@@ -17,3 +17,4 @@ Author: Zhiyu Zhou, Haozhan Tang
 - Random seed
 - level design (classics)
 - merge and refactor barriered games from branch thz
+- refactor specatae screen and co-op code (duplicated code)
