@@ -181,6 +181,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public List<int[][]> moveHistory; // Stores the history of moves
     public int currentMoveIndex; // Tracks the current move in the history
+    private int level = -1;
 
     public float elapsedTime; // Tracks the elapsed time in seconds
     public Label timerLabel; // Label to display the timer
@@ -202,7 +203,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public Label congratsLabel;
     protected Group badgeGroup;
     private Timer.Task badgeHideTask;
-    private long randomSeed;
+    private long randomSeed = -1L;
     private int blockedLevel;
 
     public int blockedId = -1; // no piece is blocked at first
@@ -1026,8 +1027,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             block.clearActions(); // Clear all actions for this block
         }
 
-        // Reset the game logic
-        game.initialize();
+        // Initialize the game logic
+        if (blockedId == -1)
+            game = new KlotskiGame();
+        else
+            game = new EnhancedKlotskiGame(String.valueOf(blockedLevel));
+
+        if (this.level != -1 ) {
+            this.setLevel(this.level);
+        }
+
 
         // Update the blocks to match the game state
         updateBlocksFromGame(game);
@@ -1040,6 +1049,34 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         broadcastGameState();
 
         System.out.println("Game restarted.");
+
+        if (blockedLevel != -1){
+            String levelString = String.valueOf(blockedLevel);
+            GameScreen gameScreen = new GameScreen(klotski, levelString);
+            gameScreen.setGameMode(false); // Set to 3min-Attack mode
+            klotski.setGameScreen(gameScreen);
+            klotski.setScreen(gameScreen);
+        }
+        else if (randomSeed != -1L && this.isAttackMode) {
+            GameScreen gameScreen = new GameScreen(klotski, (long) klotski.randomHelper.nextInt(114514), true);
+            klotski.setGameScreen(gameScreen); // Set the game screen
+            klotski.setScreen(gameScreen); // Navigate to the game screen
+        }
+
+        else if (this.level != -1 || this.randomSeed == -1L) {
+            // Currently we just re-create the GameScreen
+            GameScreen gameScreen = new GameScreen(klotski);
+            gameScreen.setGameMode(false); // Classical mode
+            gameScreen.setLevel(level);    // Set to Level 1~5
+            klotski.setGameScreen(gameScreen);
+            klotski.setScreen(gameScreen);
+        }
+    
+        else if (this.randomSeed != -1L) {
+            GameScreen gameScreen = new GameScreen(klotski, (long) klotski.randomHelper.nextInt(114514), false);
+            klotski.setGameScreen(gameScreen); // Set the game screen
+            klotski.setScreen(gameScreen); // Navigate to the game screen
+        }
     }
 
     public void handleHint(KlotskiGame game) {
@@ -1680,6 +1717,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void setLevel(int level) {
+        this.level = level;
         // get the level data file from the resources
         String levelDataFile = "levels/level" + level + ".dat";
         // read the whole file as a string
