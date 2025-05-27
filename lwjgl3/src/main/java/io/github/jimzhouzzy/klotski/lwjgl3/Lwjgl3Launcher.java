@@ -105,8 +105,7 @@ public class Lwjgl3Launcher {
     private static boolean[] loadConfiguration() {
         // TODO: Add frame rate option
 
-        final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-        final String SETTINGS_FILE = configPathHelper.getConfigFilePath("Klotski", "settings.json");
+        final String SETTINGS_FILE = ConfigPathHelper.getConfigFilePath("Klotski", "settings.json");
         File file = new File(SETTINGS_FILE);
         Map<String, Object> settings;
 

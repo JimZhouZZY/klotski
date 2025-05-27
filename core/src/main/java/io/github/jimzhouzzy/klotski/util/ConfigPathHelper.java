@@ -52,7 +52,7 @@ import java.nio.file.Paths;
 
 public class ConfigPathHelper {
 
-    public String getConfigFilePath(String appName, String fileName) {
+    public static String getConfigFilePath(String appName, String fileName) {
         String userHome = System.getProperty("user.home");
         String osName = System.getProperty("os.name").toLowerCase();
 

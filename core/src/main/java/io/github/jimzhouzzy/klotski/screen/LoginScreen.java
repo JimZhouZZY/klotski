@@ -94,8 +94,7 @@ import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 
 public class LoginScreen extends ProtoScreen {
 
-    private static final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    private static final String USER_DATA_FILE = configPathHelper.getConfigFilePath("Klotski", "users.dat");
+    private static final String USER_DATA_FILE = ConfigPathHelper.getConfigFilePath("Klotski", "users.dat");
     private static final Map<String, String> userDatabase = new HashMap<>();
     private static TextField usernameField;
     private static TextField passwordField;

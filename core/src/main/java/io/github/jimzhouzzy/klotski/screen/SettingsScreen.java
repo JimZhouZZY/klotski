@@ -88,8 +88,7 @@ import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
 public class SettingsScreen extends ProtoScreen {
 
     private boolean isDarkMode;
-    private static final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    private static final String SETTINGS_FILE = configPathHelper.getConfigFilePath("Klotski", "settings.json");
+    private static final String SETTINGS_FILE = ConfigPathHelper.getConfigFilePath("Klotski", "settings.json");
 
     public SettingsScreen(final Klotski klotski) {
         super(klotski);

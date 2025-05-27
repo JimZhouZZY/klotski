@@ -126,8 +126,7 @@ public class Klotski extends Game {
     private GameWebSocketServer webSocketServer;
     public GameWebSocketClient webSocketClient;
 
-    private final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    private final String LOGIN_STATUS_FILE = configPathHelper.getConfigFilePath("Klotski", "login_status.dat");
+    private final String LOGIN_STATUS_FILE = ConfigPathHelper.getConfigFilePath("Klotski", "login_status.dat");
     public SpriteBatch batch;
     public BitmapFont font;
     public FitViewport viewport;

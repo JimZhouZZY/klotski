@@ -120,7 +120,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -136,6 +135,7 @@ import io.github.jimzhouzzy.klotski.Klotski;
 import io.github.jimzhouzzy.klotski.logic.GameState;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.KlotskiSolver;
+import io.github.jimzhouzzy.klotski.ui.component.Dialog;
 import io.github.jimzhouzzy.klotski.ui.component.KlotskiTheme;
 import io.github.jimzhouzzy.klotski.ui.component.RectangleBlockActor;
 import io.github.jimzhouzzy.klotski.util.ConfigPathHelper;
@@ -147,8 +147,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public boolean winMusicPlayed = false;
     public Music loseSound;
     public boolean loseMusicPlayed = false;
-    public final ConfigPathHelper configPathHelper = new ConfigPathHelper();
-    public final String SAVE_FILE = configPathHelper.getConfigFilePath("Klotski", "game_save.dat");
+    public final String SAVE_FILE = ConfigPathHelper.getConfigFilePath("Klotski", "game_save.dat");
 
     public Stage stage;
     public Skin skin;
@@ -1281,6 +1280,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             uploadSaveToServer(Files.readAllBytes(file.toPath()), autoSave);
         } catch (IOException e) {
             System.err.println("Failed to save game: " + e.getMessage());
+            Dialog.showDialog(klotski, skin, stage, "Save Error", "Failed to save game: " + e.getMessage());
         }
     }
 
@@ -1346,6 +1346,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         fetchLatestSaveFromServer(username, saveData -> {
             if (saveData == null) {
                 System.out.println("No save file found for user: " + username);
+                Dialog.showDialog(klotski, skin, stage, "Load Error", "No save file found for user: ");
                 return;
             }
 
@@ -1377,6 +1378,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 System.err.println("Failed to load game: " + e.getMessage());
+                Dialog.showDialog(klotski, skin, stage, "Load Error", "Failed to load game: " + e.getMessage());
             }
         });
     }
@@ -1433,7 +1435,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
         String saveFileName = getSaveFileName();
-        File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
+        File file = new File(ConfigPathHelper.getConfigFilePath("Klotski", saveFileName));
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             // Save the positions of all pieces, move history, current move index, and
             // elapsed time
@@ -1448,14 +1450,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 showBadge("Game auto-saved for user: " + klotski.getLoggedInUser());
         } catch (IOException e) {
             System.err.println("Failed to save game: " + e.getMessage());
+            Dialog.showDialog(klotski, skin, stage, "Save Error", "Failed to save game: " + e.getMessage());
         }
     }
 
     public void handleLocalLoad() {
         String saveFileName = getSaveFileName();
-        File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
+        File file = new File(ConfigPathHelper.getConfigFilePath("Klotski", saveFileName));
         if (!file.exists()) {
             System.out.println("No save file found for user: " + klotski.getLoggedInUser());
+            Dialog.showDialog(klotski, skin, stage, "Load Error", "No save file found for user: ");
             return;
         }
 
@@ -1482,6 +1486,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             System.out.println("Game loaded successfully for user: " + klotski.getLoggedInUser());
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Failed to load game: " + e.getMessage());
+            Dialog.showDialog(klotski, skin, stage, "Load Error", "Failed to load game: " + e.getMessage());
         }
     }
 
