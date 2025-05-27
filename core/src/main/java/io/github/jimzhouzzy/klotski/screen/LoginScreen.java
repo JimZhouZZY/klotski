@@ -24,12 +24,13 @@
  * Klotski is starting.
  *
  * @author JimZhouZZY
- * @version 1.32
+ * @version 1.33
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
  *
  * Change log:
+ * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
  * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-26: Update changelog

@@ -24,11 +24,12 @@
  * and hooks to updates the game state accordingly.
  * 
  * @author JimZhouZZY
- * @version 1.22
+ * @version 1.23
  * @since 2025-5-25
  * @see {@link GameScreen}
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
  * 2025-05-27: Implement Co-op
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
@@ -111,6 +112,13 @@ public class RectangleBlockActor extends Actor {
         } else if (pieceId >= 6 && pieceId <= 9) {
             pieceTexture = new Texture(Gdx.files.internal("assets/image/Soldier.png"));
         }
+        System.out.println("RectangleBlockActor: pieceId = " + pieceId);
+        System.out.println("BlockedId = " + game.blockedId);
+        // print hash of game
+        System.out.println("Game hash = " + game.hashCode());
+        if (pieceId == game.blockedId) {
+            color = new Color(Color.valueOf("#808080"));
+        }
 
         setBounds(x, y, width, height);
 
@@ -119,7 +127,8 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (enableTouch == false) {
+                if (enableTouch == false
+                        || pieceId == RectangleBlockActor.this.game.blockedId) {
                     return false;
                 }
 
@@ -143,7 +152,8 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                if (enableTouch == false) {
+                if (enableTouch == false
+                        || pieceId == RectangleBlockActor.this.game.blockedId) {
                     return;
                 }
 
@@ -238,7 +248,8 @@ public class RectangleBlockActor extends Actor {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (enableTouch == false) {
+                if (enableTouch == false
+                        || pieceId == RectangleBlockActor.this.game.blockedId) {
                     return;
                 }
 
@@ -313,6 +324,9 @@ public class RectangleBlockActor extends Actor {
 
         // Optional dynamic color for the rectangle
         float time = (System.currentTimeMillis() % 10000) / 10000f; // 0 to 1 looping value
+        if (pieceId == game.blockedId) {
+            color = new Color(Color.valueOf("#808080"));
+        }
         Color dynamicColor = new Color(
             color.r * (0.9f + 0.1f * (float) Math.sin(2 * Math.PI * time)), // Dynamic red component
             color.g * (0.9f + 0.1f * (float) Math.sin(2 * Math.PI * time + Math.PI / 3)), // Dynamic green component

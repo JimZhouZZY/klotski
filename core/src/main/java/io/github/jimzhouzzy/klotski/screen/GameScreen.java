@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.54
+ * @version 1.58
  * @since 2025-5-25
  * <p>
  * KNOWN ISSUES:
@@ -33,7 +33,11 @@
  * reset the game to the shuffeled state.
  * <p>
  * Change log:
+ * 2025-05-27: UI improvement
+ * 2025-05-27: Refactor UI in SpectateScreen
+ * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
+ * 2025-05-27: multiple classical level
  * 2025-05-27: fix white line
  * 2025-05-27: show total moves at the end of the game
  * 2025-05-27: Do not allow unauthorized(guest) users to save and load
@@ -139,6 +143,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.google.gson.Gson;
 
 import io.github.jimzhouzzy.klotski.Klotski;
+import io.github.jimzhouzzy.klotski.logic.EnhancedKlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.GameState;
 import io.github.jimzhouzzy.klotski.logic.KlotskiGame;
 import io.github.jimzhouzzy.klotski.logic.KlotskiSolver;
@@ -192,11 +197,36 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public boolean isAttackMode; // Flag to track if the game is in 3min-Attack mode
     public float attackModeTimeLimit = 3 * 60; // 3 minutes in seconds
     public Label congratsLabel;
-    private Group badgeGroup;
+    protected Group badgeGroup;
     private Timer.Task badgeHideTask;
+    private long randomSeed;
 
-    public int blockedId = 10; // no piece is blocked at first
+    public int blockedId = -1; // no piece is blocked at first
 
+    public GameScreen(final Klotski klotski, long seed) {
+        this.klotski = klotski;
+        create();
+        this.randomSeed = seed;
+        randomShuffle(seed);
+    }
+    
+    public GameScreen(final Klotski klotski, long seed, boolean isAttackMode) {
+        this.klotski = klotski;
+        create();
+        this.randomSeed = seed;
+        this.isAttackMode = isAttackMode;
+        randomShuffle(seed);
+    }
+
+    public GameScreen(final Klotski klotski, int blockedId) {
+        this.klotski = klotski;
+        this.blockedId = blockedId;
+        System.out.println("GameScreen created with blockedId: " + blockedId);
+        // print hash of game
+        System.out.println("GameScreen hash: " + this.hashCode());
+        create();
+    }
+    
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
         create();
@@ -237,7 +267,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         cellSize = Math.min(Gdx.graphics.getWidth() / (float) cols, Gdx.graphics.getHeight() / (float) rows);
 
         // Initialize the game logic
-        game = new KlotskiGame();
+        if (blockedId == -1)
+            game = new KlotskiGame();
+        else
+            game = new EnhancedKlotskiGame(blockedId);
 
         // Create a root table for layout
         Table rootTable = new Table();
@@ -419,13 +452,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         else
             timeLabelStyle = skin.get("default-white", Label.LabelStyle.class);
         timerLabel = new Label("Time: 00:00", timeLabelStyle);
-        timerLabel.setFontScale(1.2f);
+        timerLabel.setFontScale(1.0f);
         timerLabel.setAlignment(Align.center);
         buttonTable.add(timerLabel).width(100).pad(10).row();
 
         // Add moves label under the timer
         movesLabel = new Label("Moves: 0", timeLabelStyle);
-        movesLabel.setFontScale(1.2f);
+        movesLabel.setFontScale(1.0f);
         movesLabel.setAlignment(Align.center);
         buttonTable.add(movesLabel).width(100).pad(10).row();
 
@@ -434,7 +467,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         Label badgeLabel = new Label("", skin);
         badgeLabel.setName("badgeLabel");
-        badgeLabel.setFontScale(1.2f);
+        badgeLabel.setFontScale(1.0f);
         badgeLabel.setAlignment(Align.center);
 
         Image badgeBg = new Image(skin.newDrawable("white", new Color(1, 1, 1, 0.5f)));
@@ -654,6 +687,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     private void handleAutoArrowKeys(int[] direction) {
+        if (selectedBlock.pieceId == blockedId) return;
         List<int[][]> legalMoves = game.getLegalMovesByDirection(direction);
         if (legalMoves.isEmpty()) {
             return;
@@ -999,7 +1033,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleHint(KlotskiGame game) {
         // Get the solution from the solver
-        List<String> solution = KlotskiSolver.solve(game);
+        List<String> solution = KlotskiSolver.solve(game, blockedId);
 
         if (solution != null && !solution.isEmpty()) {
             // Parse the first move from the solution
@@ -1049,7 +1083,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } else {
             solution = null; // Clear the previous solution
             solutionIndex = 0; // Reset the solution index
-            List<String> newSolution = KlotskiSolver.solve(game); // Get the new solution
+            List<String> newSolution = KlotskiSolver.solve(game, blockedId); // Get the new solution
 
             if (newSolution != null && !newSolution.isEmpty()) {
                 solution = newSolution; // Store the solution
@@ -1108,7 +1142,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Add congratulatory message
         Label.LabelStyle narrationStyle = skin.get("narration", Label.LabelStyle.class);
         congratsLabel = new Label("Congratulations! You Win!", narrationStyle);
-        congratsLabel.setFontScale(2); // Make the text larger
+        congratsLabel.setFontScale(1.5f); // Make the text larger
         congratsTable.add(congratsLabel).padBottom(20).row();
 
         // Add time usage placeholder
@@ -1116,8 +1150,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Table timeMovesTable = new Table();
         Label movesLabelCongrats = new Label("Moves: 0", altStyle);
         Label timerLabelCongrats = new Label("Time: 00:00", altStyle); // Placeholder for time usage
-        movesLabelCongrats.setFontScale(1.5f);
-        timerLabelCongrats.setFontScale(1.5f);
+        movesLabelCongrats.setFontScale(1.1f);
+        timerLabelCongrats.setFontScale(1.1f);
 
         timeMovesTable.add(timerLabelCongrats).padRight(30);
         timeMovesTable.add(movesLabelCongrats);
@@ -1180,11 +1214,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabelCongrats.setText(String.format("Time: %02d:%02d", minutes, seconds));
-        timerLabelCongrats.setFontScale(1.2f);
+        timerLabelCongrats.setFontScale(1.0f);
         movesLabelCongrats.setText("Moves: " + (currentMoveIndex + 1));
-        movesLabelCongrats.setFontScale(1.2f);
+        movesLabelCongrats.setFontScale(1.0f);
         congratsLabel.setText("Congratulations! You Win!");
-        congratsLabel.setFontScale(1.2f);
+        congratsLabel.setFontScale(1.0f);
 
         // Update the moves label with the total moves
         // plus one because index starts from 0
@@ -1631,5 +1665,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 badgeGroup.setVisible(false);
             }
         }, 3);
+    }
+
+    public void setLevel(int level) {
+        // get the level data file from the resources
+        String levelDataFile = "levels/level" + level + ".dat";
+        // read the whole file as a string
+        String levelData = Gdx.files.internal(levelDataFile).readString();
+        // parse the level data
+        game.fromString(levelData);
+        // update the blocks from the game state
+        updateBlocksFromGame(game);
+        broadcastGameState();
     }
 }

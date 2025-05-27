@@ -24,11 +24,13 @@
  * It allows users to configure various settings such as graphics, audio, and gameplay options.
  * 
  * @author JimZhouZZY
- * @version 1.34
+ * @version 1.36
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
+ * 2025-05-27: modify font
  * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment

@@ -24,10 +24,11 @@
  * checking legal moves, and determining the game state.
  * 
  * @author JimZhouZZY
- * @version 1.19
+ * @version 1.20
  * @since 2025-5-25
  * 
  * Change log:
+ * 2025-05-27: implement blocked pieces
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -139,11 +140,18 @@ public class KlotskiGame {
     }
 
     public KlotskiPiece[] pieces;
-    private int moveCount;
+    protected int moveCount;
     public static final int BOARD_WIDTH = 4;
     public static final int BOARD_HEIGHT = 5;
+    public int blockedId; // ID of the piece that is blocked and cannot be moved
 
     public KlotskiGame() {
+        blockedId = -1; // Default value for blocked piece ID
+        initialize();
+    }
+    
+    public KlotskiGame(int blockedId) {
+        this.blockedId = blockedId; // Default value for blocked piece ID
         initialize();
     }
 
@@ -256,9 +264,23 @@ public class KlotskiGame {
         return null;
     }
 
+    private boolean checkLegalPosition(int[] pos, KlotskiPiece piece) {
+        // Check if the piece is legally placed (inside of bounds)
+        if (pos[0] < 0 || pos[1] < 0 || pos[0] + piece.height > BOARD_HEIGHT || pos[1] + piece.width > BOARD_WIDTH) {
+            return false;
+        }
+        return true;
+    }
+
     public List<int[]> getLegalMovesForPiece(int[] position) {
         List<int[]> legalMoves = new ArrayList<>();
         KlotskiPiece piece = getPieceAt(position);
+
+        if (!checkLegalPosition(position, piece)
+                || piece.id == this.blockedId){
+            return null;
+        }
+
         if (piece == null) return legalMoves;
 
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
@@ -372,9 +394,11 @@ public class KlotskiGame {
         // Place pieces on the board
         for (KlotskiPiece piece : pieces) {
             int[] pos = piece.getPosition();
+
             for (int i = 0; i < piece.height; i++) {
                 for (int j = 0; j < piece.width; j++) {
-                    if (pos[0] + i < BOARD_HEIGHT && pos[1] + j < BOARD_WIDTH) {
+                    if (0 <= pos[0] + i  && pos[0] + i < BOARD_HEIGHT 
+                            && 0 <= pos[1] + j && pos[1] + j < BOARD_WIDTH) {
                         board[pos[0] + i][pos[1] + j] = piece.abbreviation;
                     }
                 }

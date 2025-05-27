@@ -22,10 +22,11 @@
  * This class represents the game mode selection screen in the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.31
+ * @version 1.32
  * @since 2025-5-25
  *
  * Change log:
+ * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
  * 2025-05-27: make GameScreen seperate
  * 2025-05-26: Update changelog
