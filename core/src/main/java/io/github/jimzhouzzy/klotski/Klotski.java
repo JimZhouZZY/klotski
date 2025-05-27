@@ -28,11 +28,15 @@
  * including the current screen and user settings.
  * 
  * @author JimZhouZZY
- * @version 1.40
+ * @version 1.44
  * @since 2025-5-25
  * @see {@link libgdx.Game}
  * 
  * Change log:
+ * 2025-05-27: fix white line
+ * 2025-05-27: Show error dialog when load-save failed
+ * 2025-05-27: debug auto-login
+ * 2025-05-27: make GameScreen seperate
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header

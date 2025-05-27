@@ -18,25 +18,26 @@
 
 /**
  * Dialog.java
- * 
+ *
  * This class provides static methods to show a dialog box with a message and an OK button.
- * It is used to display error messages or other information to the user. 
+ * It is used to display error messages or other information to the user.
  * See {@link LoginScreen} for practical usage.
- * 
+ *
  * Klotski instance is used to play sounds when the dialog is shown and when the OK button is clicked.
  * Skin instance is used to style the dialog elements.
  * Stage instance is used to add the dialog to the screen.
- * 
+ *
  * Example usage:
  *     Dialog.showErrorDialog(klotski, skin, stage, "An error occurred while loading the game.");
  *     Dialog.showDialog(klotski, skin, stage, "Notification","User logged in successfully.");
  *
  * @author JimZhouZZY
- * @version 1.10
+ * @version 1.11
  * @since 2025-5-25
  * @see {@link LoginScreen}
- * 
+ *
  * Change log:
+ * 2025-05-27: modify font
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -68,7 +69,7 @@ public class Dialog {
     public static void showErrorDialog(Klotski klotski, Skin skin, Stage stage, String message) {
         showDialog(klotski, skin, stage, "Error", message);
     }
-    
+
     public static void showDialog(Klotski klotski, Skin skin, Stage stage, String title, String message) {
         // Play alert sound
         klotski.playAlertSound();
@@ -85,7 +86,7 @@ public class Dialog {
 
         // Create a title label for the dialog
         Label titleLabel = new Label(title, skin);
-        titleLabel.setFontScale(2.0f);
+        titleLabel.setFontScale(1.0f);
         titleLabel.setAlignment(Align.center); // Align the text to the center
         titleLabel.setSize(background.getWidth(), titleLabel.getHeight()); // Match the width of the background
         titleLabel.setPosition(background.getX(), background.getY() + 180); // Position it relative to the background
@@ -94,7 +95,7 @@ public class Dialog {
         // Create a label for the error message
         Label messageLabel = new Label(message, skin);
         messageLabel.setColor(Color.BLACK);
-        messageLabel.setFontScale(1.5f);
+        messageLabel.setFontScale(1f);
         messageLabel.setWrap(true);
         messageLabel.setWidth(360);
         messageLabel.setPosition(background.getX() + 20, background.getY() + 100);

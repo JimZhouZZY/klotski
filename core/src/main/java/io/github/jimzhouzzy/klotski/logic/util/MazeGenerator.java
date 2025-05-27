@@ -23,11 +23,12 @@
  * The maze is represented as a 1D array where 0 = wall and 1 = path.
  * 
  * @author JimZhouZZY
- * @version 1.3
+ * @version 1.4
  * @since 2025-5-26
  * @see {@link https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_depth-first_search}
  * 
  * Change log:
+ * 2025-05-27: Enhance GameScreen block color
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
  * 2025-05-26: Klotzki game

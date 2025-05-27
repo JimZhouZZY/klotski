@@ -5,12 +5,13 @@
  * It sets up the application configuration and starts the game.
  * 
  * @author JimZhouZZY
- * @version 1.14
+ * @version 1.15
  * @since 2025-5-25
  * @see {@link Klotski}
  * @see {@link Lwjgl3Application}
  * 
  * Change log:
+ * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-25: Refactor all the change logs
  * 2025-05-25: Organize import (doc)
  * 2025-05-25: Organize import

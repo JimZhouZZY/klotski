@@ -18,18 +18,20 @@
 
 /**
  * LoginScreen.java
- * 
+ *
  * This class represents the login and registration screen in the Klotski game.
- * It also initializes the user database and handles user authentication when 
+ * It also initializes the user database and handles user authentication when
  * Klotski is starting.
- * 
+ *
  * @author JimZhouZZY
- * @version 1.30
+ * @version 1.32
  * @since 2025-5-25
  * @see {@link Klotski#create()}
  * @see {@link https://github.com/JimZhouZZY/klotski-server}
- * 
+ *
  * Change log:
+ * 2025-05-27: modify font
+ * 2025-05-27: Show error dialog when load-save failed
  * 2025-05-26: Update changelog
  * 2025-05-26: add comment
  * 2025-05-26: Copyright Header
@@ -131,7 +133,7 @@ public class LoginScreen extends ProtoScreen {
 
         // Add a title label
         Label titleLabel = new Label("Login or Register", skin);
-        titleLabel.setFontScale(2);
+        titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
 
         // Add username and password fields
@@ -203,7 +205,7 @@ public class LoginScreen extends ProtoScreen {
             }
         }
     }
-    
+
     private boolean authenticate(String username, String password) {
         // Do basic validation
         if (!basicValidation(username, password)) {
@@ -345,7 +347,7 @@ public class LoginScreen extends ProtoScreen {
             }
         });
     }
-    
+
     private void register(String username, String password) {
         try {
             if (!basicValidation(username, password)) {
