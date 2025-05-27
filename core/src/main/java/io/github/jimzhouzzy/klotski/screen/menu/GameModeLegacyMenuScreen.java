@@ -23,10 +23,11 @@
  * It allows players to choose between different legacy game modes such as Classical, Shuffled, and 3min-Attack.
  *
  * @author JimZhouZZY
- * @version 1.8
+ * @version 1.9
  * @since 2025-5-25
  *
  * Change log:
+ * 2025-05-27: UI improvement
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
  * 2025-05-27: multiple classical level
@@ -94,7 +95,7 @@ public class GameModeLegacyMenuScreen extends MenuScreen {
         table.add(freeGameButton).width(300).height(50).padBottom(20).row();
 
         // Add "3min-Attack" button
-        TextButton attackModeButton = new TextButton("Shuffled-Attack", skin);
+        TextButton attackModeButton = new TextButton("Shuffle-Attack", skin);
         attackModeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

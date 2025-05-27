@@ -4,10 +4,11 @@
  * This class represents the game mode legacy level menu screen in the Klotski game.
  * 
  * @author JimZhouZZY
- * @version 1.2
+ * @version 1.3
  * @since 2025-05-26
  * 
  * Change log:
+ * 2025-05-27: UI improvement
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: multiple classical level
  */
@@ -39,13 +40,13 @@ public class GameModeLegactLevelMenuScreen extends MenuScreen {
 
         // Add a title label
         Label titleLabel = new Label("Select Classical Level", skin);
-        titleLabel.setFontScale(2);
+        titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
 
         // Add 5 level buttons for level1.dat to level5.dat
         for (int i = 1; i <= 5; i++) {
             final int level = i;
-            TextButton levelButton = new TextButton("Classical Level " + level, skin);
+            TextButton levelButton = new TextButton("Level " + level, skin);
             levelButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

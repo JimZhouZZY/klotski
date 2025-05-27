@@ -23,7 +23,7 @@
  * It is enheritaged by {@link SpectateScreen} and {@link CooperateScreen}.
  *
  * @author JimZhouZZY
- * @version 1.57
+ * @version 1.58
  * @since 2025-5-25
  *
  * KNOWN ISSUES:
@@ -33,6 +33,7 @@
  *    reset the game to the shuffeled state.
  *
  * Change log:
+ * 2025-05-27: UI improvement
  * 2025-05-27: Refactor UI in SpectateScreen
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: modify font
@@ -451,13 +452,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         else
             timeLabelStyle = skin.get("default-white", Label.LabelStyle.class);
         timerLabel = new Label("Time: 00:00", timeLabelStyle);
-        timerLabel.setFontScale(1.2f);
+        timerLabel.setFontScale(1.0f);
         timerLabel.setAlignment(Align.center);
         buttonTable.add(timerLabel).width(100).pad(10).row();
 
         // Add moves label under the timer
         movesLabel = new Label("Moves: 0", timeLabelStyle);
-        movesLabel.setFontScale(1.2f);
+        movesLabel.setFontScale(1.0f);
         movesLabel.setAlignment(Align.center);
         buttonTable.add(movesLabel).width(100).pad(10).row();
 
@@ -466,7 +467,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         Label badgeLabel = new Label("", skin);
         badgeLabel.setName("badgeLabel");
-        badgeLabel.setFontScale(1.2f);
+        badgeLabel.setFontScale(1.0f);
         badgeLabel.setAlignment(Align.center);
 
         Image badgeBg = new Image(skin.newDrawable("white", new Color(1, 1, 1, 0.5f)));
@@ -1142,7 +1143,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Add congratulatory message
         Label.LabelStyle narrationStyle = skin.get("narration", Label.LabelStyle.class);
         congratsLabel = new Label("Congratulations! You Win!", narrationStyle);
-        congratsLabel.setFontScale(2); // Make the text larger
+        congratsLabel.setFontScale(1.5f); // Make the text larger
         congratsTable.add(congratsLabel).padBottom(20).row();
 
         // Add time usage placeholder
@@ -1150,8 +1151,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Table timeMovesTable = new Table();
         Label movesLabelCongrats = new Label("Moves: 0", altStyle);
         Label timerLabelCongrats = new Label("Time: 00:00", altStyle); // Placeholder for time usage
-        movesLabelCongrats.setFontScale(1.5f);
-        timerLabelCongrats.setFontScale(1.5f);
+        movesLabelCongrats.setFontScale(1.1f);
+        timerLabelCongrats.setFontScale(1.1f);
 
         timeMovesTable.add(timerLabelCongrats).padRight(30);
         timeMovesTable.add(movesLabelCongrats);
@@ -1212,11 +1213,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabelCongrats.setText(String.format("Time: %02d:%02d", minutes, seconds));
-        timerLabelCongrats.setFontScale(1.2f);
+        timerLabelCongrats.setFontScale(1.0f);
         movesLabelCongrats.setText("Moves: " + (currentMoveIndex + 1));
-        movesLabelCongrats.setFontScale(1.2f);
+        movesLabelCongrats.setFontScale(1.0f);
         congratsLabel.setText("Congratulations! You Win!");
-        congratsLabel.setFontScale(1.2f);
+        congratsLabel.setFontScale(1.0f);
 
         // Update the moves label with the total moves
         // plus one because index starts from 0
