@@ -9,7 +9,6 @@ Author: Zhiyu Zhou, Haozhan Tang
 
 ### Checklist to v1.1.1
 - Font size
-- Cracked save (handle correctly)
 - Guests should not have the permission to save
 - Guide guests to register and login
 - show total moves in the end of a normal game

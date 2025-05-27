@@ -1257,6 +1257,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void handleSave(boolean autoSave) {
+        if (klotski.getLoggedInUser() == null 
+                || klotski.getLoggedInUser().isEmpty()
+                || klotski.getLoggedInUser().equals("Guest")) {
+            Dialog.showDialog(klotski, skin, stage, "Save Error", "You must be logged in to save the game.");
+            return;
+        }
+        
         String saveFileName = getSaveFileName();
         File file = new File(Gdx.files.getLocalStoragePath(), saveFileName);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -1342,6 +1349,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleLoad() {
         String username = klotski.getLoggedInUser();
+        if (klotski.getLoggedInUser() == null 
+                || klotski.getLoggedInUser().isEmpty()
+                || klotski.getLoggedInUser().equals("Guest")) {
+            Dialog.showDialog(klotski, skin, stage, "Load Error", "You must be logged in to load the game.");
+            return;
+        }
 
         fetchLatestSaveFromServer(username, saveData -> {
             if (saveData == null) {
@@ -1434,6 +1447,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void handleLocalSave(boolean autoSave) {
         // TODO: refactor to math the online method
+        if (klotski.getLoggedInUser() == null 
+                || klotski.getLoggedInUser().isEmpty()
+                || klotski.getLoggedInUser().equals("Guest")) {
+            Dialog.showDialog(klotski, skin, stage, "Save Error", "You must be logged in to save the game.");
+            return;
+        }
+
         String saveFileName = getSaveFileName();
         File file = new File(ConfigPathHelper.getConfigFilePath("Klotski", saveFileName));
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -1455,6 +1475,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void handleLocalLoad() {
+        if (klotski.getLoggedInUser() == null 
+                || klotski.getLoggedInUser().isEmpty()
+                || klotski.getLoggedInUser().equals("Guest")) {
+            Dialog.showDialog(klotski, skin, stage, "Load Error", "You must be logged in to load the game.");
+            return;
+        }
+
         String saveFileName = getSaveFileName();
         File file = new File(ConfigPathHelper.getConfigFilePath("Klotski", saveFileName));
         if (!file.exists()) {
