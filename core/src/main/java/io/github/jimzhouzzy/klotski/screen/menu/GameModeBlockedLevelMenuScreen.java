@@ -1,18 +1,15 @@
 /**
-<<<<<<< Updated upstream:core/src/main/java/io/github/jimzhouzzy/klotski/screen/menu/GameModeLegactLevelMenuScreen.java
- * GameModeLegactLevelMenuScreen.java
- * 
-=======
- * GameModeLegacyLevelMenuScreen.java
+ * GameModeBlockedLevelMenuScreen.java
  *
->>>>>>> Stashed changes:core/src/main/java/io/github/jimzhouzzy/klotski/screen/menu/GameModeLegacyLevelMenuScreen.java
- * This class represents the game mode legacy level menu screen in the Klotski game.
+ * This class represents the game mode blocked level menu screen in the Klotski game.
  *
  * @author JimZhouZZY
- * @version 1.3
+ * @version 1.5
  * @since 2025-05-26
  *
  * Change log:
+ * 2025-05-27: implement levels for 'enhanced' game
+ * 2025-05-27: Multilevel for blocked
  * 2025-05-27: UI improvement
  * 2025-05-27: implement blocked pieces
  * 2025-05-27: multiple classical level
@@ -31,8 +28,8 @@ import io.github.jimzhouzzy.klotski.screen.GameScreen;
 import io.github.jimzhouzzy.klotski.screen.core.MenuScreen;
 import io.github.jimzhouzzy.klotski.screen.core.ProtoScreen;
 
-public class GameModeLegactLevelMenuScreen extends MenuScreen {
-    public GameModeLegactLevelMenuScreen(Klotski klotski, ProtoScreen lastScreen) {
+public class GameModeBlockedLevelMenuScreen extends MenuScreen {
+    public GameModeBlockedLevelMenuScreen(Klotski klotski, ProtoScreen lastScreen) {
         super(klotski, lastScreen);
     }
 
@@ -44,7 +41,7 @@ public class GameModeLegactLevelMenuScreen extends MenuScreen {
         stage.addActor(table);
 
         // Add a title label
-        Label titleLabel = new Label("Select Classical Level", skin);
+        Label titleLabel = new Label("Select Blocked Level", skin);
         titleLabel.setFontScale(1.5f);
         table.add(titleLabel).padBottom(50).row();
 
@@ -56,9 +53,9 @@ public class GameModeLegactLevelMenuScreen extends MenuScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     klotski.playClickSound();
-                    GameScreen gameScreen = new GameScreen(klotski);
-                    gameScreen.setGameMode(false); // Classical mode
-                    gameScreen.setLevel(level);    // Set to Level 1~5
+                    String levelString = String.valueOf(level);
+                    GameScreen gameScreen = new GameScreen(klotski, levelString);
+                    gameScreen.setGameMode(false); // Set to 3min-Attack mode
                     klotski.setGameScreen(gameScreen);
                     klotski.setScreen(gameScreen);
                 }

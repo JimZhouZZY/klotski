@@ -199,7 +199,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public Label congratsLabel;
     protected Group badgeGroup;
     private Timer.Task badgeHideTask;
+<<<<<<< Updated upstream
     private long randomSeed;
+=======
+    private long randomSeed = -1L;
+    private int blockedLevel = -1;
+>>>>>>> Stashed changes
 
     public int blockedId = -1; // no piece is blocked at first
 
@@ -209,7 +214,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.randomSeed = seed;
         randomShuffle(seed);
     }
-    
+
     public GameScreen(final Klotski klotski, long seed, boolean isAttackMode) {
         this.klotski = klotski;
         create();
@@ -226,7 +231,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         System.out.println("GameScreen hash: " + this.hashCode());
         create();
     }
-    
+
     public GameScreen(final Klotski klotski) {
         this.klotski = klotski;
         create();
@@ -311,7 +316,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     klotski.playClickSound();
                     switch (name) {
                         case "Restart":
-                            handleRestart(game);
+                            handleRestart(game, false);
                             break;
                         case "Hint":
                             handleHint(game);
@@ -497,7 +502,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                         handleExit(); // Handle exit when ESC is pressed
                         return true;
                     case Input.Keys.R:
-                        handleRestart(game); // Handle restart when R is pressed
+                        handleRestart(game, false); // Handle restart when R is pressed
                         return true;
                     case Input.Keys.I:
                         handleHint(game); // Handle hint when H is pressed
@@ -1000,7 +1005,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    public void handleRestart(KlotskiGame game) {
+    public void handleRestart(KlotskiGame game, boolean isFromSave) {
+        System.out.println("!!!!!!!!!"+this.level);
         // Stop auto-solving if active
         stopAutoSolving();
 
@@ -1014,10 +1020,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         for (RectangleBlockActor block : blocks) {
             block.clearActions(); // Clear all actions for this block
         }
+<<<<<<< Updated upstream
 
         // Reset the game logic
         game.initialize();
 
+=======
+        if (isFromSave) {
+            return;
+        }
+>>>>>>> Stashed changes
         // Update the blocks to match the game state
         updateBlocksFromGame(game);
 
@@ -1029,10 +1041,46 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         broadcastGameState();
 
         System.out.println("Game restarted.");
+<<<<<<< Updated upstream
+=======
+
+        // Initialize the game logic
+        if (this.isCooperateMode) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        } else if (blockedLevel != -1) // block mode
+        {
+            System.out.println("？？？？？？？？？？？？？？？？？？？");
+            String levelString = String.valueOf(blockedLevel);
+            GameScreen gameScreen = new GameScreen(klotski, levelString);
+            gameScreen.setGameMode(false); // Set to 3min-Attack mode
+            klotski.setGameScreen(gameScreen);
+            klotski.setScreen(gameScreen);
+        } else if (randomSeed != -1L && this.isAttackMode) //
+
+        {
+            System.out.println("。。。。。。。。。。。。。。。。。。。。。。。。。");
+            GameScreen gameScreen = new GameScreen(klotski, (long) klotski.randomHelper.nextInt(114514), true);
+            klotski.setGameScreen(gameScreen); // Set the game screen
+            klotski.setScreen(gameScreen); // Navigate to the game screen
+        } else if (this.level != -1 || this.randomSeed == -1L) {
+            // Currently we just re-create the GameScreen
+            System.out.println("!!! !!! !!! !!!     !!!!!Level: !!!!!!!!!");
+            GameScreen gameScreen = new GameScreen(klotski);
+            gameScreen.setGameMode(false); // Classical mode
+            gameScreen.setLevel(this.level);    // Set to Level 1~5
+            klotski.setGameScreen(gameScreen);
+            klotski.setScreen(gameScreen);
+        } else if (this.randomSeed != -1L) {
+            GameScreen gameScreen = new GameScreen(klotski, (long) klotski.randomHelper.nextInt(114514), false);
+            klotski.setGameScreen(gameScreen); // Set the game screen
+            klotski.setScreen(gameScreen); // Navigate to the game screen
+        }
+>>>>>>> Stashed changes
     }
 
     public void handleHint(KlotskiGame game) {
         // Get the solution from the solver
+<<<<<<< Updated upstream
         List<String> solution = KlotskiSolver.solve(game, blockedId);
 
         if (solution != null && !solution.isEmpty()) {
@@ -1074,6 +1122,54 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } else {
             System.out.println("No solution found or no hint available.");
         }
+=======
+        // Run the solver in a separate thread to avoid blocking the UI
+        new Thread(() -> {
+            List<String> solutionResult = KlotskiSolver.solve(game, blockedId);
+            Gdx.app.postRunnable(() -> {
+                this.solution = solutionResult;
+                if (solution != null && !solution.isEmpty()) {
+                    // Parse the first move from the solution
+                    String move = solution.get(0);
+                    System.out.println("Hint: " + move);
+
+                    int fromIndex = move.indexOf(" from ");
+                    String fromPart = move.substring(fromIndex + 6, move.indexOf(" to "));
+                    String toPart = move.substring(move.indexOf(" to ") + 4);
+
+                    int fromRow = Integer.parseInt(fromPart.substring(1, fromPart.indexOf(',')));
+                    int fromCol = Integer.parseInt(fromPart.substring(fromPart.indexOf(',') + 1, fromPart.length() - 1));
+                    int toRow = Integer.parseInt(toPart.substring(1, toPart.indexOf(',')));
+                    int toCol = Integer.parseInt(toPart.substring(toPart.indexOf(',') + 1, toPart.length() - 1));
+
+                    // Find the block at the starting position
+                    for (RectangleBlockActor block : blocks) {
+                        KlotskiGame.KlotskiPiece piece = game.getPiece(block.pieceId);
+                        System.out.printf("Block ID: %d, Position: (%d, %d)\n", piece.id, piece.position[0], piece.position[1]);
+                        if (piece.position[0] == fromRow && piece.position[1] == fromCol) {
+                            // Animate the block's movement to the target position
+                            float targetX = toCol * cellSize;
+                            float targetY = (rows - toRow - piece.height) * cellSize; // Invert y-axis
+                            block.addAction(Actions.sequence(
+                                Actions.moveTo(targetX, targetY, 0.1f), // Smooth animation
+                                Actions.run(() -> {
+                                    // Update game logic after animation
+                                    game.applyAction(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                                    piece.setPosition(new int[]{toRow, toCol});
+                                    recordMove(new int[]{fromRow, fromCol}, new int[]{toRow, toCol});
+                                    this.isTerminal = game.isTerminal(); // Check if the game is in a terminal state
+                                    broadcastGameState();
+                                })));
+                            break;
+                        }
+                    }
+                    System.out.println(game.toString());
+                } else {
+                    System.out.println("No solution found or no hint available.");
+                }
+            });
+        }).start();
+>>>>>>> Stashed changes
     }
 
     public void handleAutoSolve(KlotskiGame game, TextButton autoButton) {
@@ -1172,7 +1268,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 klotski.playClickSound();
                 ;
-                handleRestart(game); // Restart the game
+                handleRestart(game, false); // Restart the game
                 congratulationsGroup.setVisible(false); // Hide the congratulations screen
             }
         });
@@ -1427,7 +1523,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 System.out.println("Decoded save data length: " + decodedSaveData.length);
 
                 try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(decodedSaveData))) {
-                    handleRestart(game);
+                    handleRestart(game, true);
 
                     List<KlotskiGame.KlotskiPiece> pieces = (List<KlotskiGame.KlotskiPiece>) ois.readObject();
                     moveHistory = (List<int[][]>) ois.readObject();
@@ -1551,7 +1647,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             // Restart the game
-            handleRestart(game);
+            handleRestart(game, true);
 
             // Load the game state
             List<KlotskiGame.KlotskiPiece> pieces = (List<KlotskiGame.KlotskiPiece>) ois.readObject();
@@ -1677,5 +1773,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // update the blocks from the game state
         updateBlocksFromGame(game);
         broadcastGameState();
+
+        System.out.println("Loaded level: " + level + "\n" + levelData);
     }
 }
